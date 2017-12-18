@@ -4,7 +4,7 @@ import java.util.List;
 
 import paul.wintz.math.Vector2D;
 
-public interface Layer<L> {
+public abstract class Layer<L> {
 
 	public interface Transformation {
 	}
@@ -37,48 +37,137 @@ public interface Layer<L> {
 		}
 	}
 
-	// Set the persistent state of the layers
+	public Layer(int width, int height) {
+		this.width = width;
+		this.height = height;
 
-	void setScale(float scale);
-	void setSize(int width, int height);
-	void setCenter(float centerX, float centerY);
-	void setRotation(float angle);
+		layer = createLayer();
+	}
 
-	int getWidth();
-	int getHeight();
-	float getScale();
+	protected L layer;
+	private int width;
+	private int height;
 
+	private float scaleX = 1;
+	private float scaleY = 1;
+	private float rotation = 0;
+	private float centerX = 0;
+	private float centerY = 0;
 
-	void handleNewFrame();
-	void clear();
-	void background(Painter painter);
+	//******************************************
+	//* Set the persistent state of the layers.*
+	//******************************************
+	public void setScale(float scale) {
+		setScaleX(scale);
+		setScaleY(scale);
+	}
 
-	L getImage();
-	void drawOnto(L target);
+	public void setCenter(float centerX, float centerY) {
+		this.centerX = centerX;
+		this.centerY = centerY;
+	}
 
-	void line(float x0, float y0, float x1, float y1, Painter painter);
-	void endpointToEndpoint(Vector2D center, Vector2D tracer, Painter painter);
+	public void setRotation(float radians) {
+		rotation = radians;
+	}
 
-	void arc(float xCenter, float yCenter, float width, float height, float startAngle, float endAngle, Painter painter);
+	public void setScaleX(float scaleX) {
+		this.scaleX = scaleX;
+	}
 
-	void circle(float x, float y, float radius, Painter painter);
+	public void setScaleY(float scaleY) {
+		this.scaleY = scaleY;
+	}
 
-	void dot(float x, float y, float radius, Painter painter);
-	void dot(Vector2D tracer, float radius, Painter painter);
+	public void setCenterX(float centerX) {
+		this.centerX = centerX;
+	}
+
+	public void setCenterY(float centerY) {
+		this.centerY = centerY;
+	}
+
+	public float getScaleX() {
+		return scaleX;
+	}
+
+	public float getScaleY() {
+		return scaleY;
+	}
+
+	public float getAverageScale() {
+		return (scaleX + scaleY) / 2f;
+	}
+
+	public float getCenterX() {
+		return centerX;
+	}
+
+	public float getCenterY() {
+		return centerY;
+	}
+
+	public float getRotation() {
+		return rotation;
+	}
+
+	//////////////////////////
+	//      LAYER SIZE      //
+	//////////////////////////
+
+	public void setSize(int width, int height) {
+		this.width = width;
+		this.height = height;
+
+		layer = createLayer();
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	protected abstract L createLayer();
+
+	public abstract void handleNewFrame();
+	public abstract void clear();
+	public abstract void background(Painter painter);
+
+	public abstract L getImage();
+	public abstract void drawOnto(L target);
+
+	public abstract void line(float x0, float y0, float x1, float y1, Painter painter);
+	//TODO: Rename to line()
+	public abstract void endpointToEndpoint(Vector2D start, Vector2D end, Painter painter);
+
+	public abstract void arc(float xCenter, float yCenter, float width, float height, float startAngle, float endAngle, Painter painter);
+
+	public abstract void circle(float x, float y, float radius, Painter painter);
+
+	public abstract void dot(float x, float y, float radius, Painter painter);
+	public abstract void dot(Vector2D pos, float radius, Painter painter);
 
 	//Complex Shapes
-	void rectangle(float x, float y, float width, float height, Painter painter);
-	void rectangle(float x, float y, float width, float height, Painter painter, List<Transformation> transforms);
+	public abstract void rectangle(float x, float y, float width, float height, Painter painter);
+	public abstract void rectangle(float x, float y, float width, float height, Painter painter, List<Transformation> transforms);
 
-	void ellipse(float xCenter, float yCenter, float width, float height, Painter painter);
-	void ellipse(float xCenter, float yCenter, float width, float height, Painter painter, List<Transformation> transforms);
+	public abstract void ellipse(float xCenter, float yCenter, float width, float height, Painter painter);
+	public abstract void ellipse(float xCenter, float yCenter, float width, float height, Painter painter, List<Transformation> transforms);
 
-	void quad(Vector2D corner0, Vector2D corner1, Vector2D corner2, Vector2D corner3, Painter painter);
+	public abstract void quad(Vector2D corner0, Vector2D corner1, Vector2D corner2, Vector2D corner3, Painter painter);
 
-	void drawPath(final List<Vector2D> points, final Painter painter);
-	void drawPath(final List<Vector2D> points, final Painter painter, final List<Transformation> transforms);
+	public abstract void drawPath(final List<Vector2D> points, final Painter painter);
+	public abstract void drawPath(final List<Vector2D> points, final Painter painter, final List<Transformation> transforms);
 
-	void drawPolygon(final List<Vector2D> points, final Painter painter);
-	void drawPolygon(final List<Vector2D> points, final Painter painter, List<Transformation> transforms);
+	public abstract void drawPolygon(final List<Vector2D> points, final Painter painter);
+	public abstract void drawPolygon(final List<Vector2D> points, final Painter painter, List<Transformation> transforms);
+
+	@Override
+	public String toString() {
+		return String.format("Layer(%d x %d){scaleX=%.2f, scaleY=%.2f, rotation=%.2f}", width, height, scaleX, scaleY, rotation);
+	}
 
 }
