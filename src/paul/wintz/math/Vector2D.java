@@ -11,6 +11,14 @@ public class Vector2D implements Cloneable {
 		this.y = y;
 	}
 
+	public static Vector2D fromXandY(double x, double y) {
+		return new Vector2D(x, y);
+	}
+
+	public static Vector2D fromDirectionAndSpeed(double direction, double speed) {
+		return new Vector2D(speed * cos(direction), speed * sin(direction));
+	}
+
 	public Vector2D() {
 		this(0, 0);
 	}

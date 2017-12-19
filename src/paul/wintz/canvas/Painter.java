@@ -36,7 +36,8 @@ public class Painter {
 			sb.append(", ");
 		}
 		if (isStroked) {
-			sb.append("Stroke: ").append(stroke).append(", StrokeWeight: ").append(strokeWeight);
+			sb.append("Stroke: ").append(stroke)
+			.append(", StrokeWeight: ").append(strokeWeight);
 		}
 		return sb.toString();
 	}
