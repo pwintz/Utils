@@ -145,8 +145,7 @@ public abstract class Layer<L> {
 	public abstract void drawOnto(L target);
 
 	public abstract void line(float x0, float y0, float x1, float y1, Painter painter);
-	//TODO: Rename to line()
-	public abstract void endpointToEndpoint(Vector2D start, Vector2D end, Painter painter);
+	public abstract void line(Vector2D start, Vector2D end, Painter painter);
 
 	public abstract void arc(float xCenter, float yCenter, float width, float height, float startAngle, float endAngle, Painter painter);
 

@@ -122,7 +122,7 @@ public class MockLayer extends Layer<Void> {
 	}
 
 	@Override
-	public void endpointToEndpoint(Vector2D start, Vector2D end, Painter painter) {
+	public void line(Vector2D start, Vector2D end, Painter painter) {
 		addRecordedAction("endpointToEndpoint", asPixelCoord(start), asPixelCoord(end));
 	}
 

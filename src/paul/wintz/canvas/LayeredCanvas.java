@@ -58,7 +58,7 @@ public class LayeredCanvas<L> {
 	}
 
 	public double getScale() {
-		return layers.get(0).getScale();
+		return layers.get(0).getAverageScale();
 	}
 
 	protected final Layer<L> getLayer(int i){
