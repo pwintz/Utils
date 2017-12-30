@@ -370,4 +370,29 @@ public final class Utils {
 	public static void checkInRange(double value, double start, int end) {
 		checkArgument(0 <= value && value <= 1, "The value %s is not in the range [%s, %s]", value, start, end);
 	}
+
+	/**Updates the averagedSpectrum array by setting each element
+	 * to a weighted average of its current value and the
+	 * present value.
+	 *//*
+	private void updateAveragedSectrum(){
+		float currentFrameWeight = 0.7f;
+
+		for(int i = LOWEST_INDEX; i < HIGHEST_INDEX; i++){
+			amplitudesAveraged[i - LOWEST_INDEX] = weightedAverage(currentFrameWeight, amplitudesAveraged[i - LOWEST_INDEX], grid.getAmplitude(0, i));
+		}
+	}*/
+
+	public static float weightedAverage(float weight, float a, float b){
+		return (weight * a + (1 - weight) * b);
+	}
+
+	public static double log2(double x) {
+		return (float) (Math.log(x) / Math.log(2));
+	}
+
+	public static float log2(float x) {
+		float y = (float) (Math.log(x) / Math.log(2));
+		return y;
+	}
 }
