@@ -255,55 +255,9 @@ public final class Utils {
 		}
 	}
 
-	public static class ColoredString {
-		public ColoredString(String text, int color) {
-			this.text = text;
-			this.color = color;
-		}
-
-		public String text;
-		public int color;
-	}
-
-	public static String arrayToString(int[] a) {
-		final StringBuilder sb = new StringBuilder();
-		for (final int obj : a) {
-			sb.append(obj + "\t");
-		}
-		return sb.toString();
-	}
-
-	public static String arrayToString(boolean[] a) {
-		final StringBuilder sb = new StringBuilder();
-		for (final boolean obj : a) {
-			sb.append(obj + "\t");
-		}
-		return sb.toString();
-	}
-
-	public static <T> String arrayToString(T[] a) {
-		return arrayToString("\t", a);
-	}
-
-	public static <T> String arrayToString(String separator, T[] a) {
-		final StringBuilder sb = new StringBuilder();
-		boolean isFirst = true;
-		for (final T obj : a) {
-			if(!isFirst) {
-				sb.append(separator);
-			}
-
-			sb.append(obj);
-
-			isFirst = false;
-		}
-		return sb.toString();
-	}
-
 	public static double randomDouble() {
 		return random.nextDouble();
 	}
-
 
 	public static boolean doLengthsMatch(Object... arrays){
 		final int length = length(arrays[0]);
@@ -366,6 +320,18 @@ public final class Utils {
 		final double remainder = modulus(valueFromLower, range);
 
 		return remainder + lowerBound;
+	}
+
+	public static double clipToRange(double d, double min, double max) {
+		if(d < min) return min;
+		if(d > max) return max;
+		return d;
+	}
+
+	public static float clipToRange(float f, float min, float max) {
+		if(f < min) return min;
+		if(f > max) return max;
+		return f;
 	}
 
 	private Utils() {

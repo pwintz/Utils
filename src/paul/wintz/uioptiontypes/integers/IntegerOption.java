@@ -22,12 +22,15 @@ public class IntegerOption extends NumberOption<Integer> {
 	}
 
 	protected Integer sanitizeValue(Integer newValue) {
-		if(newValue < min) {
-			newValue = min;
-		} else if(newValue > max) {
-			newValue = max;
+		int sanitizedValue = skipIllegalValue(newValue);
+
+		if(sanitizedValue < min) {
+			sanitizedValue = min;
+		} else if(sanitizedValue > max) {
+			sanitizedValue = max;
 		}
-		return skipIllegalValue(newValue);
+
+		return sanitizedValue;
 	}
 
 	private Integer skipIllegalValue(Integer newValue) {

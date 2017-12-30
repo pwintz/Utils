@@ -83,38 +83,32 @@ public class LayeredCanvas<L> {
 		return layers;
 	}
 
-	@Override
-	public String toString() {
-
-		return String.format("Canvas (%dx%d)", getWidth(), getHeight());
-	}
-
 	public float getCenterX() {
 		return centerX;
 	}
 
-	public float setCenterX(float centerX) {
+	public void setCenterX(float centerX) {
 		this.centerX = centerX;
-		return centerX;
 	}
 
 	public float getCenterY() {
 		return centerY;
 	}
 
-	public float setCenterY(float centerY) {
+	public void setCenterY(float centerY) {
 		this.centerY = centerY;
-		return centerY;
 	}
 
 	public float getRotation() {
 		return rotation;
 	}
 
-	public float setRotation(float rotation) {
+	public void setRotation(float rotation) {
 		this.rotation = rotation;
-		return rotation;
 	}
 
-
+	@Override
+	public String toString() {
+		return String.format("LayeredCanvas (%dx%d)", getWidth(), getHeight());
+	}
 }

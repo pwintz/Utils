@@ -1,6 +1,7 @@
 package paul.wintz.utils;
 
 import java.io.*;
+import java.nio.file.*;
 
 import paul.wintz.utils.logging.Lg;
 
@@ -12,24 +13,11 @@ public final class FileUtils {
 		return new File(folderPath).list();
 	}
 
-	public static void addLineToFile(String fileName, String newLine) {
-		FileWriter out;
-		try {
-			// ADD EXTENSION TO FILENAME
-			if (!fileName.contains(".txt")) {
-				fileName += ".txt";
-			}
-			// ADD LINE BREAK
-			if (!newLine.endsWith(System.lineSeparator())) {
-				newLine += System.lineSeparator();
-			}
+	public static void addLineToFile(String fileName, CharSequence newLine) {
 
-			// SAVE ARRAYLIST TO THE FILE
-			out = new FileWriter(fileName, true);
-			out.append(newLine);
-			out.close();
-			Lg.v(TAG, newLine + " appended to " + fileName);
-		} catch (final IOException e) {
+		try(BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName), StandardOpenOption.APPEND)){
+			writer.append(newLine);
+		} catch (IOException e) {
 			Lg.e(TAG, "Failed to append line", e);
 		}
 	}

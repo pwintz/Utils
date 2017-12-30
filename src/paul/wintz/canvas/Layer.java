@@ -62,6 +62,11 @@ public abstract class Layer<L> {
 		setScaleY(scale);
 	}
 
+	/**
+	 * Set the center point as a fraction of the distance across the layer.
+	 * For example, for the vector (0, 0) to be displayed at the center of the
+	 * image, then call setCenter(0.5f, 0.5f).
+	 */
 	public void setCenter(float centerX, float centerY) {
 		this.centerX = centerX;
 		this.centerY = centerY;
