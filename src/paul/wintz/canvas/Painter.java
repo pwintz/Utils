@@ -3,7 +3,7 @@ package paul.wintz.canvas;
 import static java.lang.Math.max;
 
 public class Painter {
-	private boolean isFilled;
+	private boolean isFilled = true;
 	private int fill;
 	private boolean isStroked;
 	private float strokeWeight;
@@ -11,18 +11,14 @@ public class Painter {
 
 	public Painter setStroke(int color, float weight) {
 		setOnlyStroked();
-
 		stroke = color;
 		strokeWeight = max(0, weight);
-
 		return this;
 	}
 
 	public Painter setFill(int color) {
 		setOnlyFilled();
-
 		fill = color;
-
 		return this;
 	}
 
