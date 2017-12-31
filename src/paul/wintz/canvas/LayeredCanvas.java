@@ -1,5 +1,6 @@
 package paul.wintz.canvas;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static paul.wintz.utils.logging.Lg.makeTAG;
 
 import java.util.*;
@@ -18,6 +19,7 @@ public class LayeredCanvas<L> {
 	private boolean preserveGraph = false;
 
 	protected LayeredCanvas(Layer<L>... layers) {
+		checkArgument(layers.length > 0);
 		this.layers = Arrays.asList(layers);
 	}
 

@@ -123,7 +123,7 @@ public class MockLayer extends Layer<Void> {
 
 	@Override
 	public void line(Vector2D start, Vector2D end, Painter painter) {
-		addRecordedAction("endpointToEndpoint", asPixelCoord(start), asPixelCoord(end));
+		addRecordedAction("line", asPixelCoord(start), asPixelCoord(end));
 	}
 
 	@Override
@@ -132,19 +132,15 @@ public class MockLayer extends Layer<Void> {
 		addRecordedAction("arc", asPixelCoord(xCenter, yCenter));
 	}
 
+
+	@Override
+	public void circle(Vector2D center, float radius, Painter painter) {
+		addRecordedAction("circle", asPixelCoord(center));
+	}
+
 	@Override
 	public void circle(float x, float y, float radius, Painter painter) {
 		addRecordedAction("circle", asPixelCoord(x, y));
-	}
-
-	@Override
-	public void dot(float x, float y, float radius, Painter painter) {
-		addRecordedAction("dot", asPixelCoord(x, y));
-	}
-
-	@Override
-	public void dot(Vector2D pos, float radius, Painter painter) {
-		addRecordedAction("dot", asPixelCoord(pos));
 	}
 
 	@Override

@@ -149,15 +149,12 @@ public abstract class Layer<L> {
 
 	public abstract void arc(float xCenter, float yCenter, float width, float height, float startAngle, float endAngle, Painter painter);
 
-	public abstract void circle(float x, float y, float radius, Painter painter);
 
-	public abstract void dot(float x, float y, float radius, Painter painter);
-	public abstract void dot(Vector2D pos, float radius, Painter painter);
-
-	//Complex Shapes
 	public abstract void rectangle(float x, float y, float width, float height, Painter painter);
 	public abstract void rectangle(float x, float y, float width, float height, Painter painter, List<Transformation> transforms);
 
+	public abstract void circle(float x, float y, float radius, Painter painter);
+	public abstract void circle(Vector2D center, float radius, Painter painter);
 	public abstract void ellipse(float xCenter, float yCenter, float width, float height, Painter painter);
 	public abstract void ellipse(float xCenter, float yCenter, float width, float height, Painter painter, List<Transformation> transforms);
 
