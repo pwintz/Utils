@@ -10,6 +10,8 @@ import java.util.Random;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
 
+import paul.wintz.utils.exceptions.UnhandledCaseException;
+
 public final class Utils {
 	// private static PApplet papplet; //set to the main PApplet. Can only be
 	// used in or after setup().
@@ -79,6 +81,10 @@ public final class Utils {
 		} while (!allowZeroValue && i == 0);
 
 		return i;
+	}
+
+	public static String getRandomHash() {
+		return String.format("%08x", Utils.randomInteger(0, Integer.MAX_VALUE));
 	}
 
 	/*
@@ -208,7 +214,7 @@ public final class Utils {
 				return -cos(x);
 			}
 
-			throw new RuntimeException("Programming Error: unimplemented case.");
+			throw new UnhandledCaseException(this);
 		}
 
 		public TrigFunction derivativeFunction(int derivativeOrder) {
@@ -392,7 +398,12 @@ public final class Utils {
 	}
 
 	public static float log2(float x) {
-		float y = (float) (Math.log(x) / Math.log(2));
-		return y;
+		return (float) (Math.log(x) / Math.log(2));
 	}
+
+	public static double map(double value, double inStart, double inStop, double outStart, double outStop) {
+		double slope = (outStop - outStart) / (inStop - inStart);
+		return slope * (value - inStart) + outStart;
+	}
+
 }

@@ -116,10 +116,6 @@ public abstract class Layer<L> {
 		return rotation;
 	}
 
-	//////////////////////////
-	//      LAYER SIZE      //
-	//////////////////////////
-
 	public void setSize(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -148,7 +144,6 @@ public abstract class Layer<L> {
 	public abstract void line(Vector2D start, Vector2D end, Painter painter);
 
 	public abstract void arc(float xCenter, float yCenter, float width, float height, float startAngle, float endAngle, Painter painter);
-
 
 	public abstract void rectangle(float x, float y, float width, float height, Painter painter);
 	public abstract void rectangle(float x, float y, float width, float height, Painter painter, List<Transformation> transforms);
