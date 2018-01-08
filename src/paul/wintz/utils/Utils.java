@@ -406,4 +406,20 @@ public final class Utils {
 		return slope * (value - inStart) + outStart;
 	}
 
+	public static int[] toIntArray(String[] strings) {
+		final int[] ints = new int[strings.length];
+		for (int i = 0; i < strings.length; i++) {
+			ints[i] = Integer.valueOf(strings[i].trim());
+		}
+		return ints;
+	}
+
+	public static boolean[] toBooleanArray(String[] strings) {
+		final boolean[] bools = new boolean[strings.length];
+		for (int i = 0; i < strings.length; i++) {
+			bools[i] = Boolean.valueOf(strings[i].trim());
+		}
+		return bools;
+	}
+
 }
