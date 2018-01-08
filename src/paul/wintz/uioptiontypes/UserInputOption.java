@@ -27,6 +27,11 @@ public abstract class UserInputOption<T> extends OptionItem {
 		onValueChangedListeners.add(callback);
 	}
 
+	public void addOnValueChangedListenerAndCall(OnValueChangedListener<T> callback) {
+		addOnValueChangedListener(callback);
+		callback.onValueChanged(getValue());
+	}
+
 	private final void doCallbacks() {
 		for (final OnValueChangedListener<T> callback : onValueChangedListeners) {
 			callback.onValueChanged(getValue());
