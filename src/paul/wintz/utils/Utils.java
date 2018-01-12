@@ -19,6 +19,7 @@ public final class Utils {
 	public static final Random random = new Random();
 	public static final char PHI = '\u03D5';
 	public static final char PSI = '\u03C8';
+	private static final String NOT_POSITIVE_FORMAT = "%s is not positive";
 
 	public static int min(int... values) {
 		if (values.length == 0)
@@ -70,8 +71,7 @@ public final class Utils {
 	 *         (non-inclusive). [low, high)
 	 */
 	public static int randomInteger(int low, int high, boolean allowZeroValue) {
-		if (low > high)
-			throw new IllegalArgumentException("Illegal range. Low value must be less than high value.");
+		checkArgument(low <= high, "Illegal range. Low value must be less than high value.");
 		if (!allowZeroValue && high == 0 && low == 0)
 			throw new IllegalArgumentException("Cannot pick value from empty set");
 
@@ -349,17 +349,17 @@ public final class Utils {
 	}
 
 	public static int checkPositive(int i) {
-		checkArgument(i > 0, "%s is not positive", i);
+		checkArgument(i > 0, NOT_POSITIVE_FORMAT, i);
 		return i;
 	}
 
 	public static double checkPositive(double x) {
-		checkArgument(x > 0, "%s is not positive", x);
+		checkArgument(x > 0, NOT_POSITIVE_FORMAT, x);
 		return x;
 	}
 
 	public static float checkPositive(float x) {
-		checkArgument(x > 0, "%s is not positive", x);
+		checkArgument(x > 0, NOT_POSITIVE_FORMAT, x);
 		return x;
 	}
 

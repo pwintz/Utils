@@ -94,6 +94,18 @@ public class IntegerOption extends NumberOption<Integer> {
 			return this;
 		}
 
+		public final Builder prohibitNonPositive() {
+			checkState(validityEvaluator == null);
+			validityEvaluator = value -> value > 0;
+			return this;
+		}
+
+		public final Builder prohibitNegative() {
+			checkState(validityEvaluator == null);
+			validityEvaluator = value -> value >= 0;
+			return this;
+		}
+
 		public final IntegerOption build() {
 			checkValues();
 			return new IntegerOption(description, initialValue, minValue, maxValue, validityEvaluator);
