@@ -401,6 +401,10 @@ public final class Utils {
 		return (float) (Math.log(x) / Math.log(2));
 	}
 
+	public static double sq(double x) {
+		return x * x;
+	}
+
 	public static double map(double value, double inStart, double inStop, double outStart, double outStop) {
 		double slope = (outStop - outStart) / (inStop - inStart);
 		return slope * (value - inStart) + outStart;

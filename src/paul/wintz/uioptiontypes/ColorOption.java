@@ -90,9 +90,11 @@ public class ColorOption extends OptionGroup {
 	private void setBlue(int b) {
 		rgba.get(2).setValue(b);
 	}
+
 	private int getAlpha() {
 		return rgba.get(3).getValue();
 	}
+
 	private void setAlpha(int a) {
 		rgba.get(3).setValue(a);
 	}
