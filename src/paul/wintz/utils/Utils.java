@@ -5,10 +5,12 @@ import static java.lang.Double.isFinite;
 import static java.lang.Math.*;
 
 import java.io.File;
-import java.util.Random;
+import java.util.*;
 
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
+
+import com.google.common.primitives.Ints;
 
 import paul.wintz.utils.exceptions.UnhandledCaseException;
 
@@ -162,16 +164,21 @@ public final class Utils {
 	/**
 	 * Calculates the least common multiple of multiple values. If one of the
 	 * values is zero, than the result is zero.
-	 *
-	 * @param N
-	 * @param values
-	 * @return
-	 * @throws MathArithmeticException
+	 * @throws MathArithmeticException if any of the values are 0.
 	 */
 	public static int lcm(int... values) {
+		return lcm(Ints.asList(values));
+	}
+	
+	/**
+	 * Calculates the least common multiple of multiple values. If one of the
+	 * values is zero, than the result is zero.
+	 * @throws MathArithmeticException if any of the values are 0.
+	 */
+	public static int lcm(List<Integer> values) {
 		int lcm = 1;
-		for (int i = 0; i < values.length; i++) {
-			lcm = ArithmeticUtils.lcm(lcm, values[i]);
+		for (int i = 0; i < values.size(); i++) {
+			lcm = ArithmeticUtils.lcm(lcm, values.get(i));
 		}
 		return lcm;
 	}
