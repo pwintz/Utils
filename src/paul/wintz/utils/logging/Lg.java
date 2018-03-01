@@ -57,7 +57,7 @@ public final class Lg {
 		return classs.getSimpleName();
 	}
 
-	public static void setupDefaultLogger(){
+	public static synchronized void setupDefaultLogger(){
 		if(logger == null) {
 			setLogger(new JavaStdOutLogger());
 		}

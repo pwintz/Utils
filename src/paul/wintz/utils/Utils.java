@@ -73,13 +73,14 @@ public final class Utils {
 	 *         (non-inclusive). [low, high)
 	 */
 	public static int randomInteger(int low, int high, boolean allowZeroValue) {
-		checkArgument(low <= high, "Illegal range. Low value must be less than high value.");
+		checkArgument(low < high, "Illegal range. Low value must be less than high value.");
 		if (!allowZeroValue && high == 0 && low == 0)
 			throw new IllegalArgumentException("Cannot pick value from empty set");
 
 		int i;
 		do {
-			i = random.nextInt(high - low) + low;
+			int range = Utils.checkPositive(Math.abs(high - low));
+			i = random.nextInt(range) + low;
 		} while (!allowZeroValue && i == 0);
 
 		return i;
