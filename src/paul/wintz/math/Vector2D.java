@@ -145,7 +145,7 @@ public class Vector2D implements Cloneable {
 	}
 
 	/**
-	 *
+	 * Return a new vector that is the difference between the given vectors.
 	 * @param a
 	 * @param b
 	 * @return a - b
@@ -154,6 +154,16 @@ public class Vector2D implements Cloneable {
 		return new Vector2D(a.x - b.x, a.y - b.y);
 	}
 
+	/**
+	 * Return a new vector that is the sum of the given vectors.
+	 * @param a
+	 * @param b
+	 * @return a + b
+	 */
+	public static Vector2D sum(Vector2D a, Vector2D b) {
+		return new Vector2D(a.x + b.x, a.y + b.y);
+	}
+	
 	public static double crossProduct(Vector2D u, Vector2D v) {
 		return u.x * v.y - u.y * v.x;
 	}
