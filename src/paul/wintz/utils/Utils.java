@@ -174,7 +174,6 @@ public final class Utils {
 	/**
 	 * Calculates the least common multiple of multiple values. If one of the
 	 * values is zero, than the result is zero.
-	 * @throws MathArithmeticException if any of the values are 0.
 	 */
 	public static int lcm(List<Integer> values) {
 		int lcm = 1;

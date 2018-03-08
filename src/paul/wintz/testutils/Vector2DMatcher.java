@@ -21,9 +21,17 @@ public final class Vector2DMatcher extends BaseMatcher<Vector2D> {
 	}
 
 	private double distanceFromExpected(Object actual) {
-		return Vector2D.diff(expected, (Vector2D) actual).magnitude();
+		return differenceFromExpected(actual).magnitude();
 	}
 
+	private Vector2D differenceFromExpected(Object actual) {
+		return Vector2D.diff(expected, (Vector2D) actual);
+	}
+
+	private double angledDifferenceFromExpected(Object actual) {
+		return ((Vector2D) actual).direction() - expected.direction();
+	}
+	
 	@Override
 	public void describeTo(Description description) {
 		description.appendValue(expected);
@@ -32,7 +40,16 @@ public final class Vector2DMatcher extends BaseMatcher<Vector2D> {
 	@Override
 	public void describeMismatch(Object item, Description description) {
 		super.describeMismatch(item, description);
-		description.appendText("\nThe distance between the vectors is ").appendValue(distanceFromExpected(item));
+		
+		description.appendText("\nThe distance between the vectors is ")
+			.appendValue(distanceFromExpected(item));
+		
+		description.appendText("\nThe Cartesian difference between the vectors is ")
+			.appendValue(differenceFromExpected(item));
+		
+		description.appendText("\nThe angle difference between the vectors is ")
+			.appendValue(180.0 / Math.PI * angledDifferenceFromExpected(item))
+			.appendText(" degrees");
 	}
 
 	public static Matcher<Vector2D> closeTo(Vector2D expected) {
