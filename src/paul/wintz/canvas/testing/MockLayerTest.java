@@ -1,8 +1,11 @@
 package paul.wintz.canvas.testing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.Matchers.*;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class MockLayerTest {
 
@@ -26,7 +29,7 @@ public class MockLayerTest {
 		layer.setScale(scale); // setters are not recorded
 		layer.line(0, 0, 100, 100, null);
 		layer.assertEqualToRecorded("line", "0x0", "200x200");
-		assertEquals(scale, layer.getAverageScale());
+		assertThat(layer.getAverageScale(), is(equalTo((float) scale)));
 	}
 
 	@Test
