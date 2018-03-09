@@ -272,28 +272,10 @@ public final class Utils {
 		return random.nextDouble();
 	}
 
-	public static boolean doLengthsMatch(Object... arrays){
-		final int length = length(arrays[0]);
-
-		for(final Object a : arrays){
-			if(length != length(a)) return false;
-		}
-
-		return true;
-	}
-
 	public static void assertNonNull(Object... objs){
 		for(final Object o : objs){
 			checkNotNull(o);
 		}
-	}
-
-	public static void assertLengthsMatch(Object... arrays){
-		checkArgument(doLengthsMatch(arrays), "The length of the arrays do not match");
-	}
-
-	private static int length(Object array){
-		return java.lang.reflect.Array.getLength(array);
 	}
 
 	// FIXME: use base two values for sizes?
@@ -415,22 +397,6 @@ public final class Utils {
 	public static double map(double value, double inStart, double inStop, double outStart, double outStop) {
 		double slope = (outStop - outStart) / (inStop - inStart);
 		return slope * (value - inStart) + outStart;
-	}
-
-	public static int[] toIntArray(String[] strings) {
-		final int[] ints = new int[strings.length];
-		for (int i = 0; i < strings.length; i++) {
-			ints[i] = Integer.valueOf(strings[i].trim());
-		}
-		return ints;
-	}
-
-	public static boolean[] toBooleanArray(String[] strings) {
-		final boolean[] bools = new boolean[strings.length];
-		for (int i = 0; i < strings.length; i++) {
-			bools[i] = Boolean.valueOf(strings[i].trim());
-		}
-		return bools;
 	}
 
 }
