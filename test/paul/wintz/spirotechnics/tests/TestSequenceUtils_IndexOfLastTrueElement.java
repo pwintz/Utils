@@ -3,6 +3,8 @@ package paul.wintz.spirotechnics.tests;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertThat;
@@ -18,7 +20,7 @@ public class TestSequenceUtils_IndexOfLastTrueElement {
 
 	@Test(expected = NullPointerException.class)
 	public void throwsIfListIsNull() {
-		SequenceUtils.indexOfLastTrueElement(null);
+		SequenceUtils.indexOfLastTrueElement((List<Boolean>) null);
 	}
 	
 	@Test
