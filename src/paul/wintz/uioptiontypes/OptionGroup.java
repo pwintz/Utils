@@ -1,10 +1,13 @@
 package paul.wintz.uioptiontypes;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.*;
 
-public class OptionGroup extends OptionItem implements Iterable<OptionItem> {
-	private static final String TAG = OptionGroup.class.getSimpleName();
+public class OptionGroup implements OptionItem, Iterable<OptionItem> {
 
+	protected String description;
+	
 	protected final List<OptionItem> options = new ArrayList<>();
 	private final List<OnListChangeListener> changeListeners = new ArrayList<>();
 
@@ -21,11 +24,16 @@ public class OptionGroup extends OptionItem implements Iterable<OptionItem> {
 	}
 
 	public OptionGroup(String description, OptionItem... opts) {
-		super(description);
+		this.description = checkNotNull(description);
 
 		addOptions(opts);
 	}
 
+	@Override
+	public final String getDescription() {
+		return description;
+	}
+	
 	public final void clearOptions(){
 		options.clear();
 	}

@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.*;
 
 import java.util.*;
 
-public abstract class UserInputOption<T> extends OptionItem {
+public abstract class UserInputOption<T> implements OptionItem {
 
 	private final List<OnValueChangedListener<T>> onValueChangedListeners = new ArrayList<>();
 	private ValidityEvaluator<T> validityEvaluator = value -> true;
@@ -20,9 +20,16 @@ public abstract class UserInputOption<T> extends OptionItem {
 	}
 
 	public UserInputOption(String description) {
-		super(description);
+		this.description = description;
 	}
 
+	protected String description;
+
+	@Override
+	public final String getDescription() {
+		return description;
+	}
+	
 	public void addOnValueChangedListener(OnValueChangedListener<T> callback) {
 		onValueChangedListeners.add(callback);
 	}
