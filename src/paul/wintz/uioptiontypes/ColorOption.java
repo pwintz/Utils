@@ -32,7 +32,7 @@ public class ColorOption extends OptionGroup {
 
 	public ColorOption(String description) {
 		super(description);
-		addOptions(rgba);
+		addAll(rgba);
 		for(IntegerOption channelOption : rgba) {
 			channelOption.addOnValueChangedListener(value -> onColorChangeListener.onColorChange(getColor()));
 		}

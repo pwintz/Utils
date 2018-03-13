@@ -17,7 +17,7 @@ public class ObservableListTest {
 
 	ObservableList<String> observableList = new ObservableList<>();
 
-	@Mock ObservableList.OnListChangeListener changeListener;
+	@Mock ObservableList.Observer changeObserver;
 	
 	String item0 = "dummy item 0";
 	String item1 = "dummy item 1";
@@ -63,30 +63,30 @@ public class ObservableListTest {
 	
 	@Test
 	public void listenerNotifiedOfItemAdded() {
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 		
 		observableList.add(item0);
 		
-		verify(changeListener).onListChange();
+		verify(changeObserver).onListChange();
 	}
 	
 	@Test
 	public void listenerNotifiedOnceIfMultipleItemsAddedTogether() {
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 		
 		observableList.addAll(asList(item0, item1));
 		
-		verify(changeListener, Mockito.atMost(1)).onListChange();
+		verify(changeObserver, Mockito.atMost(1)).onListChange();
 	}
 	
 	@Test
 	public void listenerNotifiedTwiceIfAddedSeparately() {
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 		
 		observableList.add(item0);
 		observableList.add(item1);
 		
-		verify(changeListener, Mockito.times(2)).onListChange();
+		verify(changeObserver, Mockito.times(2)).onListChange();
 	}	
 	
 	// REPLACE
@@ -118,11 +118,11 @@ public class ObservableListTest {
 	@Test
 	public void listenerNotifiedOnReplace() {
 		observableList.add(item0);
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 				
 		observableList.set(0, item1);
 		
-		verify(changeListener).onListChange();
+		verify(changeObserver).onListChange();
 	}
 	
 	// REMOVE INDEX
@@ -144,11 +144,11 @@ public class ObservableListTest {
 	@Test
 	public void listenerNotifiedOnRemoveIndex() {
 		observableList.add(item0);
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 				
 		observableList.remove(0);
 		
-		verify(changeListener).onListChange();
+		verify(changeObserver).onListChange();
 	}
 	
 	// REMOVE OBJECT
@@ -170,21 +170,21 @@ public class ObservableListTest {
 	@Test
 	public void listenerNotifiedOnRemoveItem() {
 		observableList.add(item0);
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 				
 		observableList.remove(item0);
 		
-		verify(changeListener).onListChange();
+		verify(changeObserver).onListChange();
 	}
 	
 	@Test
 	public void listenerNotNotifiedOnRemoveItemIfItemIsAbsent() {
 		observableList.add(item0);
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 				
 		observableList.remove(item1);
 		
-		verify(changeListener, never()).onListChange();
+		verify(changeObserver, never()).onListChange();
 	}
 	
 	// CLEAR
@@ -201,20 +201,20 @@ public class ObservableListTest {
 	@Test
 	public void listenerNotifiedOnClearIfListContainsItems() {
 		observableList.add(item0);
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 		
 		observableList.clear();
 		
-		verify(changeListener).onListChange();
+		verify(changeObserver).onListChange();
 	}
 	
 	@Test
 	public void listenerNotNotifiedOnClearIfListIsEmpty() {
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
 		
 		observableList.clear();
 		
-		verify(changeListener, Mockito.never()).onListChange();
+		verify(changeObserver, Mockito.never()).onListChange();
 	}
 	
 	// ITERATOR
@@ -239,12 +239,12 @@ public class ObservableListTest {
 	
 	@Test
 	public void readdingListenerDoesNothing() {
-		observableList.addListChangeListener(changeListener);
-		observableList.addListChangeListener(changeListener);
+		observableList.addListChangeListener(changeObserver);
+		observableList.addListChangeListener(changeObserver);
 		
 		observableList.add(item0);
 		
-		verify(changeListener).onListChange();
+		verify(changeObserver).onListChange();
 	}
 	
 	// TO STRING

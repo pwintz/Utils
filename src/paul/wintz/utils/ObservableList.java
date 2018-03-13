@@ -7,9 +7,9 @@ import java.util.*;
 public class ObservableList<T> implements Iterable<T> {
 
 	private final List<T> items = new ArrayList<>();
-	private final Set<OnListChangeListener> observers = new HashSet<>();
+	private final Set<Observer> observers = new HashSet<>();
 
-	public interface OnListChangeListener {
+	public interface Observer {
 		void onListChange();
 	}
 
@@ -72,12 +72,12 @@ public class ObservableList<T> implements Iterable<T> {
 		return items.iterator();
 	}
 
-	public final void addListChangeListener(final OnListChangeListener changeListener){
+	public final void addListChangeListener(final Observer changeListener){
 		observers.add(checkNotNull(changeListener));
 	}
 
 	public final void notifyOnChangeListeners(){
-		for(final OnListChangeListener l : observers){
+		for(final Observer l : observers){
 			l.onListChange();
 		}
 	}

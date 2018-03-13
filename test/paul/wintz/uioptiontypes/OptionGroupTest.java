@@ -18,7 +18,7 @@ public class OptionGroupTest {
 	OptionGroup optionGroup = new OptionGroup("A Description");
 
 	@Mock
-	OptionGroup.OnListChangeListener changeListener;
+	OptionGroup.Observer changeListener;
 	
 	UserInputOption<?> dummyOption0 = new UserInputOption<String>("dummy0") {};
 	UserInputOption<?> dummyOption1 = new UserInputOption<String>("dummy1") {};

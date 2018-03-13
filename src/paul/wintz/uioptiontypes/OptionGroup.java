@@ -26,15 +26,5 @@ public class OptionGroup extends ObservableList<OptionItem> implements OptionIte
 	public void addAll(OptionItem... items) {
 		super.addAll(asList(items));
 	}
-	
-	@Deprecated
-	public void addOptions(OptionItem... items) {
-		super.addAll(asList(items));
-	}
-
-	@Deprecated
-	public void clearOptions() {
-		clear();
-	}
 
 }
