@@ -35,7 +35,10 @@ public class OptionGroup implements OptionItem, Iterable<OptionItem> {
 	}
 	
 	public final void clearOptions(){
+		if(options.isEmpty()) return;
+		
 		options.clear();
+		notifyOnChangeListeners();
 	}
 
 	public final void addOptions(final OptionItem... opts) {
@@ -44,12 +47,25 @@ public class OptionGroup implements OptionItem, Iterable<OptionItem> {
 
 	public final void addOptions(final List<? extends OptionItem> opts) {
 		for (final OptionItem opt : opts) {
-			options.add(opt);
+			options.add(checkNotNull(opt));
 		}
+		notifyOnChangeListeners();
 	}
 
 	public final void replace(final int index, final OptionItem option){
-		options.set(index, option);
+		options.set(index, checkNotNull(option));
+		notifyOnChangeListeners();
+	}
+	
+	public final void remove(final int index) {
+		options.remove(index);
+		notifyOnChangeListeners();
+	}
+	
+	public final void remove(OptionItem item) {
+		if(options.remove(item)) {
+			notifyOnChangeListeners();
+		}
 	}
 
 	public final OptionItem get(final int index){
@@ -66,15 +82,13 @@ public class OptionGroup implements OptionItem, Iterable<OptionItem> {
 	}
 
 	public final void addListChangeListener(final OnListChangeListener changeListener){
-		changeListeners.add(changeListener);
+		changeListeners.add(checkNotNull(changeListener));
 	}
 
 	public final void notifyOnChangeListeners(){
-
 		for(final OnListChangeListener l : changeListeners){
 			l.onListChange();
 		}
-
 	}
 
 	@Override
