@@ -7,9 +7,12 @@ import javax.annotation.Nonnull;
 public final class Lg {
 
 	private static Logger logger;
+	
+	static {
+		setupDefaultLogger();
+	}
 
 	public static void setLogger(@Nonnull Logger logger){
-		checkState(Lg.logger == null, "logger was already set!");
 		Lg.logger = checkNotNull(logger);
 	}
 
