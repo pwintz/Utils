@@ -1,10 +1,6 @@
 package paul.wintz.uioptiontypes;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Iterator;
-
 import org.hamcrest.Matchers;
 import org.junit.*;
 import org.junit.runner.RunWith;

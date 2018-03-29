@@ -2,12 +2,8 @@ package paul.wintz.utils;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
-import org.mockito.internal.util.collections.ArrayUtils;
-
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Booleans;
 
 public class SequenceUtils {

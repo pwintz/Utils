@@ -2,7 +2,6 @@ package paul.wintz.canvas.testing;
 
 import static org.hamcrest.Matchers.*;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
