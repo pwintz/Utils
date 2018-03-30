@@ -1,21 +1,21 @@
 package paul.wintz.nodes;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import java.util.*;
-
-import com.google.common.collect.Multimap;
 
 public abstract class Node<T> implements ISocket<T> {
 	
 	private final Map<String, Plug<?>> plugs = new LinkedHashMap<>();
 	private final Class<T> outputType;
 
-	public Node(Class<T> clazz) {
-		this.outputType = clazz;
+	public Node(Class<T> outputType) {
+		this.outputType = checkNotNull(outputType);
 	}
 	
-	protected final void addPlug(String name, Plug<?> plug) {
+	protected void addPlug(String name, Plug<?> plug) {
+		checkArgument(!plugs.containsKey(name));
+		checkArgument(!plugs.containsValue(plug));
 		plugs.put(checkNotNull(name), checkNotNull(plug));
 	}
 
@@ -28,8 +28,14 @@ public abstract class Node<T> implements ISocket<T> {
 		return plugs.keySet();
 	}
 
-	public IPlug<?> getPlug(String plugName) {
-		return plugs.get(plugName);
+	public Optional<IPlug<?>> getPlug(String plugName) {
+		return Optional.ofNullable(plugs.get(plugName));
+	}
+	
+	public boolean attemptPlugin(String plugName, ISocket<?> socket) {
+		checkNotNull(socket);
+		Optional<IPlug<?>> plug = getPlug(plugName);
+		return plug.isPresent() && plug.get().plugin(socket);
 	}
 	
 	@Override
