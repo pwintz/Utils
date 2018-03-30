@@ -1,13 +1,13 @@
 package paul.wintz.nodes;
 
-class PassThroughNode extends Node<Integer> {
-
+class PassThroughIntegerNode extends Node<Integer> {
+	public static final String PLUG_NAME = "in";
 	private final Plug<Integer> in;
 	
-	public PassThroughNode() {
+	public PassThroughIntegerNode() {
 		super(Integer.class);
 		in = new IntegerPlug();
-		addPlug("in", in);
+		addPlug(PLUG_NAME, in);
 	}
 	
 	@Override
