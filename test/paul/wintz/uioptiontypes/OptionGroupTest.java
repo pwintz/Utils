@@ -25,7 +25,7 @@ public class OptionGroupTest {
 	public void setsDescriptionToClassNameIfNoDescriptionGiven() {
 		OptionGroup anOptionGroup = new OptionGroup();
 		
-		assertThat(anOptionGroup.getDescription(), is(Matchers.equalTo("OptionGroup")));
+		assertThat(anOptionGroup.getDescription(), is(equalTo("OptionGroup")));
 	}
 	
 	@Test
