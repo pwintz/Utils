@@ -34,7 +34,7 @@ public final class UtilsTester {
 	}
 
 	@Test
-	public void testGreatestCommonDivsor() {
+	public void testGreatestCommonDivisor() {
 		final int[] a = { 0, 0, 1, -1, 3, 30, 4 };
 		final int[] b = { 0, 1, 1, -1, 3, 15, 6 };
 		final int[] c = { 0, 2, 1, 1, 3, 40, 2 };
@@ -118,7 +118,7 @@ public final class UtilsTester {
 	}
 
 	@Test
-	public void testTrigFunctionsDerivativeFuntion() {
+	public void testTrigFunctionsDerivativeFunction() {
 		final Utils.TrigFunction f = Utils.TrigFunction.SINE;
 
 		assertEquals("Zeroth derivative.", f.derivativeFunction(0), Utils.TrigFunction.SINE);
@@ -170,7 +170,7 @@ public final class UtilsTester {
 
 		Pattern hashPattern = Pattern.compile("^[a-f|\\d]{8}$");
 
-		Set<String> hashs = new HashSet<>();
+		Set<String> hashes = new HashSet<>();
 
 		for(int i = 0; i < 100; i++) {
 			String hash = Utils.getRandomHash();
@@ -178,7 +178,7 @@ public final class UtilsTester {
 			boolean isValid = hashPattern.matcher(hash).matches();
 			assertTrue("The hash '" + hash + " is not valid", isValid);
 
-			assertTrue("the hash '" + hash + "' was already in " + hashs, hashs.add(hash));
+			assertTrue("the hash '" + hash + "' was already in " + hashes, hashes.add(hash));
 		}
 	}
 

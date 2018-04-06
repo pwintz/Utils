@@ -113,7 +113,7 @@ public class Fraction implements Cloneable {
 		// int aNumerator = a.numerator * denominatorLCD / b.denominator;
 		// int bNumerator = b.numerator * denominatorLCD / a.denominator;
 		//
-		//// result = new Fraction(aNumerator, bdenominator, isReducedFraction)
+		//// result = new Fraction(aNumerator, bDenominator, isReducedFraction)
 		// return null;
 	}
 
@@ -159,13 +159,13 @@ public class Fraction implements Cloneable {
 		return fractions;
 	}
 
-	public static Fraction[] randomFractions(int n, boolean firstIsOne, boolean forSpiroParms) {
+	public static Fraction[] randomFractions(int n, boolean firstIsOne, boolean forSpiroParams) {
 		final Fraction[] fractions = new Fraction[n];
 
 		for (int i = 0; i < n; i++) {
 			do {
 				fractions[i] = random();
-			} while (fractions[i].isMultiplicativeIdentity() || fractions[i].isAddativeIdentity());
+			} while (fractions[i].isMultiplicativeIdentity() || fractions[i].isAdditiveIdentity());
 		}
 		if (firstIsOne) {
 			fractions[0] = new Fraction(1, 1, false);
@@ -174,7 +174,7 @@ public class Fraction implements Cloneable {
 		return fractions;
 	}
 
-	public boolean isAddativeIdentity() {
+	public boolean isAdditiveIdentity() {
 		return numerator == 0;
 	}
 
@@ -198,8 +198,6 @@ public class Fraction implements Cloneable {
 	 * @throws ArithmeticException
 	 */
 	public static int[] fractionsToMultipliedIntegers(Fraction[] fractions) throws ArithmeticException {
-		// Tested by
-		// spirotechnictests.UtilsTester.testFractionsToMultipliedIntegers()
 		final int N = fractions.length + 1;
 		final int[] numerators = new int[N];
 		final int[] denominators = new int[N];
@@ -248,7 +246,7 @@ public class Fraction implements Cloneable {
 	public static Fraction[] integersToFraction(int[] numerators, int[] denominators, boolean makeReducedFractions) {
 		final int n = numerators.length;
 		if (n != denominators.length)
-			throw new IllegalArgumentException("The length of the numerator and denominator arrys do not match");
+			throw new IllegalArgumentException("The length of the numerator and denominator arrays do not match");
 
 		final Fraction[] fractions = new Fraction[n];
 

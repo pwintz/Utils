@@ -58,7 +58,7 @@ public class ColorOption extends OptionGroup {
 		setAlpha(a);
 	}
 
-	public void setOnColorChangeListner(OnColorChangeListener onColorChangeListener) {
+	public void setOnColorChangeListener(OnColorChangeListener onColorChangeListener) {
 		this.onColorChangeListener = onColorChangeListener;
 	}
 

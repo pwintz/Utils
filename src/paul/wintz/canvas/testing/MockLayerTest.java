@@ -17,7 +17,7 @@ public class MockLayerTest {
 	}
 
 	@Test
-	public void testLineCoords() {
+	public void testLineCoordinates() {
 		layer.line(0, 0, 100, 100, null);
 		layer.assertEqualToRecorded("line", "0x0", "100x100");
 	}

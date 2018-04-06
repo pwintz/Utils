@@ -27,12 +27,12 @@ public class MockLayer extends Layer<Void> {
 		private final String name;
 		private final List<String> coordinates;
 
-		private static final Pattern coordPattern = Pattern.compile("^" + INTEGER_REG_EX + "x" + INTEGER_REG_EX + "$");
+		private static final Pattern coordinatePattern = Pattern.compile("^" + INTEGER_REG_EX + "x" + INTEGER_REG_EX + "$");
 
 		public DrawingAction(String name, String... coordinates){
 			this.name = name;
 			this.coordinates = Arrays.asList(coordinates);
-			this.coordinates.forEach(coord -> checkArgument(coordPattern.matcher(coord).matches()));
+			this.coordinates.forEach(coord -> checkArgument(coordinatePattern.matcher(coord).matches()));
 		}
 
 		@Override
@@ -65,22 +65,22 @@ public class MockLayer extends Layer<Void> {
 	}
 
 	//NOTE: This rounds down the pixel coordinate and does not account for rotation.
-	private String asPixelCoord(float x, float y) {
+	private String asPixelCoordinates(float x, float y) {
 		int pixelX = (int) (getCenterX() + x * getScaleX());
 		int pixelY = (int) (getCenterY() + y * getScaleY());
 		return pixelX + "x" + pixelY;
 	}
 
-	private String asPixelCoord(Vector2D v) {
-		return asPixelCoord((float) v.x(), (float) v.y());
+	private String asPixelCoordinates(Vector2D v) {
+		return asPixelCoordinates((float) v.x(), (float) v.y());
 	}
 
-	private String[] asPixelCoordsArray(List<Vector2D> points) {
-		String[] coords = new String[points.size()];
+	private String[] asPixelCoordinatesArray(List<Vector2D> points) {
+		String[] coordinates = new String[points.size()];
 		for(int i = 0; i < points.size(); i++) {
-			coords[i] = asPixelCoord(points.get(i));
+			coordinates[i] = asPixelCoordinates(points.get(i));
 		}
-		return coords;
+		return coordinates;
 	}
 
 	@Override
@@ -118,34 +118,34 @@ public class MockLayer extends Layer<Void> {
 
 	@Override
 	public void line(float x0, float y0, float x1, float y1, Painter painter) {
-		addRecordedAction("line", asPixelCoord(x0, y0), asPixelCoord(x1, y1));
+		addRecordedAction("line", asPixelCoordinates(x0, y0), asPixelCoordinates(x1, y1));
 	}
 
 	@Override
 	public void line(Vector2D start, Vector2D end, Painter painter) {
-		addRecordedAction("line", asPixelCoord(start), asPixelCoord(end));
+		addRecordedAction("line", asPixelCoordinates(start), asPixelCoordinates(end));
 	}
 
 	@Override
 	public void arc(float xCenter, float yCenter, float width, float height, float startAngle, float endAngle,
 			Painter painter) {
-		addRecordedAction("arc", asPixelCoord(xCenter, yCenter));
+		addRecordedAction("arc", asPixelCoordinates(xCenter, yCenter));
 	}
 
 
 	@Override
 	public void circle(Vector2D center, float radius, Painter painter) {
-		addRecordedAction("circle", asPixelCoord(center));
+		addRecordedAction("circle", asPixelCoordinates(center));
 	}
 
 	@Override
 	public void circle(float x, float y, float radius, Painter painter) {
-		addRecordedAction("circle", asPixelCoord(x, y));
+		addRecordedAction("circle", asPixelCoordinates(x, y));
 	}
 
 	@Override
 	public void rectangle(float x, float y, float width, float height, Painter painter) {
-		addRecordedAction("rectangle", asPixelCoord(x, y));
+		addRecordedAction("rectangle", asPixelCoordinates(x, y));
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class MockLayer extends Layer<Void> {
 
 	@Override
 	public void ellipse(float xCenter, float yCenter, float width, float height, Painter painter) {
-		addRecordedAction("ellipse", asPixelCoord(xCenter, yCenter));
+		addRecordedAction("ellipse", asPixelCoordinates(xCenter, yCenter));
 	}
 
 	@Override
@@ -167,12 +167,12 @@ public class MockLayer extends Layer<Void> {
 
 	@Override
 	public void quad(Vector2D corner0, Vector2D corner1, Vector2D corner2, Vector2D corner3, Painter painter) {
-		addRecordedAction("quad", asPixelCoord(corner0), asPixelCoord(corner1), asPixelCoord(corner2), asPixelCoord(corner3));
+		addRecordedAction("quad", asPixelCoordinates(corner0), asPixelCoordinates(corner1), asPixelCoordinates(corner2), asPixelCoordinates(corner3));
 	}
 
 	@Override
 	public void drawPath(List<Vector2D> points, Painter painter) {
-		addRecordedAction("drawPath", asPixelCoordsArray(points));
+		addRecordedAction("drawPath", asPixelCoordinatesArray(points));
 	}
 
 	@Override
@@ -182,7 +182,7 @@ public class MockLayer extends Layer<Void> {
 
 	@Override
 	public void drawPolygon(List<Vector2D> points, Painter painter) {
-		addRecordedAction("drawPolygon", asPixelCoordsArray(points));
+		addRecordedAction("drawPolygon", asPixelCoordinatesArray(points));
 	}
 
 	@Override

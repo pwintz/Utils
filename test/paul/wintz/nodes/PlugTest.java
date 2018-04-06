@@ -65,7 +65,7 @@ public class PlugTest {
 	}
 
 	@Test
-	public void getInputDefaultsToObjectPassedToConstuctorIfUnplugged() {
+	public void getInputDefaultsToObjectPassedToConstructorIfUnplugged() {
 		IPlug<Object> plug = new Plug<>(Object.class, "default"); 
 
 		assertThat(plug.getInput(), is(equalTo("default")));

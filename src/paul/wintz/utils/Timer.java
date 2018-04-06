@@ -15,7 +15,7 @@ public class Timer {
 		startTime = System.nanoTime();
 	}
 
-	private Long getEllapsedTime() {
+	private Long getElapsedTime() {
 		return System.nanoTime() - startTime;
 	}
 
@@ -24,11 +24,11 @@ public class Timer {
 	}
 
 	private double getSeconds() {
-		return getEllapsedTime() / 1_000_000_000.0;
+		return getElapsedTime() / 1_000_000_000.0;
 	}
 
 	public String timeElapsedToString() {
-		return String.valueOf(nanoToMilli(getEllapsedTime()));
+		return String.valueOf(nanoToMilli(getElapsedTime()));
 	}
 
 	public void print(String description) {

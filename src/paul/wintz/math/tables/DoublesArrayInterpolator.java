@@ -81,7 +81,7 @@ public class DoublesArrayInterpolator {
 				return yArray[wrapIndex(index)];
 
 			default:
-				throw new RuntimeException("Not implmented: " + edgeBehavior);
+				throw new RuntimeException("Not implemented: " + edgeBehavior);
 			}
 		} else if(index >= length){
 
@@ -101,7 +101,7 @@ public class DoublesArrayInterpolator {
 				return yArray[wrapIndex(index)];
 
 			default:
-				throw new RuntimeException("Not implmented: " + edgeBehavior);
+				throw new RuntimeException("Not implemented: " + edgeBehavior);
 			}
 		}
 

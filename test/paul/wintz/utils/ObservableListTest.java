@@ -238,7 +238,7 @@ public class ObservableListTest {
 	}
 	
 	@Test
-	public void readdingListenerDoesNothing() {
+	public void reAddingListenerDoesNothing() {
 		observableList.addListChangeListener(changeObserver);
 		observableList.addListChangeListener(changeObserver);
 		

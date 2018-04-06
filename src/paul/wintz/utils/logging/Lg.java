@@ -56,8 +56,8 @@ public final class Lg {
 		logger.logError(tag, message, t);
 	}
 
-	public static String makeTAG(Class<?> classs){
-		return classs.getSimpleName();
+	public static String makeTAG(Class<?> clazz){
+		return clazz.getSimpleName();
 	}
 
 	public static synchronized void setupDefaultLogger(){

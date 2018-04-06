@@ -15,15 +15,15 @@ public final class NumericalDifferentiator {
 	}
 
 	public static double calculateDerivative(final DifferentiableDoubleArray array, final int index) {
-		return calculateDerivate(array, index, DerivativeFormula.FOURTH_ORDER);
+		return calculateDerivative(array, index, DerivativeFormula.FOURTH_ORDER);
 	}
 
-	private static double calculateDerivate(final DifferentiableDoubleArray array, final int index, DerivativeFormula derivativeFormula) {
+	private static double calculateDerivative(final DifferentiableDoubleArray array, final int index, DerivativeFormula derivativeFormula) {
 		switch(derivativeFormula) {
 		case SIMPLE:
 			return finiteDifferenceSimple(array.get(index), array.get(index + 1), array.getDTime());
 		case SYMMETRIC_DIFFERENCE_QUOTIENT:
-			return finiteDifferenceSymetricDifferenceQuotient(array.get(index - 1), array.get(index + 1), array.getDTime());
+			return finiteDifferenceSymmetricDifferenceQuotient(array.get(index - 1), array.get(index + 1), array.getDTime());
 		case FOURTH_ORDER:
 			return finiteDifferenceFourthOrder(array.get(index-2), array.get(index-1), array.get(index+1), array.get(index+2), array.getDTime());
 		default:
@@ -35,7 +35,7 @@ public final class NumericalDifferentiator {
 		return (yOfXPlusH - yOfX) / h;
 	}
 
-	private static double finiteDifferenceSymetricDifferenceQuotient(final double yOfXMinusH, final double yOfXPlusH, final double h) {
+	private static double finiteDifferenceSymmetricDifferenceQuotient(final double yOfXMinusH, final double yOfXPlusH, final double h) {
 		return (yOfXPlusH - yOfXMinusH) / (2*h);
 	}
 

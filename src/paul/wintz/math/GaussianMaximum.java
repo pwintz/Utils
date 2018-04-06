@@ -9,7 +9,7 @@ public class GaussianMaximum {
 
 	//CONSTRUCTOR, given three sequential points with the middle being the highest, the maximum is found.
 	public GaussianMaximum (Vector2D leftPoint, Vector2D centerPoint, Vector2D rightPoint) {
-		caclulateFrequencyStrengthAndFocus(leftPoint, centerPoint, rightPoint);
+		calculateFrequencyStrengthAndFocus(leftPoint, centerPoint, rightPoint);
 		//		    note, if the strength of all the points are equal, no max will be found.
 	}
 
@@ -37,7 +37,7 @@ public class GaussianMaximum {
 			rightPoint = new Vector2D( frequencies[0], 0);
 		}
 
-		caclulateFrequencyStrengthAndFocus(leftPoint, centerPoint, rightPoint);
+		calculateFrequencyStrengthAndFocus(leftPoint, centerPoint, rightPoint);
 	}
 
 	public GaussianMaximum(float amplitudeLeft, float amplitudeCenter, float amplitudeRight,
@@ -47,10 +47,10 @@ public class GaussianMaximum {
 		Vector2D centerPoint = new Vector2D( frequencyCenter, amplitudeCenter);
 		Vector2D rightPoint = new Vector2D( frequencyRight, amplitudeRight);
 
-		caclulateFrequencyStrengthAndFocus(leftPoint, centerPoint, rightPoint);
+		calculateFrequencyStrengthAndFocus(leftPoint, centerPoint, rightPoint);
 	}
 
-	private void caclulateFrequencyStrengthAndFocus(Vector2D leftPoint, Vector2D centerPoint, Vector2D rightPoint){
+	private void calculateFrequencyStrengthAndFocus(Vector2D leftPoint, Vector2D centerPoint, Vector2D rightPoint){
 		double a = log(centerPoint.y()) - log(rightPoint.y()); //y2 - y3
 		double b = pow(leftPoint.x(), 2) - pow(centerPoint.x(), 2);
 		double c = log(leftPoint.y()) - log(centerPoint.y());
@@ -64,7 +64,6 @@ public class GaussianMaximum {
 		setStrength((float) exp(( log(centerPoint.y()) * e - log(rightPoint.y()) * f) / ( e - f )));
 		focus = (float)(( log(centerPoint.y()) - log(getStrength())) / pow(centerPoint.x() - getCenterFrequency(), 2));
 	}
-
 
 	static float gaussian(float x, float frequency, float strength, float focus) {
 		return strength * (float) exp(focus * pow(x - frequency, 2));

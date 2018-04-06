@@ -40,7 +40,7 @@ public class TypeMap<T> extends LinkedHashMap<String, Class<? extends T>> {
 				throw new NullPointerException(name + " is not static but outerObject was null");
 
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Lg.w(TAG, "Failed to instatiate: " + name, e);
+			Lg.w(TAG, "Failed to instantiate: " + name, e);
 			return null;
 		}
 	}

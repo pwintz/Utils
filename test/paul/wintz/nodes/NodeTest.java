@@ -30,7 +30,7 @@ public class NodeTest {
 	}
 
 	@Test
-	public void getPlugReturnsEmptyIfPlugDoesntExist() {
+	public void getPlugReturnsEmptyIfPlugDoesNotExist() {
 		assertFalse(passThroughNode.getPlug("not a plug").isPresent());
 	}
 

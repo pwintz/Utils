@@ -45,11 +45,11 @@ public class SequenceUtils {
 	}
 
 	public static boolean[] toBooleanArray(String[] strings) {
-		final boolean[] bools = new boolean[strings.length];
+		final boolean[] booleans = new boolean[strings.length];
 		for (int i = 0; i < strings.length; i++) {
-			bools[i] = Boolean.valueOf(strings[i].trim());
+			booleans[i] = Boolean.valueOf(strings[i].trim());
 		}
-		return bools;
+		return booleans;
 	}
 	
 	private static int length(Object array){

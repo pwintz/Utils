@@ -106,7 +106,7 @@ public class HashDoublesTable {
 
 	private double[] checkSortedArray(double[] array) {
 		checkArray(array);
-		checkArgument(isIncreasesMonotonically(array), "indpendent variable array is not sorted in ascending order");
+		checkArgument(isIncreasesMonotonically(array), "independent variable array is not sorted in ascending order");
 		return array;
 	}
 

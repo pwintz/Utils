@@ -15,8 +15,6 @@ import com.google.common.primitives.Ints;
 import paul.wintz.utils.exceptions.UnhandledCaseException;
 
 public final class Utils {
-	// private static PApplet papplet; //set to the main PApplet. Can only be
-	// used in or after setup().
 	public static final double TAU = 2 * PI;
 	public static final Random random = new Random();
 	public static final char PHI = '\u03D5';
@@ -370,7 +368,7 @@ public final class Utils {
 	 * to a weighted average of its current value and the
 	 * present value.
 	 *//*
-	private void updateAveragedSectrum(){
+	private void updateAveragedSpectrum(){
 		float currentFrameWeight = 0.7f;
 
 		for(int i = LOWEST_INDEX; i < HIGHEST_INDEX; i++){
