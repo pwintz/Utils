@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import paul.wintz.utils.logging.Lg;
 
-
+// TODO: Move to tests/
 public class RGBColorUtilsTest {
 
 	Random random = new Random();
