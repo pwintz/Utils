@@ -14,10 +14,6 @@ public class RGBColorUtilsTest {
 
 	Random random = new Random();
 
-	static {
-		Lg.setupDefaultLogger();
-	}
-
 	@Test
 	public final void testRgb() {
 		verifyRgb(0, 0, 0);
