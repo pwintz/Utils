@@ -1,6 +1,6 @@
 package paul.wintz.nodes;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Test;
 

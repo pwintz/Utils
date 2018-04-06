@@ -1,6 +1,6 @@
 package paul.wintz.canvas.testing;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Test;
 
