@@ -24,16 +24,13 @@ import paul.wintz.utils.exceptions.UnimplementedMethodException;
  *
  */
 public class Fraction implements Cloneable {
-	private static Random random = new Random();
+	private static final Random random = new Random();
 	private static final int MAX_DENOMINATOR = 300;
 	private int numerator;
 	private int denominator;
 
 	/**
 	 * Creates a fraction from the given numerator and denominator.
-	 *
-	 * @param numerator
-	 * @param denominator
 	 * @param makeReducedFraction
 	 *            if isReducedFraction is true, and the value of the fraction is
 	 *            negative, then the negative sign will be put in the numerator.
@@ -137,6 +134,7 @@ public class Fraction implements Cloneable {
 		return new Fraction(num, den, true);
 	}
 
+	@SuppressWarnings("MethodDoesntCallSuperMethod")
 	@Override
 	public Object clone() {
 		return new Fraction(numerator, denominator, false);
@@ -193,9 +191,7 @@ public class Fraction implements Cloneable {
 	 * ... , </br>
 	 * I[i] = I[0] * F[0] * F[1] * ... * F[i-1]
 	 *
-	 * @param fractions
-	 * @return
-	 * @throws ArithmeticException
+	 * @throws ArithmeticException if any of the denominators are zero.
 	 */
 	public static int[] fractionsToMultipliedIntegers(Fraction[] fractions) throws ArithmeticException {
 		final int N = fractions.length + 1;
@@ -266,9 +262,6 @@ public class Fraction implements Cloneable {
 	 * When successive numbers have opposite signs, then the fraction will have
 	 * a negative value in the numerator.
 	 *
-	 * @param array
-	 *            *
-	 * @return
 	 */
 	public static Fraction[] integerSeriesToFractions(int[] array) {
 

@@ -7,8 +7,8 @@ public class DoublesArrayInterpolator {
 		EXTEND_CONSTANT,
 		EXTEND_LINEAR,
 		//		REFLECT,
-		ERROR;
-	}
+		ERROR
+    }
 
 	private final int length;
 	private final double xStart;

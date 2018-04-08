@@ -7,7 +7,7 @@ public abstract class EventOption extends UserInputOption<Void> {
 	protected final Event event;
 
 	public interface Event {
-		public void doEvent();
+		void doEvent();
 	}
 
 	public EventOption(String description, Event event) {

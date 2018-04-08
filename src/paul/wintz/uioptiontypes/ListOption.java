@@ -1,6 +1,9 @@
 package paul.wintz.uioptiontypes;
 
+import javax.annotation.Nonnull;
+
 import static com.google.common.base.Preconditions.checkElementIndex;
+import static java.util.Arrays.asList;
 
 import java.util.*;
 
@@ -16,20 +19,22 @@ public class ListOption<T> extends UserInputOption<List<T>> implements Iterable<
 		void onSelect(T t);
 	}
 
-	public ListOption(String description, T... items) {
+	public ListOption(String description) {
+		this(description, Collections.emptyList());
+	}
+
+	public ListOption(String description, List<T> items) {
 		super(description);
 		add(items);
 		setSelected(selectedNdx);
 	}
 
-	public void add(T... items) {
-		add(Arrays.asList(items));
-	}
+//	public ListOption(String description, Class<?> enumeration) {
+//		this(description, (List<T>) asList(enumeration.getEnumConstants()));
+//	}
 
 	public void add(Collection<T> items) {
-		for (final T item : items) {
-			list.add(item);
-		}
+		list.addAll(items);
 
 		setSelected(selectedNdx);
 	}
@@ -84,6 +89,7 @@ public class ListOption<T> extends UserInputOption<List<T>> implements Iterable<
 		checkElementIndex(n, list.size());
 	}
 
+	@Nonnull
 	@Override
 	public Iterator<T> iterator() {
 		return list.iterator();

@@ -43,7 +43,7 @@ public class DoublesArrayInterpolatorTest {
 
 
 	@Test
-	public void testEdgesBehavior() throws Exception {
+	public void testEdgesBehavior() {
 		final int TOO_SMALL = -1;
 		final int TOO_LARGE = 4;
 		final double[] to = {0, 1, 2};
@@ -86,7 +86,7 @@ public class DoublesArrayInterpolatorTest {
 	}
 
 	@Test
-	public void testDeltaTime() throws Exception {
+	public void testDeltaTime() {
 		final double[] to = {0, 1, 2, 3};
 		final DoublesArrayInterpolator interpolator = new DoublesArrayInterpolator(0, 3, to);
 
@@ -96,7 +96,7 @@ public class DoublesArrayInterpolatorTest {
 
 
 	@Test
-	public void testPositiveModulus() throws Exception {
+	public void testPositiveModulus() {
 		assertEquals(0, positiveModulus(0, 3));
 		assertEquals(2, positiveModulus(2, 3));
 		assertEquals(2, positiveModulus(-1, 3));

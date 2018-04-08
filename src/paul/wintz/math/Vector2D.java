@@ -53,10 +53,6 @@ public class Vector2D implements Cloneable {
 
 	/**
 	 * Adds the Cartesian coordinates to the vector
-	 *
-	 * @param x
-	 * @param y
-	 * @return
 	 */
 	public Vector2D add(double x, double y) {
 		this.x += x;
@@ -81,9 +77,6 @@ public class Vector2D implements Cloneable {
 
 	/**
 	 * Adds a vector of length radius and direction theta to the current vector
-	 *
-	 * @param radius
-	 * @param theta
 	 * @return this vector after addition
 	 */
 	public Vector2D addPolar(double radius, double theta) {
@@ -103,6 +96,7 @@ public class Vector2D implements Cloneable {
 		return this;
 	}
 
+	@SuppressWarnings("MethodDoesntCallSuperMethod")
 	@Override
 	public Vector2D clone() {
 		return new Vector2D(x, y);
@@ -146,8 +140,6 @@ public class Vector2D implements Cloneable {
 
 	/**
 	 * Return a new vector that is the difference between the given vectors.
-	 * @param a
-	 * @param b
 	 * @return a - b
 	 */
 	public static Vector2D diff(Vector2D a, Vector2D b) {
@@ -156,8 +148,6 @@ public class Vector2D implements Cloneable {
 
 	/**
 	 * Return a new vector that is the sum of the given vectors.
-	 * @param a
-	 * @param b
 	 * @return a + b
 	 */
 	public static Vector2D sum(Vector2D a, Vector2D b) {

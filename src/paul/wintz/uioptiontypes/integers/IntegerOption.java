@@ -83,7 +83,7 @@ public class IntegerOption extends NumberOption<Integer> {
 		}
 
 		public final Builder setValidityEvaluator(ValidityEvaluator<Integer> validityEvaluator) {
-			checkState(validityEvaluator == null);
+			checkState(this.validityEvaluator == null);
 			this.validityEvaluator = validityEvaluator;
 			return this;
 		}

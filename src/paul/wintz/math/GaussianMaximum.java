@@ -40,8 +40,9 @@ public class GaussianMaximum {
 		calculateFrequencyStrengthAndFocus(leftPoint, centerPoint, rightPoint);
 	}
 
+	@SuppressWarnings("SuspiciousNameCombination") // Lint is confused by 'left'/'right'
 	public GaussianMaximum(float amplitudeLeft, float amplitudeCenter, float amplitudeRight,
-			float frequencyLeft, float frequencyCenter, float frequencyRight)  {
+						   float frequencyLeft, float frequencyCenter, float frequencyRight)  {
 
 		Vector2D leftPoint = new Vector2D( frequencyLeft, amplitudeLeft);
 		Vector2D centerPoint = new Vector2D( frequencyCenter, amplitudeCenter);

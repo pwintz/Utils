@@ -8,15 +8,6 @@ import paul.wintz.math.tables.DoublesArrayInterpolator.EdgeBehavior;
 
 public class InterpolationTableTest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
 	@Test
 	public final void testInterpolate() {
 

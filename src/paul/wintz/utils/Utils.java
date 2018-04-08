@@ -7,6 +7,7 @@ import static java.lang.Math.*;
 import java.io.File;
 import java.util.*;
 
+import com.google.common.base.Preconditions;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
 
@@ -14,6 +15,7 @@ import com.google.common.primitives.Ints;
 
 import paul.wintz.utils.exceptions.UnhandledCaseException;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public final class Utils {
 	public static final double TAU = 2 * PI;
 	public static final Random random = new Random();
@@ -61,19 +63,13 @@ public final class Utils {
 	}
 
 	/**
-	 *
-	 * @param low
-	 * @param high
-	 *            Must be greater than low.
-	 * @param allowZeroValue
-	 *            If false, low and high cannot both equal zero.
+	 * @param allowZeroValue If false, low and high cannot both equal zero.
 	 * @return a value equal to or greater than low, and less than high
 	 *         (non-inclusive). [low, high)
+	 * @throws IllegalArgumentException if low is equal to or greater than high.
 	 */
 	public static int randomInteger(int low, int high, boolean allowZeroValue) {
 		checkArgument(low < high, "Illegal range. Low value must be less than high value.");
-		if (!allowZeroValue && high == 0 && low == 0)
-			throw new IllegalArgumentException("Cannot pick value from empty set");
 
 		int i;
 		do {
@@ -125,21 +121,14 @@ public final class Utils {
 	 * The Sine function scaled and shifted so that it ranges from 0.0 to 1.0,
 	 * and has a period of 1.0.
 	 *
-	 * @param x
-	 * @return
 	 */
-	public static final float normalizedSin(double x) {
+	public static float normalizedSin(double x) {
 		return normalizedSin(x, 0.0, 1.0);
 	}
 
 	/**
 	 * The Sine function scaled and shifted so that it ranges from min to max,
 	 * and has a period of 1.0.
-	 *
-	 * @param x
-	 * @param min
-	 * @param max
-	 * @return
 	 */
 	public static float normalizedSin(double x, double min, double max) {
 		final double range = max - min;
@@ -149,11 +138,6 @@ public final class Utils {
 	/**
 	 * The Cosine function scaled and shifted so that its value ranges from min
 	 * to max, and has a period of 1.0.
-	 *
-	 * @param x
-	 * @param min
-	 * @param max
-	 * @return
 	 */
 	public static float normalizedCos(double x, double min, double max) {
 		final double range = max - min;
@@ -175,19 +159,15 @@ public final class Utils {
 	 */
 	public static int lcm(List<Integer> values) {
 		int lcm = 1;
-		for (int i = 0; i < values.size(); i++) {
-			lcm = ArithmeticUtils.lcm(lcm, values.get(i));
+		for (Integer value : values) {
+			lcm = ArithmeticUtils.lcm(lcm, value);
 		}
 		return lcm;
 	}
 
 	/**
 	 * Calculates the greatest common denominator of multiple values
-	 *
-	 * @param N
-	 * @param values
-	 * @return
-	 * @throws MathArithmeticException
+	 * @throws MathArithmeticException if any of the values are zero
 	 */
 	public static int gcd(int... values) {
 		int gcd = values[0];
@@ -258,7 +238,7 @@ public final class Utils {
 		 * @param derivativeDegree
 		 *            The order of the derivative. E.g. first derivative, second
 		 *            derivative, etc.
-		 * @param angleOffset
+		 * @param angleOffset the amount the angle is rotated from zero
 		 * @return the evaluated value of the derivative.
 		 */
 		public double evaluateDerivative(double x, double a, int derivativeDegree, double angleOffset) {
@@ -356,7 +336,6 @@ public final class Utils {
 	}
 
 	/**
-	 * @param value
 	 * @param start (inclusive)
 	 * @param end (inclusive)
 	 */

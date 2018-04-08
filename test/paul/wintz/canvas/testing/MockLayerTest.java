@@ -3,6 +3,7 @@ package paul.wintz.canvas.testing;
 import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Test;
+import paul.wintz.canvas.MockLayer;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +24,7 @@ public class MockLayerTest {
 	}
 
 	@Test
-	public void testScaled() throws Exception {
+	public void testScaled() {
 		int scale = 2;
 		layer.setScale(scale); // setters are not recorded
 		layer.line(0, 0, 100, 100, null);
@@ -32,14 +33,14 @@ public class MockLayerTest {
 	}
 
 	@Test
-	public void testShifted() throws Exception {
+	public void testShifted() {
 		layer.setCenter(50, 50); // setters are not recorded
 		layer.line(0, 0, 100, 100, null);
 		layer.assertEqualToRecorded("line", "50x50", "150x150");
 	}
 
 	@Test
-	public void testScaledX() throws Exception {
+	public void testScaledX() {
 		int scaleX = 2;
 		layer.setScaleX(scaleX);
 		layer.line(0, 0, 100, 100, null);
@@ -47,7 +48,7 @@ public class MockLayerTest {
 	}
 
 	@Test
-	public void testScaledY() throws Exception {
+	public void testScaledY() {
 		int scaleY = 2;
 		layer.setScaleY(scaleY);
 		layer.line(0, 0, 100, 100, null);
@@ -55,7 +56,7 @@ public class MockLayerTest {
 	}
 
 	@Test
-	public void testScaledAndShifted() throws Exception {
+	public void testScaledAndShifted() {
 		int scaleX = 3;
 		int scaleY = 2;
 		layer.setScaleX(scaleX);
@@ -66,17 +67,17 @@ public class MockLayerTest {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testInvalidRegEx_singleInt() throws Exception {
+	public void testInvalidRegEx_singleInt() {
 		layer.assertEqualToRecorded("", "1123");
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testInvalidRegEx_float() throws Exception {
+	public void testInvalidRegEx_float() {
 		layer.assertEqualToRecorded("", "1.2x4.5");
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testInvalidRegEx_extraDimension() throws Exception {
+	public void testInvalidRegEx_extraDimension() {
 		layer.assertEqualToRecorded("", "1x2x3");
 	}
 }

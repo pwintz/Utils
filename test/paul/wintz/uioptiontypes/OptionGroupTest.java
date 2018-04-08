@@ -1,7 +1,7 @@
 package paul.wintz.uioptiontypes;
 
 import static org.hamcrest.Matchers.*;
-import org.hamcrest.Matchers;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
@@ -53,6 +53,7 @@ public class OptionGroupTest {
 	
 	@Test
 	public void toStringDoesNotCrash() {
+		//noinspection ResultOfMethodCallIgnored
 		optionGroup.toString();
 	}
 	

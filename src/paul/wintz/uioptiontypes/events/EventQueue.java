@@ -14,8 +14,9 @@ public class EventQueue {
 
 	public static void handleEvents() {
 
-		while (!queue.isEmpty()) {
-			queue.poll().doEvent();
+		Event event;
+		while ((event = queue.poll()) != null) {
+			event.doEvent();
 		}
 	}
 

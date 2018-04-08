@@ -4,15 +4,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.List;
 
-import com.google.common.primitives.Booleans;
-
 public class SequenceUtils {
-	
-	@Deprecated
-	public static int indexOfLastTrueElement(boolean[] booleanList) {
-		return indexOfLastTrueElement(Booleans.asList(booleanList));
-	}
-	
+
 	public static int indexOfLastTrueElement(List<Boolean> booleanList) {
 		checkArgument(!booleanList.isEmpty());
 		for (int i = booleanList.size() - 1; i >= 0; i--) {

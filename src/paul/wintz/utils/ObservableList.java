@@ -1,6 +1,7 @@
 package paul.wintz.utils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.singletonList;
 
 import java.util.*;
 
@@ -17,7 +18,7 @@ public class ObservableList<T> implements Iterable<T> {
 	}
 	
 	public ObservableList(T opts) {
-		addAll(Arrays.asList(opts));
+		addAll(singletonList(opts));
 	}
 	
 	public ObservableList(List<T> opts) {

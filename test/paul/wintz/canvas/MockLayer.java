@@ -1,4 +1,4 @@
-package paul.wintz.canvas.testing;
+package paul.wintz.canvas;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static paul.wintz.utils.RegexUtils.INTEGER_REG_EX;
@@ -41,7 +41,7 @@ public class MockLayer extends Layer<Void> {
 				return false;
 			DrawingAction other = (DrawingAction) obj;
 
-			if(this.name != other.name) return false;
+			if(!this.name.equals(other.name)) return false;
 			if(this.coordinates.size() != other.coordinates.size()) return false;
 			return this.coordinates.containsAll(other.coordinates);
 		}

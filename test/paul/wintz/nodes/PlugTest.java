@@ -38,12 +38,12 @@ public class PlugTest {
 
 		assertFalse(intPlug.isPlugged());
 	}
-	
+
 	@Test
 	public void pluggingInToSecondSocketOverridesFirst() {
 		 objectPlug.plugin(intSocket);
 		 objectPlug.plugin(boolSocket);
-		 
+
 		 assertThat(objectPlug.getInput(), is(equalTo(true)));
 	}
 
@@ -66,11 +66,11 @@ public class PlugTest {
 
 	@Test
 	public void getInputDefaultsToObjectPassedToConstructorIfUnplugged() {
-		IPlug<Object> plug = new Plug<>(Object.class, "default"); 
+		IPlug<Object> plug = new Plug<>(Object.class, "default");
 
 		assertThat(plug.getInput(), is(equalTo("default")));
 	}
-	
+
 	@Test
 	public void canPlugIntoSocketThatProvidesSubclassType() {
 		assertTrue(objectPlug.plugin(new ConstantIntegerSocket(17)));

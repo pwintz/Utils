@@ -15,7 +15,7 @@ public class NodeGUITest  extends JFrame {
 	private final JPanel contentPane = createContentPane();
 
 	public NodeGUITest() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
 		setVisible(true);
 		add(new DraggableComponent());

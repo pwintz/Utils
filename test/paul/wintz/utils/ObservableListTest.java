@@ -32,14 +32,14 @@ public class ObservableListTest {
 	
 	@Test
 	public void containsItemPassedToConstructor() {
-		ObservableList<String> anOptionGroup = new ObservableList<String>(item0);
+		ObservableList<String> anOptionGroup = new ObservableList<>(item0);
 		
 		assertThat(anOptionGroup.get(0), is(equalTo(item0)));
 	}
 	
 	@Test
 	public void containsItemsPassedToConstructor() {
-		ObservableList<String> anOptionGroup = new ObservableList<String>(Arrays.asList(item0, item1));
+		ObservableList<String> anOptionGroup = new ObservableList<>(Arrays.asList(item0, item1));
 		
 		assertThat(anOptionGroup.get(0), is(equalTo(item0)));
 		assertThat(anOptionGroup.get(1), is(equalTo(item1)));
@@ -251,6 +251,7 @@ public class ObservableListTest {
 	
 	@Test
 	public void toStringDoesNotCrash() {
+		//noinspection ResultOfMethodCallIgnored
 		observableList.toString();
 	}
 	

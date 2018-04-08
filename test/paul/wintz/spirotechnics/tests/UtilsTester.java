@@ -5,6 +5,7 @@ import static java.lang.Math.floor;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Preconditions;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,10 +24,10 @@ public final class UtilsTester {
 
 	@Test
 	public void testLeastCommonMultiple() {
-		final int[] a = { 0, 1, -1, 1, 2, 3 };
-		final int[] b = { 1, 1, -1, 2, 5, 6 };
-		final int[] c = { 2, 1, 1, 3, 3, 1 };
-		final int[] result = { 0, 1, 1, 6, 30, 6 };
+		final int[] a = {0, 1, -1, 1, 2, 3};
+		final int[] b = {1, 1, -1, 2, 5, 6};
+		final int[] c = {2, 1, 1, 3, 3, 1};
+		final int[] result = {0, 1, 1, 6, 30, 6};
 
 		for (int i = 0; i < a.length; i++) {
 			assertEquals(result[i], Utils.lcm(a[i], b[i], c[i]));
@@ -35,10 +36,10 @@ public final class UtilsTester {
 
 	@Test
 	public void testGreatestCommonDivisor() {
-		final int[] a = { 0, 0, 1, -1, 3, 30, 4 };
-		final int[] b = { 0, 1, 1, -1, 3, 15, 6 };
-		final int[] c = { 0, 2, 1, 1, 3, 40, 2 };
-		final int[] result = { 0, 1, 1, 1, 3, 5, 2 };
+		final int[] a = {0, 0, 1, -1, 3, 30, 4};
+		final int[] b = {0, 1, 1, -1, 3, 15, 6};
+		final int[] c = {0, 2, 1, 1, 3, 40, 2};
+		final int[] result = {0, 1, 1, 1, 3, 5, 2};
 
 		for (int i = 0; i < a.length; i++) {
 			assertEquals(String.format("gcd(%d, %d, %d) != %d", a[i], b[i], c[i], result[i]), result[i],
@@ -51,8 +52,8 @@ public final class UtilsTester {
 		// {1, 3/2, 1/2, 10/12, 6/5} -> {120, 180, 90, 150, 180}
 		// TODO: (Check example calculation)
 
-		final int[] numerators = 	{1, 2, 3, 4};
-		final int[] denominators = 	{1, 1, 1, 1};
+		final int[] numerators = {1, 2, 3, 4};
+		final int[] denominators = {1, 1, 1, 1};
 
 		for (int test = 0; test < 100; test++) {
 
@@ -68,11 +69,11 @@ public final class UtilsTester {
 		//Goal: I[1] = I[0] * F[0],
 
 		for (int i = 1; i < result.length; i++) {
-			final float expected = result[i-1] * fractions[i-1].getValue();
+			final float expected = result[i - 1] * fractions[i - 1].getValue();
 			//			final float fractionFromPrevious = (float) result[i] / (float) result[i - 1];
 			assertEquals("index " + i + " failed.\n"
-					+ "Fraction array: " + Arrays.toString(fractions) + "\n"
-					+ "Integer array: " + Arrays.toString(result) + "\n",
+							+ "Fraction array: " + Arrays.toString(fractions) + "\n"
+							+ "Integer array: " + Arrays.toString(result) + "\n",
 					expected,
 					result[i], 0.01);
 		}
@@ -84,7 +85,7 @@ public final class UtilsTester {
 		// example calculation)
 
 		for (int test = 0; test < 100; test++) {
-			final int n = 10;
+			final int n = 6;
 			final int low = -5;
 			final int high = 5;
 			final int[] numerators = Utils.randomNonZeroIntegerArray(n, low, high);
@@ -104,13 +105,13 @@ public final class UtilsTester {
 		final int denominator1 = 2;
 		final int numerator2 = 2;
 		final int denominator2 = 3;
-		final int[] expected = { numerator1 * denominator2, denominator1 * numerator2 };//This does not work in most other cases
+		final int[] expected = {numerator1 * denominator2, denominator1 * numerator2};//This does not work in most other cases
 		verifyToFractionsToIntegers(expected, numerator1, denominator1, numerator2, denominator2);
 
 	}
 
 	private void verifyToFractionsToIntegers(int[] expected, int numerator1, int denominator1, int numerator2, int denominator2) {
-		final Fraction[] fractions = { new Fraction(numerator1, denominator1, false), new Fraction(numerator2, denominator2, false) };
+		final Fraction[] fractions = {new Fraction(numerator1, denominator1, false), new Fraction(numerator2, denominator2, false)};
 
 		final int[] result = Fraction.fractionsToIntegers(fractions);
 
@@ -147,18 +148,18 @@ public final class UtilsTester {
 	public void testRandomInteger() {
 		final int testCount = 20;
 
-		final int[] values = { 0, -10, 10 };
+		final int[] values = {0, -10, 10};
 
 		for (final Integer low : values) {
 			for (final Integer high : values) {
 				for (int i = 0; i < testCount; i++) {
-					for(final Boolean isAllowZero : Arrays.asList(true, false)) {
-						if(high <= low) continue;
+					for (final Boolean isAllowZero : Arrays.asList(true, false)) {
+						if (high <= low) continue;
 						final int randInt = Utils.randomInteger(low, high, isAllowZero);
 						assertFalse("Random integer is equal to zero when not allowed!", !isAllowZero && randInt == 0);
 						assertFalse("Random integer is less than low!", randInt < low);
 						assertFalse("Random integer is greater than or equal to high!", randInt >= high);
-						
+
 					}
 				}
 			}
@@ -166,13 +167,13 @@ public final class UtilsTester {
 	}
 
 	@Test
-	public void testRandomHash() throws Exception {
+	public void testRandomHash() {
 
 		Pattern hashPattern = Pattern.compile("^[a-f|\\d]{8}$");
 
 		Set<String> hashes = new HashSet<>();
 
-		for(int i = 0; i < 100; i++) {
+		for (int i = 0; i < 100; i++) {
 			String hash = Utils.getRandomHash();
 
 			boolean isValid = hashPattern.matcher(hash).matches();
@@ -181,7 +182,6 @@ public final class UtilsTester {
 			assertTrue("the hash '" + hash + "' was already in " + hashes, hashes.add(hash));
 		}
 	}
-
 
 
 	@Test
@@ -220,14 +220,14 @@ public final class UtilsTester {
 		assertEquals(1.0, Utils.shiftedModulus(-1.0, 0.0, 2.0), TOLERANCE);
 		assertEquals(0.0, Utils.shiftedModulus(-2.0, 0.0, 2.0), TOLERANCE);
 
-		for(double d = -30; d < 30; d += 0.847) {
+		for (double d = -30; d < 30; d += 0.847) {
 			assertEquals(d - floor(d), Utils.shiftedModulus(d, 0.0, 1.0), TOLERANCE);
 		}
 
 	}
 
 	@Test
-	public void testMap() throws Exception {
+	public void testMap() {
 
 		assertEquals(50, Utils.map(0.5, 0, 1, 0, 100), TOLERANCE);
 		assertEquals(50, Utils.map(1.5, 1, 2, 0, 100), TOLERANCE);
@@ -238,6 +238,11 @@ public final class UtilsTester {
 		assertEquals(150, Utils.map(1.5, 0, 1, 0, 100), TOLERANCE);
 		assertEquals(50, Utils.map(-0.5, 0, 1, 100, 200), TOLERANCE);
 
+	}
+
+	@Test
+	public void testPreconditions() {
+		Preconditions.checkArgument(true);
 	}
 
 }

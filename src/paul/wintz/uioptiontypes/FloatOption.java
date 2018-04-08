@@ -57,7 +57,7 @@ public class FloatOption extends NumberOption<Float> {
 		}
 
 		public final Builder setValidityEvaluator(ValidityEvaluator<Float> validityEvaluator) {
-			checkState(validityEvaluator == null);
+			checkState(this.validityEvaluator == null);
 			this.validityEvaluator = validityEvaluator;
 			return this;
 		}

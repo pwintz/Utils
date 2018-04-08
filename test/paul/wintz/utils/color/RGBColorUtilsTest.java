@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-import paul.wintz.utils.logging.Lg;
-
 // TODO: Move to tests/
 public class RGBColorUtilsTest {
 
@@ -112,12 +110,10 @@ public class RGBColorUtilsTest {
 	}
 
 	private String grayToHexString(int gray, int a){
-		final String hex =
-				channelToHex(a)
-				+ channelToHex(gray)
-				+ channelToHex(gray)
-				+ channelToHex(gray);
-		return hex;
+		return channelToHex(a)
+		+ channelToHex(gray)
+		+ channelToHex(gray)
+		+ channelToHex(gray);
 	}
 
 	private String toStandardString(int color){
@@ -125,13 +121,11 @@ public class RGBColorUtilsTest {
 	}
 
 	private String rgbaToHexString(int r, int g, int b, int a){
-		final String hex =
-				channelToHex(a)
-				+ channelToHex(r)
-				+ channelToHex(g)
-				+ channelToHex(b);
 
-		return hex;
+		return channelToHex(a)
+		+ channelToHex(r)
+		+ channelToHex(g)
+		+ channelToHex(b);
 	}
 
 	private String channelToHex(int channel){
@@ -187,18 +181,15 @@ public class RGBColorUtilsTest {
 		verifyClipBetween(30);
 	}
 
-	/**
-	 * @param i
-	 */
-	private void verifyClipBetween(int i) {
-		int expected = i;
+	private void verifyClipBetween(int valueToClip) {
+		int expected = valueToClip;
 		if(expected < 0) {
 			expected = 0;
 		}
 		if(expected > 255) {
 			expected = 255;
 		}
-		assertEquals(expected, ColorUtils.clipBetween0and255(i));
+		assertEquals(expected, ColorUtils.clipBetween0and255(valueToClip));
 	}
 
 
