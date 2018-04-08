@@ -4,17 +4,17 @@ import paul.wintz.uioptiontypes.UserInputOption;
 
 public abstract class EventOption extends UserInputOption<Void> {
 
-	protected final Event event;
+    protected final Event event;
 
-	public interface Event {
-		void doEvent();
-	}
+    public interface Event {
+        void doEvent();
+    }
 
-	public EventOption(String description, Event event) {
-		super(description);
-		this.event = event;
-	}
+    public EventOption(String description, Event event) {
+        super(description);
+        this.event = event;
+    }
 
-	public abstract void triggerEvent();
+    public abstract void triggerEvent();
 
 }

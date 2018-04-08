@@ -4,8 +4,8 @@ import java.io.File;
 
 public class FileOption extends UserInputOption<File>{
 
-	public FileOption(final String description) {
-		super(description);
-	}
+    public FileOption(final String description) {
+        super(description);
+    }
 
 }
