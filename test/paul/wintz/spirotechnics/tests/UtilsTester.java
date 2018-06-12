@@ -1,17 +1,17 @@
 package paul.wintz.spirotechnics.tests;
 
-import static java.lang.Math.floor;
-
-import java.util.*;
-import java.util.regex.Pattern;
-
 import com.google.common.base.Preconditions;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 import paul.wintz.math.Fraction;
-import paul.wintz.utils.*;
+import paul.wintz.utils.Utils;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import static java.lang.Math.floor;
+import static org.junit.Assert.*;
 
 public final class UtilsTester {
 

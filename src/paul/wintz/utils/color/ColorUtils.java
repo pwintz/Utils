@@ -33,7 +33,7 @@ public class ColorUtils {
         // Do not instantiate.
     }
 
-    public static int hsb(final int hue, final int saturation, final int brightness) {
+    private static int hsb(final int hue, final int saturation, final int brightness) {
 
         return java.awt.Color.HSBtoRGB(hue, saturation, brightness);
 
@@ -148,7 +148,7 @@ public class ColorUtils {
         return rgb(gray, gray, gray);
     }
 
-    public static int gray(final int gray, final int alpha) {
+    static int gray(final int gray, final int alpha) {
         return rgba(gray, gray, gray, alpha);
     }
 

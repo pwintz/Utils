@@ -2,8 +2,8 @@ package paul.wintz.uioptiontypes.events;
 
 public class QueuedEventOption extends EventOption {
 
-    public QueuedEventOption(String description, Event event) {
-        super(description, event);
+    public QueuedEventOption(Event event) {
+        super(event);
     }
 
     @Override

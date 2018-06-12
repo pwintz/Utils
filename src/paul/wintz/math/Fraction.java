@@ -177,10 +177,10 @@ public class Fraction implements Cloneable {
     }
 
     /**
-     * Converts an array of fractions to an array of integers such that the
+     * Converts an array of fractions to an array of values such that the
      * ratio from one integer to the next is equal to the fraction
      * </br></br>
-     * For a given array of Fractions, F, the resulting array of integers, I,
+     * For a given array of Fractions, F, the resulting array of values, I,
      * will be as follows:
      * </br>
      * (1) I[i] = I[i-1] * F[i-1]</br>
@@ -254,9 +254,9 @@ public class Fraction implements Cloneable {
     }
 
     /**
-     * Converts a string of integers into a series of reduced fractions that are
+     * Converts a string of values into a series of reduced fractions that are
      * equal to the ratios between the numbers. The length of the array will be
-     * one less than the number of given integers. For example: [2,4,3,7] -> [
+     * one less than the number of given values. For example: [2,4,3,7] -> [
      * 2/1, 3/4, 7/3]. </br>
      * </br>
      * When successive numbers have opposite signs, then the fraction will have

@@ -5,6 +5,7 @@ import static paul.wintz.utils.logging.Lg.makeTAG;
 
 import java.util.*;
 
+import paul.wintz.utils.color.ColorUtils;
 import paul.wintz.utils.logging.Lg;
 
 public class LayeredCanvas<L> {
@@ -25,7 +26,6 @@ public class LayeredCanvas<L> {
 
     public void handleNewFrame() {
         for (final Layer<L> layer : layers) {
-
             layer.setCenter(getCenterX(), getCenterY());
             layer.setRotation(getRotation());
             layer.setScale(scale);
@@ -108,7 +108,13 @@ public class LayeredCanvas<L> {
     }
 
     public void setRotation(float rotation) {
+        Lg.v(TAG, "setRotation(%.2f)", rotation);
         this.rotation = rotation;
+    }
+
+    public void setPreserveGraph(boolean preserveGraph){
+        Lg.v(TAG, "setPreserveGraph(%b)", preserveGraph);
+        this.preserveGraph = preserveGraph;
     }
 
     @Override

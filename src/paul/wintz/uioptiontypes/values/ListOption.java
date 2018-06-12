@@ -1,15 +1,16 @@
-package paul.wintz.uioptiontypes;
+package paul.wintz.uioptiontypes.values;
 
 import javax.annotation.Nonnull;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static java.util.Arrays.asList;
 
 import java.util.*;
 
-public class ListOption<T> extends UserInputOption<List<T>> implements Iterable<T> {
+public class ListOption<T> extends ValueOption<Integer> implements Iterable<T> {
 
-    private final ArrayList<T> list = new ArrayList<>();
+    private final List<T> list;
 
     private int selectedNdx = 0;
 
@@ -19,26 +20,21 @@ public class ListOption<T> extends UserInputOption<List<T>> implements Iterable<
         void onSelect(T t);
     }
 
-    public ListOption(String description) {
-        this(description, Collections.emptyList());
+    public static <T> Builder<T> builder() {
+        return new Builder<T>();
     }
 
-    public ListOption(String description, List<T> items) {
-        super(description);
-        add(items);
+    public ListOption(Builder<T> builder) {
+        super(builder);
+        this.list = builder.items;
         setSelected(selectedNdx);
     }
-
-//  public ListOption(String description, Class<?> enumeration) {
-//      this(description, (List<T>) asList(enumeration.getEnumConstants()));
-//  }
 
     public void add(Collection<T> items) {
         list.addAll(items);
 
         setSelected(selectedNdx);
     }
-
 
     public void setSelected(T item) {
         setSelected(indexOfWithCheck(item));
@@ -79,8 +75,7 @@ public class ListOption<T> extends UserInputOption<List<T>> implements Iterable<
     private int indexOfWithCheck(T item) {
         final int indexToSelect = list.indexOf(item);
 
-        if (indexToSelect == -1)
-            throw new IllegalArgumentException("The item '" + item + "' is not a member of the list");
+        checkArgument(indexToSelect != -1, "The item '%s' is not a member of the list", item);
 
         return indexToSelect;
     }
@@ -97,7 +92,40 @@ public class ListOption<T> extends UserInputOption<List<T>> implements Iterable<
 
     @Override
     public String toString(){
-        return description + " ListOption. Selected: " + getSelected() + " (" + (selectedNdx + 1) + " of " + getSize() + ")";
+        return " ListOption. Selected: " + getSelected() + " (" + (selectedNdx + 1) + " of " + getSize() + ")";
     }
+
+    public static class Builder<T> extends ValueOption.Builder<Integer, Builder> {
+
+        private List<T> items = new ArrayList<>();
+        private T selectedItem;
+
+        private Builder() {
+            // Prevent instantiation
+            // Set default values
+            initial = 0;
+        }
+
+        public Builder<T> listItems(List<T> items) {
+            this.items.addAll(items);
+            return this;
+        }
+
+        public Builder<T> fromEnumeration(Class<T> enumeration) {
+            listItems(asList(enumeration.getEnumConstants()));
+            return this;
+        }
+
+        public Builder<T> selectedItem(T item) {
+            selectedItem = item;
+            return this;
+        }
+
+        public ListOption<T> build() {
+            return new ListOption<>(this);
+        }
+
+    }
+
 
 }

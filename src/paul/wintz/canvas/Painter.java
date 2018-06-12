@@ -80,8 +80,9 @@ public class Painter {
         return stroke;
     }
 
-    public final void setStroke(int stroke) {
+    public final Painter setStroke(int stroke) {
         this.stroke = stroke;
+        return this;
     }
 
     public final int getFill() {
