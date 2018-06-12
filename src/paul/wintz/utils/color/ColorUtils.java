@@ -11,8 +11,8 @@ import paul.wintz.utils.exceptions.UnimplementedMethodException;
 
 public class ColorUtils {
 
-    protected static final int SCALE = 255;
-    protected static final int ALPHA_BIT_SHIFT = 24;
+    private static final int SCALE = 255;
+    private static final int ALPHA_BIT_SHIFT = 24;
 
     // COLOR DEFINITIONS
     public static final int WHITE = 0xffffffff;
@@ -22,11 +22,11 @@ public class ColorUtils {
     public static final int BLACK = 0xff000000;
     public static final int TRANSPARENT = 0x00000000;
 
-    static final int BYTE_MASK = 0xff;
-    static final int RGB_MASK = 0xffffff;
-    static final int RED_BIT_SHIFT = 16;
-    static final int BLUE_BIT_SHIFT = 0;
-    static final int GREEN_BIT_SHIFT = 8;
+    private static final int BYTE_MASK = 0xff;
+    private static final int RGB_MASK = 0xffffff;
+    private static final int RED_BIT_SHIFT = 16;
+    private static final int BLUE_BIT_SHIFT = 0;
+    private static final int GREEN_BIT_SHIFT = 8;
     static final int SMALLEST_SAFE_ALPHA = 0;
 
     private ColorUtils() {
@@ -126,6 +126,13 @@ public class ColorUtils {
                 + (SCALE << ALPHA_BIT_SHIFT);
     }
 
+    public static int rgba(final double red, final double green, final double blue, final double alpha){
+        return (clipBetween0and255((int)(255 * red)) << RED_BIT_SHIFT)
+                + (clipBetween0and255((int)(255 * green)) << GREEN_BIT_SHIFT)
+                + (clipBetween0and255((int)(255 * blue)) << BLUE_BIT_SHIFT)
+                + (clipBetween0and255((int)(255 * alpha)) << ALPHA_BIT_SHIFT);
+    }
+
     public static int rgba(final int red, final int green, final int blue, final int alpha){
         return (clipBetween0and255(red) << RED_BIT_SHIFT)
                 + (clipBetween0and255(green) << GREEN_BIT_SHIFT)
@@ -174,5 +181,11 @@ public class ColorUtils {
         else
             return i;
 
+    }
+
+    public static String toString(int color) {
+        String format = String.format("%08X", color);
+        if(format.startsWith("FlkjF")) format = format.substring(2);
+        return "#" + format;
     }
 }

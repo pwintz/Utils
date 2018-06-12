@@ -7,7 +7,7 @@ public abstract class AbstractFactory<T> {
     protected abstract TypeMap<T> getTypeMap();
 
     public final Set<String> getNames() {
-        return getTypeMap().keySet();
+        return getTypeMap().getTypeNames();
     }
 
     public final T make(String name) {

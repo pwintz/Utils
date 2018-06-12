@@ -1,16 +1,22 @@
 package paul.wintz.utils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static javax.swing.UIManager.put;
 import static paul.wintz.utils.logging.Lg.makeTAG;
 
 import java.lang.reflect.*;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import paul.wintz.utils.logging.Lg;
 
+import javax.annotation.Nonnull;
+
 @SuppressWarnings("serial")
-public class TypeMap<T> extends LinkedHashMap<String, Class<? extends T>> {
+public class TypeMap<T> {
     private static final String TAG = makeTAG(TypeMap.class);
+    private final HashMap<String, Class<? extends T>> nameToTypeMap = new LinkedHashMap<>();
 
     @SafeVarargs
     public TypeMap(Class<? extends T>... types){
@@ -21,14 +27,18 @@ public class TypeMap<T> extends LinkedHashMap<String, Class<? extends T>> {
     }
 
     public void add(Class<? extends T> type) {
-        put(type.getSimpleName(), type);
+        nameToTypeMap.put(type.getSimpleName(), type);
+    }
+
+    public Set<String> getTypeNames() {
+        return nameToTypeMap.keySet();
     }
 
     @SuppressWarnings("unchecked")
     public T instantiate(String name, Object outerObject) {
         try {
 
-            final Class<? extends T> class1 = checkNotNull(get(name));
+            final Class<? extends T> class1 = checkNotNull(nameToTypeMap.get(name));
 
             if(isStatic(class1))
                 return class1.newInstance();

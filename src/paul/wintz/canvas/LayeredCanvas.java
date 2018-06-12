@@ -34,10 +34,9 @@ public class LayeredCanvas<L> {
     }
 
     public void setSize(int width, int height) {
+        Lg.v(TAG, "setSize(width=%d, height=%d), preserveGraph=%b", width, height, preserveGraph);
         if (preserveGraph)
             return;
-
-        Lg.d(TAG, "LayeredCanvas size set to: h = " + height + ", sideLength = " + width);
 
         for (final Layer<L> layer : layers) {
             layer.setSize(width, height);
@@ -73,6 +72,7 @@ public class LayeredCanvas<L> {
     //  }
 
     public void clearAll() {
+        Lg.v(TAG, "clearAll(), preserveGraph=%b", preserveGraph);
         if (preserveGraph)
             return;
 
@@ -90,6 +90,7 @@ public class LayeredCanvas<L> {
     }
 
     public void setCenterX(float centerX) {
+        Lg.v(TAG, "setCenterX(%.2f)", centerX);
         this.centerX = centerX;
     }
 
@@ -98,6 +99,7 @@ public class LayeredCanvas<L> {
     }
 
     public void setCenterY(float centerY) {
+        Lg.v(TAG, "setCenterY(%.2f)", centerY);
         this.centerY = centerY;
     }
 

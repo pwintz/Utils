@@ -20,12 +20,20 @@ public final class Lg {
         logger.logVerbose(tag, message);
     }
 
+    public static void v(String tag, String format, Object... args){
+        logger.logVerbose(tag, String.format(format, args));
+    }
+
     public static void v(String tag, String message, Throwable t){
         logger.logVerbose(tag, message, t);
     }
 
     public static void d(String tag, String message){
         logger.logDebug(tag, message);
+    }
+
+    public static void d(String tag, String format, Object... args){
+        logger.logDebug(tag, String.format(format, args));
     }
 
     public static void d(String tag, String message, Throwable t){
@@ -38,6 +46,10 @@ public final class Lg {
 
     public static void i(String tag, String message, Throwable t){
         logger.logInfo(tag, message, t);
+    }
+
+    public static void i(String tag, String format, Object... args){
+        logger.logInfo(tag, String.format(format, args));
     }
 
     public static void w(String tag, String message){

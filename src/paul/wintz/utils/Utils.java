@@ -1,19 +1,18 @@
 package paul.wintz.utils;
 
+import com.google.common.primitives.Ints;
+import org.apache.commons.math3.exception.MathArithmeticException;
+import org.apache.commons.math3.util.ArithmeticUtils;
+import paul.wintz.utils.exceptions.UnhandledCaseException;
+
+import java.io.File;
+import java.util.List;
+import java.util.Random;
+import java.util.Stack;
+
 import static com.google.common.base.Preconditions.*;
 import static java.lang.Double.isFinite;
 import static java.lang.Math.*;
-
-import java.io.File;
-import java.util.*;
-
-import com.google.common.base.Preconditions;
-import org.apache.commons.math3.exception.MathArithmeticException;
-import org.apache.commons.math3.util.ArithmeticUtils;
-
-import com.google.common.primitives.Ints;
-
-import paul.wintz.utils.exceptions.UnhandledCaseException;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public final class Utils {
@@ -152,7 +151,7 @@ public final class Utils {
     public static int lcm(int... values) {
         return lcm(Ints.asList(values));
     }
-    
+
     /**
      * Calculates the least common multiple of multiple values. If one of the
      * values is zero, than the result is zero.
@@ -327,6 +326,18 @@ public final class Utils {
 
     public static float checkPositive(float x) {
         checkArgument(x > 0, NOT_POSITIVE_FORMAT, x);
+        return x;
+    }
+
+    public static double checkIsNotNegative(double x){
+        checkArgument(x >= 0, "Value is negative: %s", x);
+        checkArgument(isFinite(x), "Value is not finite: %s", x);
+        return x;
+    }
+
+    public static double checkIsPositive(double x){
+        checkArgument(x > 0, "Value is not positive: %s", x);
+        checkArgument(isFinite(x), "Value is not finite: %s", x);
         return x;
     }
 
