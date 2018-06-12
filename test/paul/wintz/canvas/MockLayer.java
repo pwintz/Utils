@@ -190,4 +190,9 @@ public class MockLayer extends Layer<Void> {
 		throw new UnimplementedMethodException();
 	}
 
+	@Override
+	public void drawText(String text, int x, int y) {
+		throw new UnimplementedMethodException();
+	}
+
 }

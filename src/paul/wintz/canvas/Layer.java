@@ -161,6 +161,8 @@ public abstract class Layer<L> {
     public abstract void drawPolygon(final List<Vector2D> points, final Painter painter);
     public abstract void drawPolygon(final List<Vector2D> points, final Painter painter, List<Transformation> transforms);
 
+    public abstract void drawText(String text, int x, int y);
+
     @Override
     public String toString() {
         return String.format("Layer(%d x %d){scaleX=%.2f, scaleY=%.2f, rotation=%.2f}", width, height, scaleX, scaleY, rotation);
