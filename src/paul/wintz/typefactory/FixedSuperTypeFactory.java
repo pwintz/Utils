@@ -2,10 +2,7 @@ package paul.wintz.typefactory;
 
 import com.google.common.collect.ImmutableMap;
 
-import java.util.Optional;
 import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Creates instances that are a subclass of given types. The available supertypes can
@@ -13,7 +10,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class FixedSuperTypeFactory<T> {
 
-    private ImmutableMap<Class<? extends T>, Instantiator<? extends T>> typeToInstantiatorMap;
+    private final ImmutableMap<Class<? extends T>, Instantiator<? extends T>> typeToInstantiatorMap;
 
     public T make(Class<? extends T> baseType) {
         checkClassIsSupported(baseType);
@@ -28,10 +25,8 @@ public class FixedSuperTypeFactory<T> {
         return typeToInstantiatorMap.containsKey(viewClass);
     }
 
-    public void checkClassIsSupported(Class<? extends T> baseType) {
-        if (!canMake(baseType)) {
-            throw new ClassNotSupported(baseType);
-        }
+    private void checkClassIsSupported(Class<? extends T> baseType) {
+        ClassNotSupportedException.checkClassIsSupported(baseType, typeToInstantiatorMap.keySet());
     }
 
     private FixedSuperTypeFactory(Builder<T> builder){
@@ -42,13 +37,18 @@ public class FixedSuperTypeFactory<T> {
         return new Builder<T>();
     }
 
+    public Instantiator<? extends T> getInstantiator(Class<? extends T> baseType) {
+        checkClassIsSupported(baseType);
+        return typeToInstantiatorMap.get(baseType);
+    }
+
     public static class Builder<T> {
 
         private ImmutableMap.Builder<Class<? extends T>, Instantiator<? extends T>> mapBuilder = new ImmutableMap.Builder<>();
 
         /**
          * @param instantiator A callback that creates an instance of a class that extends S.
-         * @param <S> the base type. Theinstance by the Instantiator must extend S,
+         * @param <S> the base type. The instance created by the Instantiator must extend S,
          *           and S must extend T (the type for the TypeFactory).
          */
         public <S extends T> Builder<T> putType(Class<S> baseType, Instantiator<S> instantiator) {

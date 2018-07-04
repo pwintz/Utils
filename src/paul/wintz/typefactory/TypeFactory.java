@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class TypeFactory {
 
-    private ImmutableMap<Class<?>, Instantiator<?>> typeToInstantiatorMap;
+    private final ImmutableMap<Class<?>, Instantiator<?>> typeToInstantiatorMap;
 
     @SuppressWarnings("unchecked") // Instantiator is guaranteed to castable by Builder.
     public <T> Instantiator<? extends T> getInstantiator(Class<T> baseType) {
@@ -21,9 +21,7 @@ public class TypeFactory {
     }
 
     public <T> T make(Class<T> baseType) {
-        checkClassIsSupported(baseType);
-
-        return baseType.cast(typeToInstantiatorMap.get(baseType).instance());
+        return getInstantiator(baseType).instance();
     }
 
     public Set<Class<?>> getBaseTypes() {
@@ -35,9 +33,7 @@ public class TypeFactory {
     }
 
     public void checkClassIsSupported(Class<?> baseType) {
-        if (!canMake(baseType)) {
-            throw new ClassNotSupported(baseType);
-        }
+        ClassNotSupportedException.checkClassIsSupported(baseType, typeToInstantiatorMap.keySet());
     }
 
     private TypeFactory(Builder builder){
