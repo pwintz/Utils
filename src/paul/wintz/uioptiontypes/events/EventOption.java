@@ -1,18 +1,18 @@
 package paul.wintz.uioptiontypes.events;
 
-import paul.wintz.uioptiontypes.UserInputOption;
-
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class EventOption extends UserInputOption {
+public class EventOption {
 
+    @FunctionalInterface
     public interface Event {
         void doEvent();
     }
 
-    protected final Event event;
+    @Nonnull private final Event event;
     @Nullable private final EventQueue eventQueue;
 
     public void triggerEvent() {
@@ -34,8 +34,8 @@ public class EventOption extends UserInputOption {
 
     public static class Builder {
 
-        public Event event;
-        public EventQueue eventQueue;
+        private Event event;
+        private EventQueue eventQueue;
 
         public Builder event(Event event) {
             this.event = checkNotNull(event);
@@ -48,7 +48,12 @@ public class EventOption extends UserInputOption {
         }
 
         public EventOption build() {
+            checkNotNull(event);
             return new EventOption(this);
+        }
+
+        private Builder() {
+            // Prevent external instantiation.
         }
     }
 

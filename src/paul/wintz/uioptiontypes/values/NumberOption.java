@@ -11,6 +11,7 @@ public abstract class NumberOption<T extends Number> extends ValueOption<T> {
 
     protected NumberOption(Builder<T, ?> builder) {
         super(builder);
+        builder.checkValues();
         min = checkNotNull(builder.min);
         max = checkNotNull(builder.max);
         increment = checkNotNull(builder.increment);
@@ -22,7 +23,7 @@ public abstract class NumberOption<T extends Number> extends ValueOption<T> {
     public T getIncrement() { return increment; }
 
     @SuppressWarnings("unchecked")
-    public static class Builder<T, B extends ValueOption.Builder> extends ValueOption.Builder<T, B> {
+    public static class Builder<T extends Number, B extends ValueOption.Builder> extends ValueOption.Builder<T, B> {
 
         protected T increment;
         protected T max;
@@ -49,12 +50,9 @@ public abstract class NumberOption<T extends Number> extends ValueOption<T> {
             return (B) this;
         }
 
-        protected void checkValues() {
-            super.checkValues();
-            for(ValidityEvaluator<T> ve : validityEvaluators) {
-                checkState(ve.isValid(min), "min value %s is invalid", min);
-                checkState(ve.isValid(max), "max value %s is invalid", max);
-            }
+        private void checkValues() {
+            checkValue(min, "min");
+            checkValue(max, "max");
         }
 
         protected Builder() {

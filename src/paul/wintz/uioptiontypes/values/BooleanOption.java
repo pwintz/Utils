@@ -1,7 +1,5 @@
 package paul.wintz.uioptiontypes.values;
 
-import static com.google.common.base.Preconditions.checkState;
-
 public class BooleanOption extends ValueOption<Boolean> {
 
     private BooleanOption(Builder builder) {
@@ -19,7 +17,7 @@ public class BooleanOption extends ValueOption<Boolean> {
         }
 
         protected Builder() {
-            // Prevent instantiation
+            initial = Boolean.FALSE;
         }
 
     }

@@ -1,87 +1,68 @@
 package paul.wintz.uioptiontypes.values;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkElementIndex;
+import static com.google.common.base.Preconditions.checkState;
 import static java.util.Arrays.asList;
 
-import java.util.*;
-
-public class ListOption<T> extends ValueOption<Integer> implements Iterable<T> {
+public class ListOption<T> extends ValueOption<T> implements Iterable<T> {
 
     private final List<T> list;
 
-    private int selectedNdx = 0;
-
-    private Listener<T> listener;
-
-    public interface Listener<T> {
-        void onSelect(T t);
-    }
-
-    public static <T> Builder<T> builder() {
-        return new Builder<T>();
-    }
-
-    public ListOption(Builder<T> builder) {
+    private ListOption(Builder<T> builder) {
         super(builder);
         this.list = builder.items;
-        setSelected(selectedNdx);
-    }
-
-    public void add(Collection<T> items) {
-        list.addAll(items);
-
-        setSelected(selectedNdx);
-    }
-
-    public void setSelected(T item) {
-        setSelected(indexOfWithCheck(item));
-    }
-
-    public void setSelected(int n) {
-        if(list.isEmpty()) return;
-        checkIndex(n);
-
-        selectedNdx = n;
-
-        if(listener != null) {
-            listener.onSelect(list.get(n));
-        }
-    }
-
-    public void setCallback(Listener<T> listener){
-        this.listener = listener;
     }
 
     public int getSize() {
         return list.size();
     }
 
-    public boolean isEmpty(){
-        return list.isEmpty();
+    private int getIndex() {
+        return list.indexOf(getValue());
     }
 
-    public T getSelected(){
-        if(list.isEmpty()) return null;
-        return list.get(selectedNdx);
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
     }
 
-    public String getSelectedName(){
-        return getSelected().toString();
-    }
+    public static class Builder<T> extends ValueOption.Builder<T, Builder<T>> {
 
-    private int indexOfWithCheck(T item) {
-        final int indexToSelect = list.indexOf(item);
+        private List<T> items = new ArrayList<>();
 
-        checkArgument(indexToSelect != -1, "The item '%s' is not a member of the list", item);
+        public Builder<T> add(T item) {
+            this.items.add(item);
+            return this;
+        }
 
-        return indexToSelect;
-    }
+        public Builder<T> addAll(Collection<? extends T> items) {
+            this.items.addAll(items);
+            return this;
+        }
 
-    private void checkIndex(int n) {
-        checkElementIndex(n, list.size());
+        public Builder<T> fromEnumeration(Class<T> enumeration) {
+            return addAll(asList(enumeration.getEnumConstants()));
+        }
+
+        public ListOption<T> build() {
+            checkState(!items.isEmpty(), "List is empty");
+            if(initial == null) {
+                initial = items.get(0);
+            } else {
+                checkState(items.contains(initial));
+            }
+            addValidityEvaluator(value -> items.contains(value));
+            return new ListOption<>(this);
+        }
+
+        private Builder() {
+            // Prevent instantiation
+        }
+
     }
 
     @Nonnull
@@ -92,40 +73,6 @@ public class ListOption<T> extends ValueOption<Integer> implements Iterable<T> {
 
     @Override
     public String toString(){
-        return " ListOption. Selected: " + getSelected() + " (" + (selectedNdx + 1) + " of " + getSize() + ")";
+        return String.format("ListOption. Selected: %s (%d of %d)", getValue(), getIndex() + 1, getSize());
     }
-
-    public static class Builder<T> extends ValueOption.Builder<Integer, Builder> {
-
-        private List<T> items = new ArrayList<>();
-        private T selectedItem;
-
-        private Builder() {
-            // Prevent instantiation
-            // Set default values
-            initial = 0;
-        }
-
-        public Builder<T> listItems(List<T> items) {
-            this.items.addAll(items);
-            return this;
-        }
-
-        public Builder<T> fromEnumeration(Class<T> enumeration) {
-            listItems(asList(enumeration.getEnumConstants()));
-            return this;
-        }
-
-        public Builder<T> selectedItem(T item) {
-            selectedItem = item;
-            return this;
-        }
-
-        public ListOption<T> build() {
-            return new ListOption<>(this);
-        }
-
-    }
-
-
 }

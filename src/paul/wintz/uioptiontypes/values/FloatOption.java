@@ -6,6 +6,7 @@ public class FloatOption extends NumberOption<Float> {
 
     private FloatOption (Builder builder){
         super(builder);
+        builder.checkValues();
     }
 
     public static Builder builder() {
@@ -21,28 +22,30 @@ public class FloatOption extends NumberOption<Float> {
         private Builder() {
             // Prevent external instantiation and load defaults
             initial = 0f;
-            increment = 1f;
+            increment = Float.NaN;
             min = Float.NEGATIVE_INFINITY;
             max = Float.POSITIVE_INFINITY;
         }
 
         public final Builder prohibitNonPositive() {
-            if(min <= 0) min(1f);
+            if(min <= 0) min(Float.MIN_VALUE);
             addValidityEvaluator(value -> value > 0f);
             return this;
         }
 
         public final FloatOption build() {
-            checkValues();
+            addValidityEvaluator(value -> value >= min);
+            addValidityEvaluator(value -> value <= max);
             return new FloatOption(this);
         }
 
-        protected void checkValues() {
-            super.checkValues();
+        private void checkValues() {
+            checkValue(min, "min");
+            checkValue(max, "max");
+
             checkState(initial >= min, "initial value %s is less than min value %s", initial, min);
             checkState(initial <= max, "initial value %s is greater than max value %s", initial, max);
         }
-
     }
 }
 
