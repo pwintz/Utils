@@ -1,24 +1,68 @@
 package paul.wintz.canvas;
 
+import java.util.Objects;
+
 import static java.lang.Math.max;
 
-public class Painter {
+public final class Painter {
     private boolean isFilled = true;
     private int fill;
     private boolean isStroked;
     private float strokeWeight;
     private int stroke;
 
-    public Painter setStroke(int color, float weight) {
-        setOnlyStroked();
-        stroke = color;
-        strokeWeight = max(0, weight);
+    public final Painter setStroke(int color) {
+        this.stroke = color;
+        return this;
+    }
+
+    public Painter setStrokeAndWeight(int color, float weight) {
+        setStroke(color);
+        setStrokeWeight(weight);
         return this;
     }
 
     public Painter setFill(int color) {
-        setOnlyFilled();
         fill = color;
+        return this;
+    }
+
+    public final boolean isFilled() {
+        return isFilled;
+    }
+
+    public final Painter setFilled(boolean isFilled) {
+        this.isFilled = isFilled;
+        return this;
+    }
+
+    public final boolean isStroked() {
+        return isStroked;
+    }
+
+    public final Painter setStroked(boolean isStroked) {
+        this.isStroked = isStroked;
+        return this;
+    }
+
+    public final Painter setOnlyFilled() {
+        isFilled = true;
+        isStroked = false;
+        return this;
+    }
+
+    public final Painter setOnlyStroked() {
+        isFilled = false;
+        isStroked = true;
+        return this;
+    }
+
+    public final float getStrokeWeight() {
+        return strokeWeight;
+    }
+
+    public final Painter setStrokeWeight(float strokeWeight) {
+        this.strokeWeight = Math.max(0, strokeWeight);
         return this;
     }
 
@@ -33,59 +77,33 @@ public class Painter {
         }
         if (isStroked) {
             sb.append("Stroke: ").append(stroke)
-            .append(", StrokeWeight: ").append(strokeWeight);
+                    .append(", StrokeWeight: ").append(strokeWeight);
         }
         return sb.toString();
-    }
-
-    public final boolean isFilled() {
-        return isFilled;
-    }
-
-    public final void setFilled(boolean isFilled) {
-        this.isFilled = isFilled;
-    }
-
-    public final boolean isStroked() {
-        return isStroked;
-    }
-
-    public final void setStroked(boolean isStroked) {
-        this.isStroked = isStroked;
-    }
-
-    public final void setOnlyFilled() {
-        isFilled = true;
-        isStroked = false;
-    }
-
-    public final void setOnlyStroked() {
-        isFilled = false;
-        isStroked = true;
-    }
-
-    public final float getStrokeWeight() {
-        return strokeWeight;
-    }
-
-    public final void setStrokeWeight(float strokeWeight) {
-        if (strokeWeight < 0) {
-            this.strokeWeight = 0;
-        } else {
-            this.strokeWeight = strokeWeight;
-        }
     }
 
     public final int getStroke() {
         return stroke;
     }
 
-    public final Painter setStroke(int stroke) {
-        this.stroke = stroke;
-        return this;
-    }
-
     public final int getFill() {
         return fill;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Painter painter = (Painter) o;
+        return isFilled == painter.isFilled &&
+                fill == painter.fill &&
+                isStroked == painter.isStroked &&
+                Float.compare(painter.strokeWeight, strokeWeight) == 0 &&
+                stroke == painter.stroke;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isFilled, fill, isStroked, strokeWeight, stroke);
     }
 }
