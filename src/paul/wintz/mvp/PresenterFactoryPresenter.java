@@ -6,6 +6,8 @@ import paul.wintz.typefactory.TypeFactory;
 import paul.wintz.uioptiontypes.values.ListOption;
 import paul.wintz.utils.logging.Lg;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 // A presenter that a supports selecting between a list of presenters.
 public class PresenterFactoryPresenter {
     private static final String TAG = Lg.makeTAG(PresenterFactoryPresenter.class);
@@ -55,15 +57,16 @@ public class PresenterFactoryPresenter {
         private ValueChangedListener onPresenterChangeListener = (v) -> {};
 
         public Builder setPresenterSelectionView(PresenterSelectionView presenterSelectionView){
-            this.presenterSelectionView = presenterSelectionView;
-            viewFactory = presenterSelectionView.getViewFactory();
+            this.presenterSelectionView = checkNotNull(presenterSelectionView, "presenterSelectionView was null");
+            viewFactory = checkNotNull(presenterSelectionView.getViewFactory(),"viewFactory was null");
             return this;
         }
 
         public <P extends Presenter<V>, V> Builder addPresenter(
                 Class<P> presenterClass, Class<V> viewClass, Instantiator<P> presenterInstantiator) {
-
+            checkNotNull(viewFactory, "setPresenterSelectionView() must be called before addPresenter()");
             viewFactory.checkClassIsSupported(viewClass);
+
             presenterFactoryBuilder.putType(presenterClass, () -> {
                 P presenter = presenterInstantiator.instance();
                 presenter.setView(viewFactory.make(viewClass));
@@ -74,11 +77,13 @@ public class PresenterFactoryPresenter {
         }
 
         public Builder setPresenterChangedListener(ValueChangedListener onPresenterChangeListener) {
-            this.onPresenterChangeListener = onPresenterChangeListener;
+            this.onPresenterChangeListener = checkNotNull(onPresenterChangeListener);
             return this;
         }
 
         public PresenterFactoryPresenter build(){
+            checkNotNull(presenterSelectionView);
+            checkNotNull(viewFactory);
             return new PresenterFactoryPresenter(this);
         }
 

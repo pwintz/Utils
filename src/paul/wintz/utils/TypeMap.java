@@ -14,6 +14,7 @@ import paul.wintz.utils.logging.Lg;
 import javax.annotation.Nonnull;
 
 @SuppressWarnings("serial")
+@Deprecated
 public class TypeMap<T> {
     private static final String TAG = makeTAG(TypeMap.class);
     private final HashMap<String, Class<? extends T>> nameToTypeMap = new LinkedHashMap<>();
@@ -32,6 +33,10 @@ public class TypeMap<T> {
 
     public Set<String> getTypeNames() {
         return nameToTypeMap.keySet();
+    }
+
+    public T instantiateStatic(String className) {
+        return instantiate(className, null);
     }
 
     @SuppressWarnings("unchecked")

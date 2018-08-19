@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 import paul.wintz.utils.logging.Lg;
 
 @SuppressWarnings("serial")
-public class NodeGUITest  extends JFrame {
+public class NodeGUITest extends JFrame {
     protected static final String TAG = Lg.makeTAG(NodeGUITest.class);
 
     private final JPanel contentPane = createContentPane();

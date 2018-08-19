@@ -2,6 +2,8 @@ package paul.wintz.math;
 
 import static java.lang.Math.*;
 
+//TODO: convert to immutable.
+@SuppressWarnings({"UnusedReturnValue", "WeakerAccess"})
 public class Vector2D implements Cloneable {
     private double x;
     private double y;
@@ -115,7 +117,7 @@ public class Vector2D implements Cloneable {
     public static double angleBetween(final Vector2D from, final Vector2D to) {
 
         final double crossProduct = crossProduct(from, to);
-        final double normalizedCrossProduct = constrainRoundingOverflow(crossProduct / (from.magnitude() * to.magnitude()), -1, 1);
+        final double normalizedCrossProduct = constrainToUnitSegment(crossProduct / (from.magnitude() * to.magnitude()));
 
         final double dotProduct = dotProduct(from, to);
 
@@ -123,18 +125,16 @@ public class Vector2D implements Cloneable {
             return asin(normalizedCrossProduct);
         else if(dotProduct < 0)
             return PI - asin(normalizedCrossProduct);
-        else if(crossProduct < 0 && dotProduct >= 0)
-            return 2 * PI + asin(normalizedCrossProduct);
 
-        throw new RuntimeException();
+        return 2 * PI + asin(normalizedCrossProduct);
 
     }
 
-    private static double constrainRoundingOverflow(double normalizedCrossProduct, double min, double max) {
-        if(normalizedCrossProduct >  max)
-            return  max;
-        if(normalizedCrossProduct < min)
-            return min;
+    private static double constrainToUnitSegment(double normalizedCrossProduct) {
+        if(normalizedCrossProduct > 1.0)
+            return 1.0;
+        if(normalizedCrossProduct < -1.0)
+            return -1.0;
         return normalizedCrossProduct;
     }
 

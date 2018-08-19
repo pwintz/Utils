@@ -56,6 +56,10 @@ public final class Lg {
         logger.logWarning(tag, message);
     }
 
+    public static void w(String tag, String format, Object... args){
+        logger.logWarning(tag, String.format(format, args));
+    }
+
     public static void w(String tag, String message, Throwable t){
         logger.logWarning(tag, message, t);
     }

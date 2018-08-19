@@ -12,7 +12,7 @@ public class FixedSuperTypeFactory<T> {
 
     private final ImmutableMap<Class<? extends T>, Instantiator<? extends T>> typeToInstantiatorMap;
 
-    public T make(Class<? extends T> baseType) {
+    public <Q extends T> Q make(Class<Q> baseType) {
         checkClassIsSupported(baseType);
         return baseType.cast(typeToInstantiatorMap.get(baseType).instance());
     }
