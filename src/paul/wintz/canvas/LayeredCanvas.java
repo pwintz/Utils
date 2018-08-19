@@ -5,13 +5,14 @@ import static paul.wintz.utils.logging.Lg.makeTAG;
 
 import java.util.*;
 
+import com.google.common.collect.ImmutableList;
 import paul.wintz.utils.color.ColorUtils;
 import paul.wintz.utils.logging.Lg;
 
 public class LayeredCanvas<L> {
     private static final String TAG = makeTAG(LayeredCanvas.class);
 
-    protected List<Layer<L>> layers; // the bottom layer is layer 0.
+    protected final ImmutableList<Layer<L>> layers; // the bottom layer is layer 0.
 
     private float scale = 0.2f;
     private float rotation = 0.0f;
@@ -19,9 +20,17 @@ public class LayeredCanvas<L> {
     private float centerY = 0.5f;
     private boolean preserveGraph = false;
 
-    protected LayeredCanvas(Layer<L>... layers) {
-        checkArgument(layers.length > 0);
-        this.layers = Arrays.asList(layers);
+    protected LayeredCanvas(Layer<L> layer) {
+        this(Collections.singletonList(layer));
+    }
+
+    protected LayeredCanvas(Layer<L> bottomLayer, Layer<L> topLayer) {
+        this(Arrays.asList(bottomLayer, topLayer));
+    }
+
+    protected  LayeredCanvas(List<Layer<L>> layers){
+        checkArgument(!layers.isEmpty());
+        this.layers = ImmutableList.copyOf(layers);
     }
 
     public void handleNewFrame() {
