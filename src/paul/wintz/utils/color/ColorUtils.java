@@ -34,74 +34,17 @@ public class ColorUtils {
         // Do not instantiate.
     }
 
-    private static int hsb(final int hue, final int saturation, final int brightness) {
-
+    private static int hsb(final float hue, final float saturation, final float brightness) {
         return java.awt.Color.HSBtoRGB(hue, saturation, brightness);
-
-        /*double double_hue;
-        double double_saturation;
-        double p, q, t, hueRemainder;
-        int sextrant; // (Like a quadrant, but there are six).
-
-        int red, green, blue;
-
-        if (saturation <= 0.0) { // < is bogus, just shuts up warnings
-            red = value;
-            green = value;
-            blue = value;
-            return RgbColorUtils.rgb(red, green, blue);
-        }
-        double_hue = hue;
-        double_hue %= 255.0;
-        double_hue /= 42.66666666; // scale to the range [0.0, 6.0)
-        sextrant = (int) double_hue; // Round down to the integer portion
-        hueRemainder = double_hue - sextrant; // The portion
-
-        double_saturation = saturation;
-        double_saturation /= 256.0;
-        p = value * (1.0 - double_saturation);
-        q = value * (1.0 - (double_saturation * hueRemainder));
-        t = value * (1.0 - (double_saturation * (1.0 - hueRemainder)));
-
-        switch (sextrant) {
-        case 0:
-            red = value;
-            green = (int) t;
-            blue = (int) p;
-            break;
-        case 1:
-            red = (int) q;
-            green = value;
-            blue = (int) p;
-            break;
-        case 2:
-            red = (int) p;
-            green = value;
-            blue = (int) t;
-            break;
-
-        case 3:
-            red = (int) p;
-            green = (int) q;
-            blue = value;
-            break;
-        case 4:
-            red = (int) t;
-            green = (int) p;
-            blue = value;
-            break;
-        case 5:
-        default:
-            red = value;
-            green = (int) p;
-            blue = (int) q;
-            break;
-        }
-        return RgbColorUtils.rgb(red, green, blue);*/
     }
 
-    public static int hsba(final int hue, final int sat, final int black, final int alpha) {
+    public static int hsba(final float hue, final float sat, final float black, final int alpha) {
         return ColorUtils.rgba(hsb(hue, sat, black), alpha);
+    }
+
+    public static int hsba(final double hue, final double sat, final double black, final double alpha) {
+        int hsb = hsb((float) hue, (float) sat, (float) black);
+        return ColorUtils.rgba(hsb, (int)(SCALE*alpha));
     }
 
     public static int hue(int rgb) {
