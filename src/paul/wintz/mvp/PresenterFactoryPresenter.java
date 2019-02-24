@@ -37,13 +37,14 @@ public class PresenterFactoryPresenter {
     }
 
     public interface ValueChangedListener {
-        void notify(Presenter<?> newPresenter);
+        void notify(Presenter<?> oldPresenter, Presenter<?> newPresenter);
     }
 
     private final ValueChangedListener onPresenterChangeListener;
-
+    private Presenter<?> currentPresenter = null;
     private void emitPresenterChanged(Presenter<?> newPresenter) {
-        onPresenterChangeListener.notify(newPresenter);
+        onPresenterChangeListener.notify(currentPresenter, newPresenter);
+        currentPresenter = newPresenter;
     }
 
     public static Builder builder() {
@@ -54,7 +55,7 @@ public class PresenterFactoryPresenter {
         private PresenterSelectionView presenterSelectionView;
         private TypeFactory viewFactory;
         private FixedSuperTypeFactory.Builder<Presenter<?>> presenterFactoryBuilder = FixedSuperTypeFactory.builder();
-        private ValueChangedListener onPresenterChangeListener = (v) -> {};
+        private ValueChangedListener onPresenterChangeListener = (oldPresenter, newPresenter ) -> {};
 
         public Builder setPresenterSelectionView(PresenterSelectionView presenterSelectionView){
             this.presenterSelectionView = checkNotNull(presenterSelectionView, "presenterSelectionView was null");

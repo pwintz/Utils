@@ -7,10 +7,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -103,11 +103,10 @@ public class ListOptionTest {
         List<String> list = asList("One", "Two", "Three");
         ListOption<String> option = builder.addAll(list).build();
 
-        Iterator<String> iterator = option.iterator();
-
-        for(int i = 0; i > list.size(); i++) {
-            assertThat(iterator.next(), is(equalTo(list.get(i))));
-        }
+//        assertThat(option.getList(), contains());
+//        for(String s : option.getList()) {
+//            assertThat(s, is(equalTo(list.get(i))));
+//        }
     }
 
     @Test

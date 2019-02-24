@@ -46,7 +46,6 @@ public class ValueOption<T> {
      */
     public boolean emitViewValueChanged(T newValue) {
         boolean changeAllowed = isStateValid() && isValueValid(newValue);
-        Lg.v(TAG, "emitViewValueChange(%s), isChangeAllowed? %b", newValue, changeAllowed);
         if (changeAllowed && !newValue.equals(value)) {
             value = newValue;
             viewValueChangeCallback.callback(newValue);

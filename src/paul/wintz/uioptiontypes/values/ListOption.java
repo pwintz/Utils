@@ -1,21 +1,22 @@
 package paul.wintz.uioptiontypes.values;
 
+import com.google.common.collect.ImmutableList;
+
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Arrays.asList;
 
-public class ListOption<T> extends ValueOption<T> implements Iterable<T> {
+public class ListOption<T> extends ValueOption<T> {
 
-    private final List<T> list;
+    private final ImmutableList<T> list;
 
     private ListOption(Builder<T> builder) {
         super(builder);
-        this.list = builder.items;
+        this.list = ImmutableList.copyOf(builder.items);
     }
 
     public int getSize() {
@@ -66,9 +67,8 @@ public class ListOption<T> extends ValueOption<T> implements Iterable<T> {
     }
 
     @Nonnull
-    @Override
-    public Iterator<T> iterator() {
-        return list.iterator();
+    public ImmutableList<T> getList() {
+        return list;
     }
 
     @Override

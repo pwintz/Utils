@@ -10,6 +10,7 @@ import paul.wintz.typefactory.TypeFactory;
 import paul.wintz.uioptiontypes.values.ListOption;
 
 import static org.mockito.Matchers.isA;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,7 +43,7 @@ public class PresenterFactoryPresenterTest {
     public void whenAPresenterIsSelectedListenerIsNotified() throws Exception {
         presenterSelectionView.emitPresenterSelected(PresenterA.class);
 
-        verify(presenterChangeListener).notify(isA(PresenterA.class));
+        verify(presenterChangeListener).notify(isNull(Presenter.class), isA(PresenterA.class));
     }
 
     @Test (expected = ClassNotSupportedException.class)
