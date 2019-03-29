@@ -4,12 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -21,10 +20,11 @@ public class ValueOptionTest {
     private final StringOptionStub.Builder builder = StringOptionStub.builder();
 
     @Mock ValueOption.ValueChangeCallback<String> changeCallback;
+    @Mock ValueOption.ValueChangeCallback<String> changeCallback2;
 
     @Before
     public void setUp() throws Exception {
-        builder.viewValueChangeCallback(changeCallback)
+        builder.addViewValueChangeCallback(changeCallback)
                 .initial("");
     }
 
@@ -179,5 +179,63 @@ public class ValueOptionTest {
                 .build();
 
         assertTrue(stringOption.isStateValid());
+    }
+
+    @Test
+    public void noCallbackOnInitializationByDefault() {
+        builder.build();
+
+        verify(changeCallback, never()).callback(any());
+    }
+
+    @Test
+    public void callbackOnInitializationEnabled() {
+        builder.callbackOnInitialization(true)
+                .initial("Initial value")
+                .build();
+
+        verify(changeCallback).callback("Initial value");
+    }
+
+    @Test
+    public void addViewValueChangeCallbackBeforeBuilding() {
+        ValueOption<String> option = builder
+                .addViewValueChangeCallback(changeCallback2)
+                .build();
+
+        option.emitViewValueChanged("New value");
+
+        verify(changeCallback).callback("New value");
+        verify(changeCallback2).callback("New value");
+    }
+
+    @Test
+    public void addViewValueChangeCallbackAfterBuilding() {
+        ValueOption<String> option = builder.build();
+        option.addViewValueChangeCallback(changeCallback2);
+
+        option.emitViewValueChanged("New value");
+
+        verify(changeCallback).callback("New value");
+        verify(changeCallback2).callback("New value");
+    }
+
+    @Test
+    public void reusingBuilderDiscardsPreviousCallbacks() {
+        StringOptionStub.Builder builder = StringOptionStub.builder()
+                .addViewValueChangeCallback(changeCallback)
+                .callbackOnInitialization(true)
+                .addStateValidator(() -> true)
+                .addValidityEvaluator(value -> true)
+                .initial("Initial value");
+
+        builder.build();
+
+        assertEquals("Initial value", builder.initial);
+        assertTrue(builder.isCallbackOnInitialization());
+        assertEquals(1, builder.stateValidatorsCount());
+        assertEquals(1, builder.valueValidatorsCount());
+
+        assertEquals(0, builder.viewValueChangeCallbackCount());
     }
 }

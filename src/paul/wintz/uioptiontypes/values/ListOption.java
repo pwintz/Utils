@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Arrays.asList;
@@ -13,10 +14,12 @@ import static java.util.Arrays.asList;
 public class ListOption<T> extends ValueOption<T> {
 
     private final ImmutableList<T> list;
+    public final Function<T, String> nameMapper;
 
     private ListOption(Builder<T> builder) {
         super(builder);
         this.list = ImmutableList.copyOf(builder.items);
+        nameMapper = builder.nameMapper;
     }
 
     public int getSize() {
@@ -32,7 +35,7 @@ public class ListOption<T> extends ValueOption<T> {
     }
 
     public static class Builder<T> extends ValueOption.Builder<T, Builder<T>> {
-
+        private Function<T, String> nameMapper = Object::toString;
         private List<T> items = new ArrayList<>();
 
         public Builder<T> add(T item) {
@@ -47,6 +50,11 @@ public class ListOption<T> extends ValueOption<T> {
 
         public Builder<T> fromEnumeration(Class<T> enumeration) {
             return addAll(asList(enumeration.getEnumConstants()));
+        }
+
+        public Builder<T> displayNameMapper(Function<T, String> nameMapper) {
+            this.nameMapper = nameMapper;
+            return this;
         }
 
         public ListOption<T> build() {

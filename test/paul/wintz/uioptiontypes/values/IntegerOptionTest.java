@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.*;
@@ -21,7 +20,7 @@ public class IntegerOptionTest {
 
     @Before
     public void setUp() throws Exception {
-        builder.viewValueChangeCallback(changeCallback);
+        builder.addViewValueChangeCallback(changeCallback);
     }
 
     @Test

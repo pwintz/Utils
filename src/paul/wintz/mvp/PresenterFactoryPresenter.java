@@ -27,7 +27,8 @@ public class PresenterFactoryPresenter {
 
         presenterSelectionView.setPresentersOption(ListOption.<Class<? extends Presenter<?>>>builder()
                 .addAll(presenterFactory.getBaseTypes())
-                .viewValueChangeCallback(basePresenterType -> {
+                .displayNameMapper(Class::getSimpleName)
+                .addViewValueChangeCallback(basePresenterType -> {
                     Presenter<?> presenter = presenterFactory.make(basePresenterType);
                     presenter.createAndSetView(viewFactory);
                     emitPresenterChanged(presenter);

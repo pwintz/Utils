@@ -6,9 +6,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import paul.wintz.utils.color.ColorUtils;
-
-import java.awt.*;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -23,7 +20,7 @@ public class ColorOptionTest {
 
     @Before
     public void setUp() throws Exception {
-        builder.viewValueChangeCallback(changeCallback);
+        builder.addViewValueChangeCallback(changeCallback);
     }
 
     @Test

@@ -20,7 +20,7 @@ public class FileOptionTest {
 
     @Before
     public void setUp() throws Exception {
-        builder.viewValueChangeCallback(changeCallback);
+        builder.addViewValueChangeCallback(changeCallback);
     }
 
     @Test

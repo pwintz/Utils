@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BooleanOptionTest {
@@ -19,7 +18,7 @@ public class BooleanOptionTest {
 
     @Before
     public void setUp() throws Exception {
-        builder.viewValueChangeCallback(changeCallback);
+        builder.addViewValueChangeCallback(changeCallback);
     }
 
     @Test

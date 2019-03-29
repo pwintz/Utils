@@ -3,12 +3,14 @@ package paul.wintz.uioptiontypes.values;
 import com.google.common.collect.ImmutableList;
 import paul.wintz.utils.logging.Lg;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 public class ValueOption<T> {
     @SuppressWarnings("unused") private static final String TAG = Lg.makeTAG(ValueOption.class);
@@ -28,14 +30,21 @@ public class ValueOption<T> {
         boolean isValid();
     }
 
-    public T value;
-    public final ValueChangeCallback<T> viewValueChangeCallback;
-    //public final ValueChangeCallback<T> modelValueChangeCallback;
+    private T value;
+    private final Set<ValueChangeCallback<T>> viewValueChangeCallback = new HashSet<>();
     private final ImmutableList<ValueValidator<T>> valueValueValidator;
     private final ImmutableList<StateValidator> stateValidators;
 
-    public T getValue() {
-        return value;
+    protected ValueOption(Builder<T, ?> builder) {
+        builder.checkValue(builder.initial, "initial");
+        viewValueChangeCallback.addAll(builder.viewValueChangeCallback);
+        builder.viewValueChangeCallback.clear();
+        valueValueValidator = ImmutableList.copyOf(builder.valueValidators);
+        stateValidators = ImmutableList.copyOf(builder.stateValidators);
+        if(builder.callbackOnInitialization){
+            emitViewValueChanged(builder.initial);
+        }
+        this.value = checkNotNull(builder.initial);
     }
 
     /**
@@ -44,58 +53,56 @@ public class ValueOption<T> {
      * @return true if the change is legal, false otherwise. If the newValue equals the old value,
      * and the change is otherwise legal, then true is returned.
      */
-    public boolean emitViewValueChanged(T newValue) {
+    public boolean emitViewValueChanged(@Nonnull T newValue) {
         boolean changeAllowed = isStateValid() && isValueValid(newValue);
-        if (changeAllowed && !newValue.equals(value)) {
-            value = newValue;
-            viewValueChangeCallback.callback(newValue);
+        if (changeAllowed && !newValue.equals(getValue())) {
+            this.value = newValue;
+            for(ValueChangeCallback<T> callback : viewValueChangeCallback){
+                callback.callback(newValue);
+            }
         }
         return changeAllowed;
     }
 
-    public final boolean isValueValid(T value) {
+    public void addViewValueChangeCallback(ValueChangeCallback<T> viewValueChangeCallback) {
+        this.viewValueChangeCallback.add(checkNotNull(viewValueChangeCallback));
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    final boolean isValueValid(T value) {
         return valueValueValidator.stream().allMatch(evaluator -> evaluator.isValid(value));
     }
 
-    public boolean isStateValid() {
+    boolean isStateValid() {
         return stateValidators.stream().allMatch(StateValidator::isValid);
-    }
-
-    protected ValueOption(Builder<T, ?> builder) {
-        builder.checkValue(builder.initial, "initial");
-        value = checkNotNull(builder.initial);
-        viewValueChangeCallback = checkNotNull(builder.viewValueChangeCallback);
-        //modelValueChangeCallback = checkNotNull(builder.modelValueChangeCallback);
-        valueValueValidator = ImmutableList.copyOf(builder.valueValidators);
-        stateValidators = ImmutableList.copyOf(builder.stateValidators);
     }
 
     @SuppressWarnings({"unchecked", "UnusedReturnValue"})
     protected static class Builder<T, B extends Builder> {
 
         protected T initial;
-        private final ValueChangeCallback<T> NULL_VALUE_CHANGE_CALLBACK = (pass) -> {};
+        private boolean callbackOnInitialization = false;
         private final List<ValueValidator<T>> valueValidators = new ArrayList<>();
         private final List<StateValidator> stateValidators = new ArrayList<>();
-        private ValueChangeCallback<T> viewValueChangeCallback = NULL_VALUE_CHANGE_CALLBACK;
-        //private ValueChangeCallback<T> modelValueChangeCallback = NULL_VALUE_CHANGE_CALLBACK;
+        private final Set<ValueChangeCallback<T>> viewValueChangeCallback = new HashSet<>();
 
         public B initial(T initial) {
             this.initial = checkNotNull(initial);
             return (B) this;
         }
 
-        public final B viewValueChangeCallback(ValueChangeCallback<T> viewValueChangeCallback) {
-            checkState(this.viewValueChangeCallback.equals(NULL_VALUE_CHANGE_CALLBACK), "viewValueChangeCallback was set twice");
-            this.viewValueChangeCallback = checkNotNull(viewValueChangeCallback);
+        public B addViewValueChangeCallback(ValueChangeCallback<T> viewValueChangeCallback) {
+            this.viewValueChangeCallback.add(checkNotNull(viewValueChangeCallback));
             return (B) this;
         }
 
-//        public B modelValueChangeCallback(ValueChangeCallback<T> modelValueChangeCallback) {
-//            checkState(this.modelValueChangeCallback.equals(NULL_VALUE_CHANGE_CALLBACK), "modelValueChangeCallback was set twice");
-//            this.modelValueChangeCallback = checkNotNull(modelValueChangeCallback);
-//            return (B) this;
-//        }
+        public B callbackOnInitialization(boolean callbackOnInitialization){
+            this.callbackOnInitialization = callbackOnInitialization;
+            return (B) this;
+        }
 
         public final B addValidityEvaluator(ValueValidator<T> valueValidator) {
             this.valueValidators.add(checkNotNull(valueValidator));
@@ -109,12 +116,28 @@ public class ValueOption<T> {
 
         protected final void checkValue(T value, String name) {
             for(ValueValidator<T> ve : valueValidators) {
-                checkArgument(ve.isValid(value), "%s value %s is invalid", name, initial);
+                checkArgument(ve.isValid(value), "%s value %s is invalid for %s", name, initial, this);
             }
         }
 
+        public int viewValueChangeCallbackCount() {
+            return viewValueChangeCallback.size();
+        }
+
+        public boolean isCallbackOnInitialization() {
+            return callbackOnInitialization;
+        }
+
+        public int valueValidatorsCount(){
+            return valueValidators.size();
+        }
+
+        public int stateValidatorsCount(){
+            return stateValidators.size();
+        }
+
         protected Builder() {
-            // Prevent instantiation
+            // Prevent external instantiation
         }
 
     }

@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -25,7 +24,7 @@ public class ListOptionTest {
 
     @Before
     public void setUp() throws Exception {
-        builder.viewValueChangeCallback(changeCallback);
+        builder.addViewValueChangeCallback(changeCallback);
     }
 
     @Test(expected = IllegalStateException.class)
