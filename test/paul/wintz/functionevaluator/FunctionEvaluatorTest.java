@@ -8,9 +8,9 @@ import static org.junit.Assert.assertEquals;
 
 public class FunctionEvaluatorTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = InvalidEquationException.class)
     public void throwsIfNoExpressionGiven() throws Exception {
-        FunctionEvaluator functionEvaluator = FunctionEvaluator.builder().build();
+        FunctionEvaluator.builder().build();
     }
 
     @Test
@@ -41,20 +41,13 @@ public class FunctionEvaluatorTest {
 
     @Test
     public void variableReturnsUpdatedValue() throws Exception {
-        DoubleSupplier variableValueSupplier = new DoubleSupplier() {
-            double value = 7.2;
-            @Override
-            public double getAsDouble() {
-                double returnValue = this.value;
-                value++;
-                return returnValue;
-            }
-        };
+        IncrementerDoubleSupplier variableValueSupplier = new IncrementerDoubleSupplier(7.2);
         FunctionEvaluator functionEvaluator = FunctionEvaluator.builder()
                 .addVariable("x", variableValueSupplier)
                 .setEquation("x")
                 .build();
         assertEquals(7.2, functionEvaluator.evaluate(), 0.0);
+        variableValueSupplier.increment();
         assertEquals(8.2, functionEvaluator.evaluate(), 0.0);
     }
 
@@ -78,5 +71,22 @@ public class FunctionEvaluatorTest {
                 .setEquation("R")
                 .build();
         System.out.println(functionEvaluator);
+    }
+
+    private static class IncrementerDoubleSupplier implements DoubleSupplier {
+        double value;
+
+        private IncrementerDoubleSupplier(double value) {
+            this.value = value;
+        }
+
+        public void increment() {
+            value++;
+        }
+
+        @Override
+        public double getAsDouble() {
+            return value;
+        }
     }
 }
