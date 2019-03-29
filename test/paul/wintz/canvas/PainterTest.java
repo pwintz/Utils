@@ -1,12 +1,9 @@
 package paul.wintz.canvas;
 
 import org.junit.Test;
-import paul.wintz.utils.color.ColorUtils;
 
-import java.awt.*;
-
-import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static paul.wintz.utils.color.ColorUtils.*;
 
 public class PainterTest {
@@ -84,7 +81,7 @@ public class PainterTest {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
-    public void toStringDoesNotChoke() {
+    public void toStringSmokeTest() {
         painter.toString();
         painter.setStroked(true).toString();
         painter.setFilled(false).toString();

@@ -1,13 +1,14 @@
 package paul.wintz.canvas;
 
+import com.google.common.collect.ImmutableList;
+import paul.wintz.utils.logging.Lg;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static paul.wintz.utils.logging.Lg.makeTAG;
-
-import java.util.*;
-
-import com.google.common.collect.ImmutableList;
-import paul.wintz.utils.color.ColorUtils;
-import paul.wintz.utils.logging.Lg;
 
 public class LayeredCanvas<L> {
     private static final String TAG = makeTAG(LayeredCanvas.class);
@@ -50,7 +51,6 @@ public class LayeredCanvas<L> {
         for (final Layer<L> layer : layers) {
             layer.setSize(width, height);
         }
-
     }
 
     public void setScaleToFit(float maxRadiusToFit) {
@@ -124,6 +124,10 @@ public class LayeredCanvas<L> {
     public void setPreserveGraph(boolean preserveGraph){
         Lg.v(TAG, "setPreserveGraph(%b)", preserveGraph);
         this.preserveGraph = preserveGraph;
+    }
+
+    public boolean getPreserveGraph() {
+        return preserveGraph;
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ColorUtils {
     public static final int CYAN = 0xff00ffff;
     public static final int BLUE = 0xff0000ff;
     public static final int BLACK = 0xff000000;
-    public static final int TRANSPARENT = 0x00000000;
+    public static final int TRANSPARENT = 0x00005000;
 
     private static final int BYTE_MASK = 0xff;
     private static final int RGB_MASK = 0xffffff;

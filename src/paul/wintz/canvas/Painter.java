@@ -1,15 +1,15 @@
 package paul.wintz.canvas;
 
-import java.util.Objects;
+import paul.wintz.utils.color.ColorUtils;
 
-import static java.lang.Math.max;
+import java.util.Objects;
 
 public final class Painter {
     private boolean isFilled = true;
-    private int fill;
-    private boolean isStroked;
-    private float strokeWeight;
-    private int stroke;
+    private int fill = ColorUtils.TRANSPARENT;
+    private boolean isStroked = false;
+    private float strokeWeight = 0.0f;
+    private int stroke = ColorUtils.TRANSPARENT;
 
     public final Painter setStroke(int color) {
         this.stroke = color;

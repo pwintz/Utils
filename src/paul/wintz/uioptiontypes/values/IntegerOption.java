@@ -3,7 +3,7 @@ package paul.wintz.uioptiontypes.values;
 public class IntegerOption extends NumberOption<Integer> {
     private final long numberOfValuesInRange;
 
-    public IntegerOption(Builder builder) {
+    private IntegerOption(Builder builder) {
         super(builder);
         numberOfValuesInRange = (long) builder.max - (long) builder.min + 1L;
     }
@@ -50,6 +50,6 @@ public class IntegerOption extends NumberOption<Integer> {
 
     @Override
     public String toString() {
-        return String.format("IntegerOption{initial=%d, range=[%d, %d], increment=%d]}", value, min, max, increment);
+        return String.format("IntegerOption{initial=%d, range=[%d, %d], increment=%d]}", getValue(), min, max, increment);
     }
 }

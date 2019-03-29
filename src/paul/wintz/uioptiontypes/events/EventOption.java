@@ -33,7 +33,6 @@ public class EventOption {
     }
 
     public static class Builder {
-
         private Event event;
         private EventQueue eventQueue;
 

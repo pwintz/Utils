@@ -1,5 +1,6 @@
 package paul.wintz.utils;
 
+import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
@@ -8,7 +9,6 @@ import paul.wintz.utils.exceptions.UnhandledCaseException;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
-import java.util.Stack;
 
 import static com.google.common.base.Preconditions.*;
 import static java.lang.Double.isFinite;
@@ -77,6 +77,16 @@ public final class Utils {
         } while (!allowZeroValue && i == 0);
 
         return i;
+    }
+
+    public static int[] rangeNonZeroIntegerArray(int n, int start) {
+        Preconditions.checkArgument(n > 0);
+        Preconditions.checkArgument(start > 0);
+        int[] intRange = new int[n];
+        for(int i = 0; i < n; i++){
+            intRange[i] = i + start;
+        }
+        return intRange;
     }
 
     public static String getRandomHash() {

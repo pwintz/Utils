@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 public class ValueOption<T> {
-    private static final String TAG = Lg.makeTAG(ValueOption.class);
+    @SuppressWarnings("unused") private static final String TAG = Lg.makeTAG(ValueOption.class);
 
     @FunctionalInterface
     public interface ValueChangeCallback<T> {
