@@ -63,6 +63,15 @@ public class FunctionEvaluatorTest {
     }
 
     @Test
+    public void parenthesesNotNeededAfterVariableName() throws Exception {
+        FunctionEvaluator functionEvaluator = FunctionEvaluator.builder()
+                .addVariable("x", () -> 1)
+                .setEquation("x + x")
+                .build();
+        assertEquals(1+1, functionEvaluator.evaluate(), 0.0);
+    }
+
+    @Test
     public void toStringTest() throws Exception {
         FunctionEvaluator functionEvaluator = FunctionEvaluator.builder()
                 .addParameter("R", 12)
@@ -70,7 +79,7 @@ public class FunctionEvaluatorTest {
                 .addVariable("x", () -> 4.3)
                 .setEquation("R")
                 .build();
-        System.out.println(functionEvaluator);
+        System.out.println(functionEvaluator.toString());
     }
 
     private static class IncrementerDoubleSupplier implements DoubleSupplier {

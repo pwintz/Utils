@@ -68,6 +68,7 @@ public class FunctionEvaluator {
 
         public FunctionEvaluator build() throws InvalidEquationException {
             try {
+                expressionString = insertMissingParenthesesAfterVariables(expressionString);
                 ExpressionBuilder builder = new ExpressionBuilder(expressionString)
                         .variables(parameters.keySet());
 
@@ -81,6 +82,7 @@ public class FunctionEvaluator {
                         }
                     });
                 }
+
                 Expression expression = builder.build();
                 expression.setVariables(parameters);
 
@@ -95,6 +97,17 @@ public class FunctionEvaluator {
             } catch (Exception e) {
                 throw InvalidEquationException.construct(e, expressionString);
             }
+        }
+
+        private String insertMissingParenthesesAfterVariables(String expressionString) {
+            final String WORD_BOUNDARY = "\\b";
+            final String NO_PARENTHESES_PAIR = "(?!\\(\\))";
+            final String REGEX_TEMPLATE = WORD_BOUNDARY + "%s" + WORD_BOUNDARY + NO_PARENTHESES_PAIR;
+            for (String varName : variables.keySet()) {
+                String regex = String.format(REGEX_TEMPLATE, varName);
+                expressionString = expressionString.replaceAll(regex, varName + "()");
+            }
+            return expressionString;
         }
     }
 
