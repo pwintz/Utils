@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import net.objecthunter.exp4j.tokenizer.UnknownFunctionOrVariableException;
 import paul.wintz.utils.logging.Lg;
 
+import javax.annotation.Nullable;
 import java.util.EmptyStackException;
 
 public class InvalidEquationException extends Exception {
@@ -20,7 +21,8 @@ public class InvalidEquationException extends Exception {
         INVALID_NUMBER_OF_OPERANDS,
         EXTRA_OPENING_PARENTHESIS,
         EXTRA_CLOSING_PARENTHESIS,
-        ARITHMETIC_ERROR;
+        ARITHMETIC_ERROR,
+        INVALID_NUMBER_OF_FUNCTION_ARGUMENTS;
     }
 
     private InvalidEquationException(String expression, Reason reason, String message) {
@@ -39,31 +41,43 @@ public class InvalidEquationException extends Exception {
     }
 
     static InvalidEquationException construct(Exception e, String expressionString) {
-        Reason reason = null;
+        return new InvalidEquationException(expressionString, getReason(e), e.getMessage());
+    }
+
+    @Nullable
+    private static Reason getReason(Exception e) {
         if(e instanceof UnknownFunctionOrVariableException) {
-            reason = Reason.UNKNOWN_SYMBOL;
-        } else if (e instanceof NumberFormatException) {
-            reason = Reason.BAD_NUMBER_FORMAT;
-        } else if (e instanceof EmptyStackException){
-            reason = Reason.EXTRA_CLOSING_PARENTHESIS;
-        } else if (e instanceof ArithmeticException) {
-            reason = Reason.ARITHMETIC_ERROR;
-        } else if (e instanceof IllegalArgumentException) {
+            return Reason.UNKNOWN_SYMBOL;
+        }
+        if (e instanceof NumberFormatException) {
+            return Reason.BAD_NUMBER_FORMAT;
+        }
+        if (e instanceof EmptyStackException){
+            return Reason.EXTRA_CLOSING_PARENTHESIS;
+        }
+        if (e instanceof ArithmeticException) {
+            return Reason.ARITHMETIC_ERROR;
+        }
+        if (e instanceof IllegalArgumentException) {
             String s = e.getMessage();
             if ("Expression can not be empty".equals(s)) {
-                reason = Reason.EMPTY_EXPRESSION;
-            } else if ("Operator is unknown for token.".equals(s)) {
-                reason = Reason.UNKNOWN_SYMBOL;
-            } else if (s.equals("Mismatched parentheses detected. Please check the expression")) {
-                reason = Reason.EXTRA_OPENING_PARENTHESIS;
-            } else if (s.contains("Invalid number of operands available for")) {
-                reason = Reason.INVALID_NUMBER_OF_OPERANDS;
-            } else {
-                Lg.w(TAG, "Unrecognized exception" + e);
+                return Reason.EMPTY_EXPRESSION;
             }
-        } else {
-            Lg.w(TAG, "Unrecognized exception" + e);
+            if ("Operator is unknown for token.".equals(s)) {
+                return Reason.UNKNOWN_SYMBOL;
+            }
+            if (s.equals("Mismatched parentheses detected. Please check the expression")) {
+                return Reason.EXTRA_OPENING_PARENTHESIS;
+            }
+            if (s.contains("Invalid number of operands available for")) {
+                return Reason.INVALID_NUMBER_OF_OPERANDS;
+            }
+            if ("Invalid number of items on the output queue. Might be caused by an invalid number of arguments for a function.".equals(s)) {
+                return Reason.INVALID_NUMBER_OF_FUNCTION_ARGUMENTS;
+            }
         }
-        return new InvalidEquationException(expressionString, reason, e.getMessage());
+
+        Lg.w(TAG, "Unrecognized exception", e);
+        return null;
     }
 }

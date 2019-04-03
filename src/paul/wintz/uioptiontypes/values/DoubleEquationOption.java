@@ -18,6 +18,7 @@ public class DoubleEquationOption extends ValueOption<EquationDoubleSupplierPair
     // with the given function equation and a standard set of variables that are specified in setValuesSupplier().
     private final FunctionEvaluator.Builder functionEvaluatorBuilder;
 
+    @SuppressWarnings("WeakerAccess")
     protected DoubleEquationOption(Builder builder) {
         super(builder);
         this.functionEvaluatorBuilder = builder.functionEvaluatorBuilder;
@@ -53,6 +54,7 @@ public class DoubleEquationOption extends ValueOption<EquationDoubleSupplierPair
                 initial = new EquationDoubleSupplierPair(initialEquation, functionEvaluator::evaluate);
             } catch (InvalidEquationException e) {
                 Lg.e(TAG, "Initial equation value is invalid", e);
+                throw new RuntimeException(e);
             }
             return new DoubleEquationOption(this);
         }

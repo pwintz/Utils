@@ -59,6 +59,14 @@ public class TypeFactory {
             return this;
         }
 
+        public Builder onVoidSelectedAction(Runnable onVoidSelected){
+            putType(Void.class, () -> {
+                onVoidSelected.run();
+                return null;
+            });
+            return this;
+        }
+
         public TypeFactory build(){
             return new TypeFactory(this);
         }

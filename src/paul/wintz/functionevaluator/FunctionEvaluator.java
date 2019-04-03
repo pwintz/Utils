@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Takes a string expression and a set of variables, or variable getters, and returns a value
  */
@@ -71,7 +73,7 @@ public class FunctionEvaluator {
 
                 // The variables are passed as functions that return its current value.
                 for(String variableName : this.variables.keySet()){
-                    final DoubleSupplier variableSupplier = variables.get(variableName);
+                    final DoubleSupplier variableSupplier = checkNotNull(variables.get(variableName), "The variable named '%s' was null", variableName);
                     builder.function(new Function(variableName, 0) {
                         @Override
                         public double apply(double... doubles) {

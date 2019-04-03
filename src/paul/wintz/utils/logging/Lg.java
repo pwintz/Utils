@@ -1,13 +1,13 @@
 package paul.wintz.utils.logging;
 
-import static com.google.common.base.Preconditions.*;
-
 import javax.annotation.Nonnull;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class Lg {
 
     private static Logger logger;
-    
+
     static {
         setupDefaultLogger();
     }
@@ -66,6 +66,10 @@ public final class Lg {
 
     public static void e(String tag, String message){
         logger.logError(tag, message);
+    }
+
+    public static void e(String tag, Throwable error){
+        logger.logError(tag, "", error);
     }
 
     public static void e(String tag, String message, Throwable t){
