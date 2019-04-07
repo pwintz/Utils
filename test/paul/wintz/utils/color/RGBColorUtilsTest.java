@@ -1,11 +1,17 @@
 package paul.wintz.utils.color;
 
-import java.awt.Color;
+import org.junit.Test;
+import paul.wintz.utils.logging.Lg;
+
+import java.awt.*;
 import java.util.Random;
 
-import org.junit.Test;
-
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static paul.wintz.testutils.ColorMatcher.*;
+import static paul.wintz.utils.color.ColorUtils.*;
 
 // TODO: Move to tests/
 public class RGBColorUtilsTest {
@@ -26,6 +32,34 @@ public class RGBColorUtilsTest {
     }
 
     @Test
+    public void rgbTestUsingMatchers() {
+        assertThat(rgb(0, 0, 0), isBlack());
+        assertThat(rgb(255, 255, 255), isWhite());
+        assertThat(rgb(255, 0, 0), isRed());
+        assertThat(rgb(0, 255, 0), isGreen());
+        assertThat(rgb(0, 0, 255), isBlue());
+    }
+
+    @Test
+    public void testRgbaProblemChild() {
+        // The method rgba() with double-valued parameters is displaying as white
+        // in the processing canvas for these input parameters.
+        int hsba = hsba(0.66666, 1.0, 1.0, 0.0);
+        Lg.v("hsba", ColorUtils.toString(hsba));
+        assertThat(hsba, isFullyTransparent());
+
+        int rgb = rgb(0, 0, 255);
+        Lg.v("rgb", ColorUtils.toString(rgb));
+        int rgba = rgba(rgb, 0);
+        Lg.v("rgba", ColorUtils.toString(rgba));
+        assertThat(rgba, isFullyTransparent());
+
+        // We found that 0x0000FF is displayed as white instead of fully transparent,
+        // so we hard-coded that any fully transparent color returns TRANSPARENT.
+        assertThat(rgba(0x0000FF, 0), is(equalTo(TRANSPARENT)));
+    }
+
+    @Test
     public final void testRgba() {
         verifyRgb(0, 0, 0, 0);
         verifyRgb(255, 0, 0, 255);
@@ -37,15 +71,13 @@ public class RGBColorUtilsTest {
 
     @Test
     public final void testRgbaIntInt() {
-
-        verifyRgbaIntInt(0x00000000, 0, 0);
+        verifyRgbaIntInt(TRANSPARENT, 0, 0);
         verifyRgbaIntInt(0xffff0000, 0xff0000, 255);
         verifyRgbaIntInt(0xffffff00, 0xffff00, Integer.MAX_VALUE);
-        verifyRgbaIntInt(0x00ffffff, 0xffffff, Integer.MIN_VALUE);
+        verifyRgbaIntInt(TRANSPARENT, 0xffffff, Integer.MIN_VALUE);
         verifyRgbaIntInt(0x04000000, 0x000000, 4);
-        verifyRgbaIntInt(0x0fffffff, 0xffffff, 15);
+        verifyRgbaIntInt(0x0fffffff, 0xffffff, 0x0F);
     }
-
 
     @Test
     public final void testGrayInt() {
@@ -87,7 +119,7 @@ public class RGBColorUtilsTest {
     }
 
     private void verifyRgbaIntInt(int expected, int rgb, int a) {
-        assertEquals(expected, ColorUtils.rgba(rgb, a));
+        assertEquals(expected, rgba(rgb, a));
     }
 
     private void verifyRgb(int r, int g, int b) {
@@ -97,7 +129,7 @@ public class RGBColorUtilsTest {
     private void verifyRgb(int r, int g, int b, int alpha) {
         final String expected = rgbaToHexString(r, g, b, alpha);
 
-        assertEquals(expected, toStandardString(ColorUtils.rgba(r, g, b, alpha)));
+        assertEquals(expected, toStandardString(rgba(r, g, b, alpha)));
     }
 
     private void verifyGray(int gray) {
@@ -141,7 +173,7 @@ public class RGBColorUtilsTest {
     @Test
     public final void testRed() {
         for (int red = 0; red < 256; red++) {
-            final int rgb = ColorUtils.rgba(red, random.nextInt(255), random.nextInt(255), random.nextInt(255));
+            final int rgb = rgba(red, random.nextInt(255), random.nextInt(255), random.nextInt(255));
             assertEquals(red, ColorUtils.red(rgb));
         }
     }
@@ -149,7 +181,7 @@ public class RGBColorUtilsTest {
     @Test
     public final void testGreen() {
         for (int green = 0; green < 256; green++) {
-            final int rgb = ColorUtils.rgba(random.nextInt(255), green, random.nextInt(255), random.nextInt(255));
+            final int rgb = rgba(random.nextInt(255), green, random.nextInt(255), random.nextInt(255));
             assertEquals(green, ColorUtils.green(rgb));
         }
     }
@@ -157,7 +189,7 @@ public class RGBColorUtilsTest {
     @Test
     public final void testBlue() {
         for (int blue = 0; blue < 256; blue++) {
-            final int rgb = ColorUtils.rgba(random.nextInt(255), random.nextInt(255), blue, random.nextInt(255));
+            final int rgb = rgba(random.nextInt(255), random.nextInt(255), blue, random.nextInt(255));
             assertEquals(blue, ColorUtils.blue(rgb));
         }
     }
@@ -165,7 +197,7 @@ public class RGBColorUtilsTest {
     @Test
     public final void testAlpha() {
         for (int alpha = 0; alpha < 256; alpha++) {
-            final int rgb = ColorUtils.rgba(random.nextInt(255), random.nextInt(255), random.nextInt(255), alpha);
+            final int rgb = rgba(random.nextInt(255), random.nextInt(255), random.nextInt(255), alpha);
             assertEquals(alpha, ColorUtils.alpha(rgb));
         }
     }

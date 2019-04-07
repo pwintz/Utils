@@ -10,7 +10,6 @@ import paul.wintz.utils.exceptions.UnimplementedMethodException;
  */
 
 public class ColorUtils {
-
     private static final int SCALE = 255;
     private static final int ALPHA_BIT_SHIFT = 24;
 
@@ -24,6 +23,11 @@ public class ColorUtils {
     public static final int BLACK = 0xff000000;
     public static final int TRANSPARENT = 0x00005000;
 
+    // IMPORTANT HUES
+    static final double RED_HUE = 0.0;
+    static final double GREEN_HUE = 0.333333333;
+    static final double BLUE_HUE = 0.666666667;
+
     private static final int BYTE_MASK = 0xff;
     private static final int RGB_MASK = 0xffffff;
     private static final int RED_BIT_SHIFT = 16;
@@ -34,12 +38,11 @@ public class ColorUtils {
         // Do not instantiate.
     }
 
-    private static int hsb(final float hue, final float saturation, final float brightness) {
-        return java.awt.Color.HSBtoRGB(hue, saturation, brightness);
-    }
-
-    public static int hsba(final float hue, final float sat, final float black, final int alpha) {
-        return ColorUtils.rgba(hsb(hue, sat, black), alpha);
+    private static int hsb(final double hue, final double saturation, final double brightness) {
+        return java.awt.Color.HSBtoRGB(
+                clipBetween0and1AsFloat(hue),
+                clipBetween0and1AsFloat(saturation),
+                clipBetween0and1AsFloat(brightness));
     }
 
     public static int hsba(final double hue, final double sat, final double black, final double alpha) {
@@ -71,10 +74,14 @@ public class ColorUtils {
     }
 
     public static int rgba(final double red, final double green, final double blue, final double alpha){
+        int alphaInt = clipBetween0and255((int) (255 * alpha)) << ALPHA_BIT_SHIFT;
+        if(alphaInt == 0) {
+            return TRANSPARENT;
+        }
         return (clipBetween0and255((int)(255 * red)) << RED_BIT_SHIFT)
                 + (clipBetween0and255((int)(255 * green)) << GREEN_BIT_SHIFT)
                 + (clipBetween0and255((int)(255 * blue)) << BLUE_BIT_SHIFT)
-                + (clipBetween0and255((int)(255 * alpha)) << ALPHA_BIT_SHIFT);
+                + alphaInt;
     }
 
     public static int rgba(final int red, final int green, final int blue, final int alpha){
@@ -85,7 +92,13 @@ public class ColorUtils {
     }
 
     public static int rgba(int rgb, int alpha) {
-        return (rgb & RGB_MASK) + (clipBetween0and255(alpha) << ALPHA_BIT_SHIFT);
+        int alphaInt = clipBetween0and255(alpha);
+        if(alphaInt == 0) {
+            // This is necessary to prevent a bug (possibly in the Processing library)
+            // that displays some fully transparent colors (e.g. 0x0000FF) as white.
+            return TRANSPARENT;
+        }
+        return (rgb & RGB_MASK) + (alphaInt << ALPHA_BIT_SHIFT);
     }
 
     public static int gray(final int gray) {
@@ -124,12 +137,22 @@ public class ColorUtils {
             return 0;
         else
             return i;
+    }
 
+    private static float clipBetween0and1AsFloat(double i) {
+        if (i > 1.0)
+            return 1.0f;
+        else if (i < 0)
+            return 0.0f;
+        else
+            return (float) i;
     }
 
     public static String toString(int color) {
         String format = String.format("%08X", color);
-        if(format.startsWith("FlkjF")) format = format.substring(2);
+        if(format.startsWith("FF")) {
+            format = format.substring(2);
+        }
         return "#" + format;
     }
 }
