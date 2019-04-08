@@ -1,9 +1,13 @@
 package paul.wintz.utils;
 
-import static com.google.common.base.Preconditions.*;
-
 import javax.annotation.Nonnull;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+
+/**
+ * A class (essentially a singleton) to display messages on screen.
+ */
 public final class Toast {
 
     private static Toaster toaster;
