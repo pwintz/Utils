@@ -1,20 +1,36 @@
 package paul.wintz.math;
 
-import static org.apache.commons.math3.util.ArithmeticUtils.gcd;
+import org.junit.Test;
+import paul.wintz.utils.Utils;
 
 import java.util.Random;
 
-import org.junit.Test;
-
+import static org.apache.commons.math3.util.ArithmeticUtils.gcd;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import paul.wintz.math.Fraction;
-import paul.wintz.utils.Utils;
 
 public class FractionTest {
     private static final int RANDOM_RANGE = 100;
     Random rand = new Random();
+
+    @Test (expected = Fraction.ZeroDenominatorException.class)
+    public void throwsIfDenominatorIsZero() {
+        new Fraction(1, 0, true);
+    }
+
+    @Test (expected = Fraction.ZeroDenominatorException.class)
+    public void throwsIfDenominatorSetToZero() {
+        Fraction fraction = new Fraction(5);
+        fraction.setDenominator(0);
+    }
+
+    @Test
+    public void isMultiplicativeIdentity() {
+        assertTrue(new Fraction(4, 4, false).isMultiplicativeIdentity());
+        assertTrue(new Fraction(1, 1, false).isMultiplicativeIdentity());
+        assertFalse(new Fraction(1, 4, false).isMultiplicativeIdentity());
+    }
 
     @Test
     public void testReducedFractions() {

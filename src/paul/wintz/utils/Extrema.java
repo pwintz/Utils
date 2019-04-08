@@ -1,18 +1,17 @@
 package paul.wintz.utils;
 
+/**
+ * This class is NOT thread safe.
+ */
 public class Extrema {
     private double min = Double.MAX_VALUE;
     private double max = -Double.MAX_VALUE;
 
-    public void update(final double value) {
-        if (value > max)
-            max = value;
-        if (value < min)
-            min = value;
-    }
-
-    public double normalize(final double value) {
-        return (value - min) / (max - min);
+    public void update(final double measuredValue) {
+        if (measuredValue > max)
+            max = measuredValue;
+        if (measuredValue < min)
+            min = measuredValue;
     }
 
     public void clear() {

@@ -1,8 +1,8 @@
 package paul.wintz.utils;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class SequenceUtils {
 
@@ -17,16 +17,12 @@ public class SequenceUtils {
 
     public static boolean doLengthsMatch(Object... arrays){
         final int length = SequenceUtils.length(arrays[0]);
-    
+
         for(final Object a : arrays){
             if(length != SequenceUtils.length(a)) return false;
         }
-    
-        return true;
-    }
 
-    public static void assertLengthsMatch(Object... arrays){
-        checkArgument(doLengthsMatch(arrays), "The length of the arrays do not match");
+        return true;
     }
 
     public static int[] toIntArray(String[] strings) {
@@ -44,7 +40,7 @@ public class SequenceUtils {
         }
         return booleans;
     }
-    
+
     private static int length(Object array){
         return java.lang.reflect.Array.getLength(array);
     }

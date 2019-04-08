@@ -1,12 +1,11 @@
 package paul.wintz.math;
 
-import java.util.Random;
-
 import org.apache.commons.math3.fraction.BigFraction;
 import org.apache.commons.math3.util.ArithmeticUtils;
-
 import paul.wintz.utils.Utils;
 import paul.wintz.utils.exceptions.UnimplementedMethodException;
+
+import java.util.Random;
 
 /**
  * There are two modes, reduced and non-reduced.</br>
@@ -27,6 +26,8 @@ public class Fraction implements Cloneable {
     private static final Random random = new Random();
     private static final int MAX_DENOMINATOR = 300;
     private int numerator;
+
+    // denominator cannot be set to zero
     private int denominator;
 
     /**
@@ -36,8 +37,9 @@ public class Fraction implements Cloneable {
      *            negative, then the negative sign will be put in the numerator.
      */
     public Fraction(int numerator, int denominator, boolean makeReducedFraction) {
-        if (denominator == 0)
+        if (denominator == 0) {
             throw new ZeroDenominatorException();
+        }
 
         if (makeReducedFraction) {
             final int gcd = ArithmeticUtils.gcd(numerator, denominator);
@@ -79,10 +81,6 @@ public class Fraction implements Cloneable {
         return numerator == denominator && denominator != 0;
     }
 
-    public boolean isZeroDenominator() {
-        return denominator == 0;
-    }
-
     public int getNumerator() {
         return numerator;
     }
@@ -122,7 +120,7 @@ public class Fraction implements Cloneable {
         int num;
         int den;
         do {
-            num = random.nextInt(maxDen);
+            num = random.nextInt(maxNum);
             den = random.nextInt(maxDen);
         } while (den == 0 || num == den);
 
@@ -275,7 +273,7 @@ public class Fraction implements Cloneable {
     }
 
     @SuppressWarnings("serial")
-    private class ZeroDenominatorException extends ArithmeticException {
+    class ZeroDenominatorException extends ArithmeticException {
         private ZeroDenominatorException() {
             super(String.format("Denominator is zero in the fraction: %s", Fraction.this.toString()));
         }
