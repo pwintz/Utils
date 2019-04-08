@@ -29,7 +29,11 @@ public class FunctionEvaluator {
     }
 
     public double evaluate() {
-        return expression.evaluate();
+        try {
+            return expression.evaluate();
+        } catch (ArithmeticException e){
+            return Double.NaN; // If there happens to be an error, we'll just
+        }
     }
 
     @Override
@@ -92,6 +96,8 @@ public class FunctionEvaluator {
                         .add("parameters", parameters.keySet())
                         .add("variables", variables.keySet())
                         .toString();
+
+
                 functionEvaluator.evaluate(); // Make sure it works!
                 return functionEvaluator;
             } catch (Exception e) {
