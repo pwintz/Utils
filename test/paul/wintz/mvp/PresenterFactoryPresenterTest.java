@@ -3,35 +3,36 @@ package paul.wintz.mvp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import paul.wintz.typefactory.ClassNotSupportedException;
 import paul.wintz.typefactory.TypeFactory;
 import paul.wintz.uioptiontypes.values.ListOption;
 
-import static org.mockito.Matchers.isA;
-import static org.mockito.Matchers.isNull;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.isA;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PresenterFactoryPresenterTest {
 
     PresenterFactoryPresenter factoryPresenter;
-    @Mock PresenterFactoryPresenter.ValueChangedListener presenterChangeListener;
-    FakePresenterSelectionView presenterSelectionView = new FakePresenterSelectionView();
+    @Spy PresenterFactoryPresenter.ValueChangedListener<RequiredSupertype> presenterChangeListener;
+    MockView presenterSelectionView = new MockView();
 
     @Before
     public void setup() {
-        factoryPresenter = PresenterFactoryPresenter.builder()
+        factoryPresenter = PresenterFactoryPresenter.builder(RequiredSupertype.class)
                 .setPresenterSelectionView(presenterSelectionView)
                 .setPresenterChangedListener(presenterChangeListener)
-                .addPresenter(PresenterA.class, PresenterA.View.class, PresenterA::new)
+                .addPresenter(ValidPresenter.class, ValidPresenter.View.class, ValidPresenter::new)
+                .addPresenter(AnotherValidPresenter.class, AnotherValidPresenter.View.class, AnotherValidPresenter::new)
                 .build();
     }
 
-    @Test (expected = RuntimeException.class)
+    @Test (expected = ClassNotSupportedException.class)
     public void builderWillNotAddPresenterIfViewFactoryCannotCreateView() {
-        PresenterFactoryPresenter.builder()
+        PresenterFactoryPresenter.builder(Object.class)
                 .setPresenterSelectionView(presenterSelectionView)
                 .addPresenter(
                         PresenterNotInViewFactory.class, PresenterNotInViewFactory.View.class,
@@ -39,19 +40,32 @@ public class PresenterFactoryPresenterTest {
                 .build();
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void cannotAddPresenterIfDoesNotExtendRequiredSupertype() {
+        PresenterFactoryPresenter.builder(RequiredSupertype.class)
+                .setPresenterSelectionView(presenterSelectionView)
+                .addPresenter(
+                        PresenterWithoutRequiredSupertype.class, PresenterWithoutRequiredSupertype.View.class,
+                        PresenterWithoutRequiredSupertype::new)
+                .build();
+    }
+
     @Test
     public void whenAPresenterIsSelectedListenerIsNotified() throws Exception {
-        presenterSelectionView.emitPresenterSelected(PresenterA.class);
+        presenterSelectionView.presentersListOption.emitViewValueChanged(AnotherValidPresenter.class);
 
-        verify(presenterChangeListener).notify(isNull(Presenter.class), isA(PresenterA.class));
+        verify(presenterChangeListener).notify(isA(AnotherValidPresenter.class));
     }
 
-    @Test (expected = ClassNotSupportedException.class)
+    @Test
     public void noCallbackWhenAnUnrecognizedPresenterIsSelected() throws Exception {
-        presenterSelectionView.emitPresenterSelected(UnrecognizedPresenter.class);
+        assertFalse(presenterSelectionView.presentersListOption.emitViewValueChanged(UnrecognizedPresenter.class));
     }
 
-    static class PresenterA implements Presenter<PresenterA.View> {
+    interface RequiredSupertype {
+    }
+
+    static class ValidPresenter implements Presenter<ValidPresenter.View>, RequiredSupertype {
 
         @Override
         public Class<View> getViewClass() {
@@ -59,11 +73,35 @@ public class PresenterFactoryPresenterTest {
         }
 
         @Override
-        public void setView(View view) {
+        public void setView(View view) {}
+
+        static class View {}
+    }
+
+    static class AnotherValidPresenter implements Presenter<AnotherValidPresenter.View>, RequiredSupertype {
+
+        @Override
+        public Class<View> getViewClass() {
+            return View.class;
         }
 
-        static class View {
+        @Override
+        public void setView(View view) {}
+
+        static class View {}
+    }
+
+    static class PresenterWithoutRequiredSupertype implements Presenter<PresenterWithoutRequiredSupertype.View> {
+
+        @Override
+        public Class<View> getViewClass() {
+            return View.class;
         }
+
+        @Override
+        public void setView(View view) {}
+
+        static class View {}
     }
 
     static class PresenterNotInViewFactory implements Presenter<PresenterNotInViewFactory.View> {
@@ -74,10 +112,9 @@ public class PresenterFactoryPresenterTest {
         }
 
         @Override
-        public void setView(View view) {
-        }
+        public void setView(View view) {}
 
-        static class View {}
+        interface View {}
     }
 
     static class UnrecognizedPresenter implements Presenter<UnrecognizedPresenter.View> {
@@ -88,32 +125,27 @@ public class PresenterFactoryPresenterTest {
         }
 
         @Override
-        public void setView(View view) {
-        }
+        public void setView(View view) {}
 
-        static class View {
-        }
+        interface View {}
     }
 
-    private static class FakePresenterSelectionView implements PresenterFactoryPresenter.PresenterSelectionView {
-
-        private ListOption<Class<? extends Presenter<?>>> presenterChoices;
-        TypeFactory viewFactory = TypeFactory.builder()
-                .putType(PresenterA.View.class, PresenterA.View::new)
-                .build();
+    private static class MockView implements PresenterFactoryPresenter.PresenterSelectionView {
+        private ListOption<Class<? extends Presenter<?>>> presentersListOption;
 
         @Override
         public TypeFactory getViewFactory() {
-            return viewFactory;
+            return TypeFactory.builder()
+                    .putType(ValidPresenter.View.class, ValidPresenter.View::new)
+                    .putType(AnotherValidPresenter.View.class, AnotherValidPresenter.View::new)
+                    .putType(PresenterWithoutRequiredSupertype.View.class, PresenterWithoutRequiredSupertype.View::new)
+                    .build();
         }
 
         @Override
         public void setPresentersOption(ListOption<Class<? extends Presenter<?>>> presenterChoices) {
-            this.presenterChoices = presenterChoices;
+            this.presentersListOption = presenterChoices;
         }
 
-        public void emitPresenterSelected(Class<? extends Presenter<?>> presenterClass) {
-            presenterChoices.emitViewValueChanged(presenterClass);
-        }
     }
 }

@@ -6,10 +6,11 @@ import paul.wintz.typefactory.TypeFactory;
 import paul.wintz.uioptiontypes.values.ListOption;
 import paul.wintz.utils.logging.Lg;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 // A presenter that a supports selecting between a list of presenters.
-public class PresenterFactoryPresenter {
+public class PresenterFactoryPresenter<T> {
     private static final String TAG = Lg.makeTAG(PresenterFactoryPresenter.class);
 
     // PresenterSelectionView is an interface that takes a list of presenters then,
@@ -19,7 +20,7 @@ public class PresenterFactoryPresenter {
         void setPresentersOption(ListOption<Class<? extends Presenter<?>>> presenterChoices);
     }
 
-    private PresenterFactoryPresenter(Builder builder) {
+    private PresenterFactoryPresenter(Builder<T> builder) {
         FixedSuperTypeFactory<Presenter<?>> presenterFactory = builder.presenterFactoryBuilder.build();
         TypeFactory viewFactory = builder.viewFactory;
         PresenterSelectionView presenterSelectionView = builder.presenterSelectionView;
@@ -31,43 +32,51 @@ public class PresenterFactoryPresenter {
                 .addViewValueChangeCallback(basePresenterType -> {
                     Presenter<?> presenter = presenterFactory.make(basePresenterType);
                     presenter.createAndSetView(viewFactory);
-                    emitPresenterChanged(presenter);
+
+                    //noinspection unchecked - We check that every added Presenter class extends T.
+                    emitPresenterChanged((T) presenter);
                     Lg.i(TAG, "Presenter changed to " + basePresenterType.getSimpleName());
                 })
                 .build());
     }
 
-    public interface ValueChangedListener {
-        void notify(Presenter<?> oldPresenter, Presenter<?> newPresenter);
+    public interface ValueChangedListener<T> {
+        void notify(T newPresenter);
     }
 
-    private final ValueChangedListener onPresenterChangeListener;
-    private Presenter<?> currentPresenter = null;
-    private void emitPresenterChanged(Presenter<?> newPresenter) {
-        onPresenterChangeListener.notify(currentPresenter, newPresenter);
-        currentPresenter = newPresenter;
+    private final ValueChangedListener<T> onPresenterChangeListener;
+
+    private void emitPresenterChanged(T newPresenter) {
+        onPresenterChangeListener.notify(newPresenter);
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static <T> Builder<T> builder(Class<T> requiredSupertype) {
+        return new Builder<>(requiredSupertype);
     }
 
-    public static class Builder {
+    public static class Builder<T> {
+        private final Class<T> requiredSupertype;
         private PresenterSelectionView presenterSelectionView;
         private TypeFactory viewFactory;
         private FixedSuperTypeFactory.Builder<Presenter<?>> presenterFactoryBuilder = FixedSuperTypeFactory.builder();
-        private ValueChangedListener onPresenterChangeListener = (oldPresenter, newPresenter ) -> {};
+        private ValueChangedListener<T> onPresenterChangeListener = (newPresenter) -> {};
 
-        public Builder setPresenterSelectionView(PresenterSelectionView presenterSelectionView){
+        private Builder(Class<T> requiredSupertype) {
+            this.requiredSupertype = requiredSupertype;
+        }
+
+        public Builder<T> setPresenterSelectionView(PresenterSelectionView presenterSelectionView){
             this.presenterSelectionView = checkNotNull(presenterSelectionView, "presenterSelectionView was null");
             viewFactory = checkNotNull(presenterSelectionView.getViewFactory(),"viewFactory was null");
             return this;
         }
 
-        public <P extends Presenter<V>, V> Builder addPresenter(
+        public <P extends Presenter<V>, V> Builder<T> addPresenter(
                 Class<P> presenterClass, Class<V> viewClass, Instantiator<P> presenterInstantiator) {
             checkNotNull(viewFactory, "setPresenterSelectionView() must be called before addPresenter()");
             viewFactory.checkClassIsSupported(viewClass);
+
+            checkArgument(requiredSupertype.isAssignableFrom(presenterClass), "Presenter class must extend %s", requiredSupertype);
 
             presenterFactoryBuilder.putType(presenterClass, () -> {
                 P presenter = presenterInstantiator.instance();
@@ -78,18 +87,16 @@ public class PresenterFactoryPresenter {
             return this;
         }
 
-        public Builder setPresenterChangedListener(ValueChangedListener onPresenterChangeListener) {
+        public Builder<T> setPresenterChangedListener(ValueChangedListener<T> onPresenterChangeListener) {
             this.onPresenterChangeListener = checkNotNull(onPresenterChangeListener);
             return this;
         }
 
-        public PresenterFactoryPresenter build(){
+        public PresenterFactoryPresenter<T> build(){
             checkNotNull(presenterSelectionView);
             checkNotNull(viewFactory);
-            return new PresenterFactoryPresenter(this);
+            return new PresenterFactoryPresenter<>(this);
         }
-
-        private Builder() {}
 
     }
 
