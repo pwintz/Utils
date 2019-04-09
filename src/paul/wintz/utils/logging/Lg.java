@@ -68,6 +68,10 @@ public final class Lg {
         logger.logError(tag, message);
     }
 
+    public static void e(String tag, String format, Object... args){
+        logger.logError(tag, String.format(format, args));
+    }
+
     public static void e(String tag, Throwable error){
         logger.logError(tag, "", error);
     }
@@ -80,7 +84,7 @@ public final class Lg {
         return clazz.getSimpleName();
     }
 
-    public static synchronized void setupDefaultLogger(){
+    private static synchronized void setupDefaultLogger(){
         if(logger == null) {
             setLogger(new JavaStdOutLogger());
         }

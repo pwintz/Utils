@@ -3,7 +3,6 @@ package paul.wintz.math;
 import org.apache.commons.math3.fraction.BigFraction;
 import org.apache.commons.math3.util.ArithmeticUtils;
 import paul.wintz.utils.Utils;
-import paul.wintz.utils.exceptions.UnimplementedMethodException;
 
 import java.util.Random;
 
@@ -100,7 +99,7 @@ public class Fraction implements Cloneable {
     }
 
     public static Fraction add(Fraction a, Fraction b) {
-        throw new UnimplementedMethodException();
+        throw new UnsupportedOperationException();
         // Fraction result;
         //
         // int denominatorLCD = lcm(a.denominator, b.denominator);

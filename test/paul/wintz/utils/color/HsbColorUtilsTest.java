@@ -35,12 +35,21 @@ public class HsbColorUtilsTest {
     }
 
     @Test
-    public void hsbaArgumentsAreClipped() {
+    public void hsbaArgumentsAreClippedExceptHue() {
         // Red is at either hue = 0.0 or hue = 1.0.
-        assertThat(hsba(-0.1, 1.2, 1.1, 1.3), isRed());
-        assertThat(hsba(Double.MAX_VALUE, -Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE), isWhite());
-        assertThat(hsba(-Double.MAX_VALUE, Double.MAX_VALUE, -Double.MAX_VALUE, 1.0), isBlack());
+        assertThat(hsba(BLUE_HUE, 1.2, 1.1, 1.3), isBlue());
+        assertThat(hsba(0, -Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE), isWhite());
+        assertThat(hsba(1.0, Double.MAX_VALUE, -Double.MAX_VALUE, 1.0), isBlack());
         assertThat(hsba(1.0, 1.0, 1.0, -Double.MAX_VALUE), isFullyTransparent());
+    }
+
+    @Test
+    public void hueWraps() {
+        assertThat(hsba(BLUE_HUE, 1, 1, 1), isBlue());
+        assertThat(hsba(BLUE_HUE+1, 1, 1, 1), isBlue());
+        assertThat(hsba(BLUE_HUE-1, 1, 1, 1), isBlue());
+        assertThat(hsba(GREEN_HUE+100, 1, 1, 1), isGreen());
+        assertThat(hsba(GREEN_HUE-100, 1, 1, 1), isGreen());
     }
 
     @Test

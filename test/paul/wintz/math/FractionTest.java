@@ -74,7 +74,7 @@ public class FractionTest {
 
     @Test
     public void testFractionDouble() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             final int num = rand.nextInt(RANDOM_RANGE) + 1;
             final int den = rand.nextInt(RANDOM_RANGE) + 1;
 
@@ -132,7 +132,7 @@ public class FractionTest {
     @Test
     public void testConstructorUnreduced() {
 
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 100; i++) {
             final int n = Utils.randomInteger(-100, 100);
             final int d = Utils.randomNonZeroInteger(-100, 100);
             System.out.printf("%d / %d", n, d);

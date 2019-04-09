@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
-import paul.wintz.utils.exceptions.UnhandledCaseException;
 
 import java.io.File;
 import java.util.List;
@@ -208,7 +207,7 @@ public final class Utils {
                 return -cos(x);
             }
 
-            throw new UnhandledCaseException(this);
+            throw new UnsupportedOperationException(this.toString());
         }
 
         public TrigFunction derivativeFunction(int derivativeOrder) {

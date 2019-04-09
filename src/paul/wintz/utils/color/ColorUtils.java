@@ -1,6 +1,8 @@
 package paul.wintz.utils.color;
 
-import paul.wintz.utils.exceptions.UnimplementedMethodException;
+import paul.wintz.utils.Utils;
+
+import java.awt.Color;
 
 /**
  * Creates and evaluates colors. The format of the created ints are: [1 byte
@@ -39,8 +41,8 @@ public class ColorUtils {
     }
 
     private static int hsb(final double hue, final double saturation, final double brightness) {
-        return java.awt.Color.HSBtoRGB(
-                clipBetween0and1AsFloat(hue),
+        return Color.HSBtoRGB(
+                (float) Utils.modulus(hue, 1.0),
                 clipBetween0and1AsFloat(saturation),
                 clipBetween0and1AsFloat(brightness));
     }
@@ -51,19 +53,19 @@ public class ColorUtils {
     }
 
     public static int hue(int rgb) {
-        throw new UnimplementedMethodException();
+        throw new UnsupportedOperationException();
     }
 
     public static int saturation(int rgb) {
-        throw new UnimplementedMethodException();
+        throw new UnsupportedOperationException();
     }
 
     public static int brightness(int rgb) {
-        throw new UnimplementedMethodException();
+        throw new UnsupportedOperationException();
     }
 
     public static int lerpHsb(int color, int color2, float mixture) {
-        throw new UnimplementedMethodException();
+        throw new UnsupportedOperationException();
     }
 
     public static int rgb(final int red, final int green, final int blue){
@@ -111,7 +113,7 @@ public class ColorUtils {
 
     public static int lerpRgb(final int rgb1, final int rgb2, final int mix) {
 
-        throw new UnimplementedMethodException();
+        throw new UnsupportedOperationException();
     }
 
     public static int red(final int rgb) {

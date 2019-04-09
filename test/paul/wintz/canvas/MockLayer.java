@@ -1,16 +1,16 @@
 package paul.wintz.canvas;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static paul.wintz.utils.RegexUtils.INTEGER_REG_EX;
+import paul.wintz.math.Vector2D;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.regex.Pattern;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.junit.Assert.assertEquals;
-
-import paul.wintz.canvas.*;
-import paul.wintz.math.Vector2D;
-import paul.wintz.utils.exceptions.UnimplementedMethodException;
+import static paul.wintz.utils.RegexUtils.INTEGER_REG_EX;
 
 /**
  * This is a mock class to verify that calls are correctly made to Layers.
@@ -151,7 +151,7 @@ public class MockLayer extends Layer<Void> {
 	@Override
 	public void rectangle(float x, float y, float width, float height, Painter painter,
 			List<Transformation> transforms) {
-		throw new UnimplementedMethodException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class MockLayer extends Layer<Void> {
 	@Override
 	public void ellipse(float xCenter, float yCenter, float width, float height, Painter painter,
 			List<Transformation> transforms) {
-		throw new UnimplementedMethodException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public class MockLayer extends Layer<Void> {
 
 	@Override
 	public void drawPath(List<Vector2D> points, Painter painter, List<Transformation> transforms) {
-		throw new UnimplementedMethodException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -187,12 +187,12 @@ public class MockLayer extends Layer<Void> {
 
 	@Override
 	public void drawPolygon(List<Vector2D> points, Painter painter, List<Transformation> transforms) {
-		throw new UnimplementedMethodException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void drawText(String text, int x, int y) {
-		throw new UnimplementedMethodException();
+		throw new UnsupportedOperationException();
 	}
 
 }

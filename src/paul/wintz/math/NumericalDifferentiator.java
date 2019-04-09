@@ -2,7 +2,6 @@ package paul.wintz.math;
 
 import paul.wintz.math.tables.IndexBoundaryHandler;
 import paul.wintz.math.tables.IndexBoundaryHandler.BoundaryHandling;
-import paul.wintz.utils.exceptions.UnhandledCaseException;
 
 public final class NumericalDifferentiator {
     // See this page for details about numerical difference equations:
@@ -27,7 +26,7 @@ public final class NumericalDifferentiator {
         case FOURTH_ORDER:
             return finiteDifferenceFourthOrder(array.get(index-2), array.get(index-1), array.get(index+1), array.get(index+2), array.getDTime());
         default:
-            throw new UnhandledCaseException(derivativeFormula);
+            throw new UnsupportedOperationException(derivativeFormula.toString());
         }
     }
 
