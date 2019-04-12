@@ -47,7 +47,7 @@ public class EventOption {
         }
 
         public EventOption build() {
-            checkNotNull(event);
+            checkNotNull(event, "Event not set");
             return new EventOption(this);
         }
 

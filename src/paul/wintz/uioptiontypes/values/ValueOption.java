@@ -76,7 +76,7 @@ public class ValueOption<T> {
         return valueValueValidator.stream().allMatch(evaluator -> evaluator.isValid(value));
     }
 
-    boolean isStateValid() {
+    final boolean isStateValid() {
         return stateValidators.stream().allMatch(StateValidator::isValid);
     }
 

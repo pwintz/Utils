@@ -1,5 +1,6 @@
 package paul.wintz.utils;
 
+import paul.wintz.stringids.StringId;
 import paul.wintz.utils.logging.Lg;
 
 import javax.annotation.Nonnull;
@@ -16,7 +17,27 @@ public final class Toast {
     private static Toaster toaster;
 
     public interface Toaster {
+        /**
+         * @param message a string message to display to screen
+         */
         void show(String message);
+
+        /**
+         * @param messageId an ID that corresponds to a message string.
+         */
+        void show(StringId messageId);
+
+        /**
+         * @param messageFormat a format string.
+         * @param args a mixture of StringIds and other objects (including boxed primitives)
+         */
+        void show(String messageFormat, Object... args);
+
+        /**
+         * @param messageFormatId an ID that corresponds to a format string.
+         * @param args a mixture of StringIds and other objects (including boxed primitives)
+         */
+        void show(StringId messageFormatId, Object... args);
     }
 
     public static void setToaster(@Nonnull Toaster toaster){
@@ -30,6 +51,30 @@ public final class Toast {
             return;
         }
         toaster.show(message);
+    }
+
+    public static void show(String message, Object... args){
+        if(toaster == null){
+            Lg.i(TAG, "Toaster not set. Cannot display message: %s", message);
+            return;
+        }
+        toaster.show(message, args);
+    }
+
+    public static void show(StringId messageId){
+        if(toaster == null){
+            Lg.i(TAG, "Toaster not set. Cannot display messageId: %s", messageId);
+            return;
+        }
+        toaster.show(messageId);
+    }
+
+    public static void show(StringId messageId, Object... args){
+        if(toaster == null){
+            Lg.i(TAG, "Toaster not set. Cannot display messageId: %s with args: %s", messageId, args);
+            return;
+        }
+        toaster.show(messageId, args);
     }
 
     private Toast() {
