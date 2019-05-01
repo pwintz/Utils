@@ -3,6 +3,8 @@ package paul.wintz.utils;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.lang.Math.abs;
+import static java.lang.Math.round;
 
 public class SequenceUtils {
 
@@ -25,12 +27,36 @@ public class SequenceUtils {
         return true;
     }
 
-    public static int[] toIntArray(String[] strings) {
-        final int[] ints = new int[strings.length];
+    public static double[] toDoubleArray(String[] strings) {
+        final double[] doubles = new double[strings.length];
         for (int i = 0; i < strings.length; i++) {
-            ints[i] = Integer.valueOf(strings[i].trim());
+            doubles[i] = Double.valueOf(strings[i].trim());
         }
-        return ints;
+        return doubles;
+    }
+
+    public static int[] toIntArray(String[] strings) {
+        try {
+            final int[] ints = new int[strings.length];
+            for (int i = 0; i < strings.length; i++) {
+                ints[i] = Integer.valueOf(strings[i].trim());
+            }
+            return ints;
+        } catch (NumberFormatException e) {
+            double[] doubles = toDoubleArray(strings);
+            int[] ints = new int[strings.length];
+            for (int i = 0; i < doubles.length; i++) {
+                double d = doubles[i];
+                if (abs(d - round(d)) > 0.0001) {
+                    NumberFormatException numberFormatException = new NumberFormatException("Number wasn't a integer:" + d);
+                    numberFormatException.initCause(e);
+                    throw numberFormatException;
+                }
+                ints[i] = (int) round(d);
+            }
+            return ints;
+        }
+
     }
 
     public static boolean[] toBooleanArray(String[] strings) {
