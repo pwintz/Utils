@@ -19,13 +19,23 @@ public class ValueOptionTest {
 
     private final StringOptionStub.Builder builder = StringOptionStub.builder();
 
-    @Mock ValueOption.ValueChangeCallback<String> changeCallback;
-    @Mock ValueOption.ValueChangeCallback<String> changeCallback2;
+    @Mock ValueOption.ValueChangeCallback<String> changeCallback; // added by default
+    @Mock ValueOption.ValueChangeCallback<String> changeCallback2; // not added by default
 
     @Before
     public void setUp() throws Exception {
         builder.addViewValueChangeCallback(changeCallback)
                 .initial("");
+    }
+
+    @Test
+    public void modelChanged() {
+        ValueOption<String> option = builder.build();
+        option.addModelValueChangeCallback(changeCallback2);
+
+        option.updateValueFromModel("Model changed");
+
+        verify(changeCallback2).callback("Model changed");
     }
 
     @Test

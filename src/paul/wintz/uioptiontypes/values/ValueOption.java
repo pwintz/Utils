@@ -4,10 +4,7 @@ import com.google.common.collect.ImmutableList;
 import paul.wintz.utils.logging.Lg;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,13 +28,14 @@ public class ValueOption<T> {
     }
 
     private T value;
-    private final Set<ValueChangeCallback<T>> viewValueChangeCallback = new HashSet<>();
+    private final Set<ValueChangeCallback<T>> viewValueChangeCallbacks = new HashSet<>();
+    private final Set<ValueChangeCallback<T>> modelValueChangeCallbacks = new HashSet<>();
     private final ImmutableList<ValueValidator<T>> valueValueValidator;
     private final ImmutableList<StateValidator> stateValidators;
 
     protected ValueOption(Builder<T, ?> builder) {
         builder.checkValue(builder.initial, "initial");
-        viewValueChangeCallback.addAll(builder.viewValueChangeCallback);
+        viewValueChangeCallbacks.addAll(builder.viewValueChangeCallback);
         builder.viewValueChangeCallback.clear();
         valueValueValidator = ImmutableList.copyOf(builder.valueValidators);
         stateValidators = ImmutableList.copyOf(builder.stateValidators);
@@ -57,7 +55,7 @@ public class ValueOption<T> {
         boolean changeAllowed = isStateValid() && isValueValid(newValue);
         if (changeAllowed && !newValue.equals(getValue())) {
             this.value = newValue;
-            for(ValueChangeCallback<T> callback : viewValueChangeCallback){
+            for(ValueChangeCallback<T> callback : viewValueChangeCallbacks){
                 callback.callback(newValue);
             }
         }
@@ -65,7 +63,17 @@ public class ValueOption<T> {
     }
 
     public void addViewValueChangeCallback(ValueChangeCallback<T> viewValueChangeCallback) {
-        this.viewValueChangeCallback.add(checkNotNull(viewValueChangeCallback));
+        this.viewValueChangeCallbacks.add(checkNotNull(viewValueChangeCallback));
+    }
+
+    public void addModelValueChangeCallback(ValueChangeCallback<T> modelValueChangeCallback) {
+        this.modelValueChangeCallbacks.add(checkNotNull(modelValueChangeCallback));
+    }
+
+    public void updateValueFromModel(T value){
+        for (ValueChangeCallback<T> callback : modelValueChangeCallbacks) {
+            callback.callback(value);
+        }
     }
 
     public T getValue() {
