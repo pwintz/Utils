@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.function.DoubleSupplier;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FunctionEvaluatorTest {
 
@@ -14,11 +15,19 @@ public class FunctionEvaluatorTest {
     }
 
     @Test
-    public void hardcodedConstantReturnsValue()  throws Exception {
+    public void hardcodedConstantReturnsValue() throws Exception {
         FunctionEvaluator functionEvaluator = FunctionEvaluator.builder()
                 .setEquation("1")
                 .build();
         assertEquals(1, functionEvaluator.evaluate(), 0.0);
+    }
+
+    @Test
+    public void arithmeticExceptionReturnsNaN() throws Exception {
+        FunctionEvaluator functionEvaluator = FunctionEvaluator.builder()
+                .setEquation("1/0")
+                .build();
+        assertTrue(Double.isNaN(functionEvaluator.evaluate()));
     }
 
     @Test

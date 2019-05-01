@@ -1,6 +1,7 @@
 package paul.wintz.functionevaluator;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableSet;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.function.Function;
@@ -32,7 +33,7 @@ public class FunctionEvaluator {
         try {
             return expression.evaluate();
         } catch (ArithmeticException e){
-            return Double.NaN; // If there happens to be an error, we'll just
+            return Double.NaN; // If there happens to be an error, we'll just return NaN.
         }
     }
 
@@ -70,6 +71,18 @@ public class FunctionEvaluator {
             return this;
         }
 
+        public boolean hasVariable(String name){
+            return variables.containsKey(name);
+        }
+
+        public ImmutableSet<String> variableNames(){
+            return ImmutableSet.copyOf(variables.keySet());
+        }
+
+        public void removeVariable(String name){
+            variables.remove(name);
+        }
+
         public FunctionEvaluator build() throws InvalidEquationException {
             try {
                 expressionString = insertMissingParenthesesAfterVariables(expressionString);
@@ -96,7 +109,6 @@ public class FunctionEvaluator {
                         .add("parameters", parameters.keySet())
                         .add("variables", variables.keySet())
                         .toString();
-
 
                 functionEvaluator.evaluate(); // Make sure it works!
                 return functionEvaluator;
