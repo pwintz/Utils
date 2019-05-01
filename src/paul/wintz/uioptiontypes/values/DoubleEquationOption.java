@@ -6,7 +6,9 @@ import paul.wintz.uioptiontypes.ValuesSuppliers;
 import paul.wintz.utils.logging.Lg;
 
 import javax.annotation.Nonnull;
+
 import java.util.Map;
+import java.util.Set;
 import java.util.function.DoubleSupplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -22,6 +24,7 @@ public class DoubleEquationOption extends ValueOption<EquationDoubleSupplierPair
     protected DoubleEquationOption(Builder builder) {
         super(builder);
         this.functionEvaluatorBuilder = builder.functionEvaluatorBuilder;
+
         emitEquationChanged(builder.initialEquation); //
     }
 
@@ -47,15 +50,34 @@ public class DoubleEquationOption extends ValueOption<EquationDoubleSupplierPair
     public static class Builder extends ValueOption.Builder<EquationDoubleSupplierPair, DoubleEquationOption.Builder> {
         private String initialEquation = "";
         private final FunctionEvaluator.Builder functionEvaluatorBuilder = FunctionEvaluator.builder().setEquation("1.0");
+        private ValuesSuppliers valuesSupplier;
 
         public DoubleEquationOption build() {
             try {
+                for (Map.Entry<String, DoubleSupplier> entry : valuesSupplier) {
+                    functionEvaluatorBuilder.addVariable(entry.getKey(), entry.getValue());
+                }
                 FunctionEvaluator functionEvaluator = functionEvaluatorBuilder.setEquation(initialEquation).build();
                 initial = new EquationDoubleSupplierPair(initialEquation, functionEvaluator::evaluate);
             } catch (InvalidEquationException e) {
                 Lg.e(TAG, "Initial equation value is invalid", e);
                 throw new RuntimeException(e);
             }
+
+            valuesSupplier.addSuppliersChangeListener((Set<String> updatedSupplierNames) -> {
+                for (String variableName : functionEvaluatorBuilder.variableNames()) {
+                    if (!updatedSupplierNames.contains(variableName)) {
+                        functionEvaluatorBuilder.removeVariable(variableName);
+                    }
+                }
+                for (String supplierName : updatedSupplierNames) {
+                    if (!functionEvaluatorBuilder.hasVariable(supplierName)) {
+                        functionEvaluatorBuilder.addVariable(supplierName, valuesSupplier.get(supplierName));
+                    }
+                }
+                Lg.v(TAG, "functionEvaluatorBuilder.variableNames(): %s", functionEvaluatorBuilder.variableNames());
+            });
+
             return new DoubleEquationOption(this);
         }
 
@@ -67,9 +89,7 @@ public class DoubleEquationOption extends ValueOption<EquationDoubleSupplierPair
         }
 
         public Builder setValuesSupplier(ValuesSuppliers valuesSupplier) {
-            for (Map.Entry<String, DoubleSupplier> entry : valuesSupplier) {
-                functionEvaluatorBuilder.addVariable(entry.getKey(), entry.getValue());
-            }
+            this.valuesSupplier = checkNotNull(valuesSupplier);
             return this;
         }
 
