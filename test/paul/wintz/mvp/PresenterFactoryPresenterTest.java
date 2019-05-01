@@ -3,6 +3,7 @@ package paul.wintz.mvp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import paul.wintz.typefactory.ClassNotSupportedException;
@@ -20,13 +21,15 @@ public class PresenterFactoryPresenterTest {
     @Spy PresenterFactoryPresenter.ValueChangedListener<RequiredSupertype> presenterChangeListener;
     MockView presenterSelectionView = new MockView();
 
+    @Mock AnotherValidPresenter anotherPresenterMock;
+
     @Before
     public void setup() {
         factoryPresenter = PresenterFactoryPresenter.builder(RequiredSupertype.class)
                 .setPresenterSelectionView(presenterSelectionView)
                 .setPresenterChangedListener(presenterChangeListener)
                 .addPresenter(ValidPresenter.class, ValidPresenter.View.class, ValidPresenter::new)
-                .addPresenter(AnotherValidPresenter.class, AnotherValidPresenter.View.class, AnotherValidPresenter::new)
+                .addPresenter(AnotherValidPresenter.class, AnotherValidPresenter.View.class, () -> anotherPresenterMock)
                 .build();
     }
 
@@ -60,6 +63,17 @@ public class PresenterFactoryPresenterTest {
     @Test
     public void noCallbackWhenAnUnrecognizedPresenterIsSelected() throws Exception {
         assertFalse(presenterSelectionView.presentersListOption.emitViewValueChanged(UnrecognizedPresenter.class));
+    }
+
+    @Test
+    public void presenterEnabledWhenSelectedAndDisabledWhenUnselected() throws Exception {
+        presenterSelectionView.presentersListOption.emitViewValueChanged(AnotherValidPresenter.class);
+
+        verify(anotherPresenterMock).enable();
+
+        presenterSelectionView.presentersListOption.emitViewValueChanged(ValidPresenter.class);
+
+        verify(anotherPresenterMock).disable();
     }
 
     interface RequiredSupertype {

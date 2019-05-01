@@ -13,6 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class PresenterFactoryPresenter<T> {
     private static final String TAG = Lg.makeTAG(PresenterFactoryPresenter.class);
 
+    private Presenter<?> currentPresenter;
+
     // PresenterSelectionView is an interface that takes a list of presenters then,
     // when a presenters is selected, a callback is triggered.
     public interface PresenterSelectionView {
@@ -30,11 +32,15 @@ public class PresenterFactoryPresenter<T> {
                 .addAll(presenterFactory.getBaseTypes())
                 .displayNameMapper(Class::getSimpleName)
                 .addViewValueChangeCallback(basePresenterType -> {
-                    Presenter<?> presenter = presenterFactory.make(basePresenterType);
-                    presenter.createAndSetView(viewFactory);
+                    if(currentPresenter != null){
+                        currentPresenter.disable();
+                    }
+                    currentPresenter = presenterFactory.make(basePresenterType);
+                    currentPresenter.createAndSetView(viewFactory);
 
                     //noinspection unchecked - We check that every added Presenter class extends T.
-                    emitPresenterChanged((T) presenter);
+                    emitPresenterChanged((T) currentPresenter);
+                    currentPresenter.enable();
                     Lg.i(TAG, "Presenter changed to " + basePresenterType.getSimpleName());
                 })
                 .build());
@@ -48,6 +54,10 @@ public class PresenterFactoryPresenter<T> {
 
     private void emitPresenterChanged(T newPresenter) {
         onPresenterChangeListener.notify(newPresenter);
+    }
+
+    Presenter<?> getCurrentPresenter() {
+        return currentPresenter;
     }
 
     public static <T> Builder<T> builder(Class<T> requiredSupertype) {

@@ -9,4 +9,8 @@ public interface Presenter<V> {
     default void createAndSetView(TypeFactory viewFactory) {
         setView(viewFactory.make(getViewClass()));
     }
+
+    default void enable(){}
+    default void disable(){}
+
 }
