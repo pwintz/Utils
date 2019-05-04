@@ -122,7 +122,7 @@ public class ExtraFunctionsTest {
         // values are swapped:
         // 1.0 in {..., (-0.5, 0.25], (0.0, 0.25], (0.5, 0.75], ...}
         // and 0.0 in {..., (-0.25, 0.0], (0.25, 0.5], (0.75, 2.0], ...}
-        // Note, however, the rounding at the boundaries is oppositive of above
+        // Note, however, the rounding at the boundaries is opposite of above
         assertThat(SQUARE_WAVE.apply(0.0, frequency), is(equalTo(0.0)));
         assertThat(SQUARE_WAVE.apply(0.01, frequency), is(equalTo(1.0)));
         assertThat(SQUARE_WAVE.apply(0.51, frequency), is(equalTo(0.0)));
