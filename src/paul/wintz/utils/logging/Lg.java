@@ -94,4 +94,25 @@ public final class Lg {
         // Don't allow instantiation.
     }
 
+    private static String tempTAG() {
+        return "(temp logging!)" + new Exception().getStackTrace()[2].getClassName();
+    };
+
+    public static void temp(String message){
+        logger.logDebug(tempTAG(), message);
+    }
+
+    public static void temp(String format, Object... args){
+        logger.logDebug(tempTAG(), String.format(format, args));
+    }
+
+    public static void temp(Throwable t){
+        logger.logDebug(tempTAG(), "", t);
+    }
+
+    public static void temp(String message, Throwable t){
+        logger.logDebug(tempTAG(), message, t);
+    }
+
 }
+
