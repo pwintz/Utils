@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static paul.wintz.utils.RegexUtils.WORD_BOUNDARY;
 
 /**
  * Takes a string expression and a set of variables, or variable getters, and returns a value
@@ -29,6 +30,9 @@ public class FunctionEvaluator {
         return new Builder();
     }
 
+    /**
+     * @return the value of the function, if possible, otherwise NaN.
+     */
     public double evaluate() {
         try {
             return expression.evaluate();
@@ -100,6 +104,12 @@ public class FunctionEvaluator {
                     });
                 }
 
+                builder.function(ExtraFunctions.NORMALIZED_SINE)
+                        .function(ExtraFunctions.NORMALIZED_COSINE)
+                        .function(ExtraFunctions.ROUND)
+                        .function(ExtraFunctions.STEPS)
+                        .function(ExtraFunctions.SQUARE_WAVE);
+
                 Expression expression = builder.build();
                 expression.setVariables(parameters);
 
@@ -118,7 +128,6 @@ public class FunctionEvaluator {
         }
 
         private String insertMissingParenthesesAfterVariables(String expressionString) {
-            final String WORD_BOUNDARY = "\\b";
             final String NO_PARENTHESES_PAIR = "(?!\\(\\))";
             final String REGEX_TEMPLATE = WORD_BOUNDARY + "%s" + WORD_BOUNDARY + NO_PARENTHESES_PAIR;
             for (String varName : variables.keySet()) {
