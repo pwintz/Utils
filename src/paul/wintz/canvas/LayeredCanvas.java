@@ -15,8 +15,6 @@ public class LayeredCanvas<L> {
 
     protected final ImmutableList<Layer<L>> layers; // the bottom layer is layer 0.
 
-    // scale is the amount that the image is scaled in order to make the drawing fit in the available area
-    private float scale = 0.2f;
     // zoom is a user controlled parameter to adjust the scaling.
     private float zoom = 1.0f;
     private float rotation = 0.0f;
@@ -24,6 +22,7 @@ public class LayeredCanvas<L> {
     private float centerY = 0.5f;
     private boolean preserveGraph = false;
     private float drawingWidth;
+    private float maxRadiusToFit;
 
     protected LayeredCanvas(Layer<L> layer) {
         this(Collections.singletonList(layer));
@@ -39,7 +38,8 @@ public class LayeredCanvas<L> {
     }
 
     public void handleNewFrame() {
-        scale = zoom * drawingWidth;
+        // scale is the amount that the image is scaled in order to make the drawing fit in the available area
+        float scale = zoom * getWidth() / (2 * maxRadiusToFit);
         for (final Layer<L> layer : layers) {
             layer.setCenter(getCenterX(), getCenterY());
             layer.setRotation(getRotation());
@@ -61,7 +61,7 @@ public class LayeredCanvas<L> {
     public void setScaleToFit(float maxRadiusToFit) {
         if (preserveGraph)
             return;
-        drawingWidth = getWidth() / (2 * maxRadiusToFit);
+        this.maxRadiusToFit = maxRadiusToFit;
     }
 
     public int getWidth() {
