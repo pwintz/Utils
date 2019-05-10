@@ -100,6 +100,26 @@ public class FloatOptionTest {
     }
 
     @Test
+    public void settingMinMultipleTimesUsesLargest() {
+        builder.min(-100f);
+        assertThat(builder.getMin(), is(equalTo(-100f)));
+        builder.min(-1f); // Should update minimum, because it provides a new lower bound.
+        assertThat(builder.getMin(), is(equalTo(-1f)));
+        builder.min(-10f); // Should be ignored, because it is below the allowed minimum
+        assertThat(builder.getMin(), is(equalTo(-1f)));
+    }
+
+    @Test
+    public void settingMaxMultipleTimesUsesSmallest() {
+        builder.max(100f);
+        assertThat(builder.getMax(), is(equalTo(100f)));
+        builder.max(1f); // Should update maximum, because it provides a new upper bound.
+        assertThat(builder.getMax(), is(equalTo(1f)));
+        builder.max(10f); // Be ignored, because it is above the allowed minimum
+        assertThat(builder.getMax(), is(equalTo(1f)));
+    }
+
+    @Test
     public void incrementSetAndGet() {
         FloatOption option = builder.increment(10.0f).build();
         assertThat(option.getIncrement(), is(equalTo(10.f)));

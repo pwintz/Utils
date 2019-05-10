@@ -28,7 +28,9 @@ public class FloatOption extends NumberOption<Float> {
         }
 
         public final Builder prohibitNonPositive() {
-            if(min <= 0) min(Float.MIN_VALUE);
+            if(min <= 0) {
+                min(Float.MIN_VALUE); // i.e. the smallest positive number.
+            }
             addValidityEvaluator(value -> value > 0f);
             return this;
         }

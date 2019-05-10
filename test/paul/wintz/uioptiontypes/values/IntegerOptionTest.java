@@ -112,6 +112,26 @@ public class IntegerOptionTest {
     }
 
     @Test
+    public void settingMinMultipleTimesUsesLargest() {
+        builder.min(-100);
+        assertThat(builder.getMin(), is(equalTo(-100)));
+        builder.min(-1); // Should update minimum because it provides a new lower bound.
+        assertThat(builder.getMin(), is(equalTo(-1)));
+        builder.min(-10); // Should be ignored because it is below the allowed minimum
+        assertThat(builder.getMin(), is(equalTo(-1)));
+    }
+
+    @Test
+    public void settingMaxMultipleTimesUsesSmallest() {
+        builder.max(100);
+        assertThat(builder.getMax(), is(equalTo(100)));
+        builder.max(1); // Should update maximum because it provides a new upper bound.
+        assertThat(builder.getMax(), is(equalTo(1)));
+        builder.max(10); // Be ignored because it is above the allowed minimum
+        assertThat(builder.getMax(), is(equalTo(1)));
+    }
+
+    @Test
     public void incrementAmountSetAndGet() {
         IntegerOption option = builder.increment(10).build();
         assertThat(option.getIncrement(), is(equalTo(10)));

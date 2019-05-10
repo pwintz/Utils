@@ -1,7 +1,6 @@
 package paul.wintz.uioptiontypes.values;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 public abstract class NumberOption<T extends Number> extends ValueOption<T> {
 
@@ -23,7 +22,7 @@ public abstract class NumberOption<T extends Number> extends ValueOption<T> {
     public T getIncrement() { return increment; }
 
     @SuppressWarnings("unchecked")
-    public static class Builder<T extends Number, B extends ValueOption.Builder> extends ValueOption.Builder<T, B> {
+    public abstract static class Builder<T extends Number, B extends ValueOption.Builder> extends ValueOption.Builder<T, B> {
 
         protected T increment;
         protected T max;
@@ -34,13 +33,27 @@ public abstract class NumberOption<T extends Number> extends ValueOption<T> {
             return (B) this;
         }
 
+        /**
+         * If max is set multiple times, then the smallest of the values will be used.
+         * @param max an upper bound for the value of the option
+         * @return this builder
+         */
         public final B max(T max) {
-            this.max = max;
+            if(max.doubleValue() < this.max.doubleValue()) {
+                this.max = max;
+            }
             return (B) this;
         }
 
+        /**
+         * If min is set multiple times, then the largest of the values will be used.
+         * @param min a lower bound for the value of the option
+         * @return this builder
+         */
         public final B min(T min) {
-            this.min = min;
+            if(min.doubleValue() > this.min.doubleValue()) {
+                this.min = min;
+            }
             return (B) this;
         }
 
@@ -57,6 +70,18 @@ public abstract class NumberOption<T extends Number> extends ValueOption<T> {
 
         protected Builder() {
             // Prevent instantiation
+        }
+
+        T getIncrement() {
+            return increment;
+        }
+
+        T getMax() {
+            return max;
+        }
+
+        T getMin() {
+            return min;
         }
 
     }
