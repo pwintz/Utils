@@ -105,13 +105,7 @@ public class MockLayer extends Layer<Void> {
 		addRecordedAction("background");
 	}
 
-	@Override
-	public Void getImage() {
-		addRecordedAction("getImage");
-		return null;
-	}
-
-	@Override
+    @Override
 	public void drawOnto(Void target) {
 		addRecordedAction("drawOnto");
 	}
