@@ -53,11 +53,15 @@ public class ValueOption<T> {
      */
     public boolean emitViewValueChanged(@Nonnull T newValue) {
         boolean changeAllowed = isStateValid() && isValueValid(newValue);
-        if (changeAllowed && !newValue.equals(getValue())) {
-            this.value = newValue;
-            for(ValueChangeCallback<T> callback : viewValueChangeCallbacks){
-                callback.callback(newValue);
+        if (!changeAllowed || newValue.equals(this.value)) {
+            if(!changeAllowed) {
+                Lg.w(TAG, "Changed not allowed");
             }
+            return changeAllowed;
+        }
+        this.value = checkNotNull(newValue);
+        for(ValueChangeCallback<T> callbackFromViewChange : viewValueChangeCallbacks){
+            callbackFromViewChange.callback(newValue);
         }
         return changeAllowed;
     }
@@ -71,9 +75,18 @@ public class ValueOption<T> {
     }
 
     public void updateValueFromModel(T value){
-        for (ValueChangeCallback<T> callback : modelValueChangeCallbacks) {
-            callback.callback(value);
+        for (ValueChangeCallback<T> callbackFromModelChange : modelValueChangeCallbacks) {
+            callbackFromModelChange.callback(value);
         }
+    }
+
+    // Set the value from backend. This is used if both the model and the view need to be updated.
+    public void setValue(@Nonnull T value) {
+        Lg.v(TAG, "{%s}.setValue(%s)", toString(), value);
+        if(!emitViewValueChanged(value)){
+            return;
+        }
+        updateValueFromModel(value);
     }
 
     public T getValue() {
@@ -124,7 +137,7 @@ public class ValueOption<T> {
 
         protected final void checkValue(T value, String name) {
             for(ValueValidator<T> ve : valueValidators) {
-                checkArgument(ve.isValid(value), "%s value %s is invalid for %s", name, initial, this);
+                checkArgument(ve.isValid(value), "'%s' value \"%s\" is invalid for %s", name, initial, this);
             }
         }
 

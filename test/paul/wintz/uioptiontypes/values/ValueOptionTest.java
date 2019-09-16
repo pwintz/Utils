@@ -248,4 +248,34 @@ public class ValueOptionTest {
 
         assertEquals(0, builder.viewValueChangeCallbackCount());
     }
+
+    @Test
+    public void setValueUpdatesModelAndView() {
+        ValueOption<String> stringOption = builder
+                .initial("Initial value")
+                .addViewValueChangeCallback(changeCallback)
+                .build();
+        stringOption.addModelValueChangeCallback(changeCallback2);
+
+        stringOption.setValue("New value");
+
+        verify(changeCallback).callback("New value");
+        verify(changeCallback2).callback("New value");
+    }
+
+    @Test
+    public void setValueFailsIfInvalid() {
+        ValueOption<String> stringOption = builder
+                .initial("Initial value")
+                .addViewValueChangeCallback(changeCallback)
+                .addStateValidator(() -> false)
+                .build();
+        stringOption.addModelValueChangeCallback(changeCallback2);
+
+        stringOption.setValue("New value");
+
+        verify(changeCallback, never()).callback("New value");
+        verify(changeCallback2, never()).callback("New value");
+    }
+
 }
