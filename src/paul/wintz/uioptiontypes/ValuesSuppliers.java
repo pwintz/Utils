@@ -1,5 +1,6 @@
 package paul.wintz.uioptiontypes;
 
+import com.google.common.base.MoreObjects;
 import paul.wintz.utils.logging.Lg;
 
 import javax.annotation.Nonnull;
@@ -78,6 +79,14 @@ public class ValuesSuppliers implements Iterable<Map.Entry<String, DoubleSupplie
 
     private ValuesSuppliers(Builder builder){
         doubleSuppliers.putAll(builder.doubleSuppliers);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("doubleSuppliers", doubleSuppliers.keySet())
+                .add("suppliersChangeListeners count", suppliersChangeListeners.size())
+                .toString();
     }
 
 }

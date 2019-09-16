@@ -75,6 +75,11 @@ public class FunctionEvaluator {
             return this;
         }
 
+        public Builder addVariable(Map.Entry<String, DoubleSupplier> variableEntry){
+            variables.put(variableEntry.getKey(), variableEntry.getValue());
+            return this;
+        }
+
         public boolean hasVariable(String name){
             return variables.containsKey(name);
         }

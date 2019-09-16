@@ -3,6 +3,7 @@ package paul.wintz.uioptiontypes.values;
 import paul.wintz.functionevaluator.FunctionEvaluator;
 import paul.wintz.functionevaluator.InvalidEquationException;
 import paul.wintz.uioptiontypes.ValuesSuppliers;
+import paul.wintz.utils.Toast;
 import paul.wintz.utils.logging.Lg;
 
 import javax.annotation.Nonnull;
@@ -13,6 +14,7 @@ import java.util.function.DoubleSupplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@Deprecated // Use EquationOption instead
 public class DoubleEquationOption extends ValueOption<EquationDoubleSupplierPair> {
     private static final String TAG = Lg.makeTAG(DoubleEquationOption.class);
 
@@ -38,13 +40,14 @@ public class DoubleEquationOption extends ValueOption<EquationDoubleSupplierPair
             return super.emitViewValueChanged(new EquationDoubleSupplierPair(newEquation, functionEvaluator::evaluate));
         } catch (InvalidEquationException e) {
             Lg.w(TAG, e.getMessage());
+            Toast.show("Invalid equation: %s", e.getMessage());
             return false;
         }
     }
 
     @Override
     public boolean emitViewValueChanged(@Nonnull EquationDoubleSupplierPair newValue) {
-        throw new UnsupportedOperationException("Use emitEquationChanged");
+        throw new UnsupportedOperationException("Use updateEquation");
     }
 
     public static class Builder extends ValueOption.Builder<EquationDoubleSupplierPair, DoubleEquationOption.Builder> {
