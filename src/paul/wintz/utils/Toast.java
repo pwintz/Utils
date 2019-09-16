@@ -55,7 +55,7 @@ public final class Toast {
 
     public static void show(String message, Object... args){
         if(toaster == null){
-            Lg.i(TAG, "Toaster not set. Cannot display message: %s", message);
+            Lg.i(TAG, "Toaster not set. Cannot display message: %s", String.format(message, args));
             return;
         }
         toaster.show(message, args);

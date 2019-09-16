@@ -25,6 +25,10 @@ public class Vector2D implements Cloneable {
         this(0, 0);
     }
 
+    public static Vector2D origin() {
+        return new Vector2D(0, 0);
+    }
+
     public Vector2D set(double x, double y) {
         this.x = x;
         this.y = y;
@@ -153,7 +157,7 @@ public class Vector2D implements Cloneable {
     public static Vector2D sum(Vector2D a, Vector2D b) {
         return new Vector2D(a.x + b.x, a.y + b.y);
     }
-    
+
     public static double crossProduct(Vector2D u, Vector2D v) {
         return u.x * v.y - u.y * v.x;
     }

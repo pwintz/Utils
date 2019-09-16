@@ -21,14 +21,17 @@ public class ToastTest {
         Toast.setToaster(toaster);
 
         Toast.show("A message");
-        Toast.show(stringId);
-        Toast.show(stringId, 1, "string", stringId);
-        Toast.show("<string format>", 1, "string", stringId);
-
         verify(toaster).show("A message");
+
+        Toast.show(stringId);
         verify(toaster).show(stringId);
+
+        Toast.show(stringId, 1, "string", stringId);
         verify(toaster).show(stringId, 1, "string", stringId);
+
+        Toast.show("<string format>", 1, "string", stringId);
         verify(toaster).show("<string format>", 1, "string", stringId);
+
         verifyNoMoreInteractions(toaster);
     }
 }
