@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import paul.wintz.uioptiontypes.ValuesSuppliers;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DoubleEquationOptionTest {
@@ -15,7 +16,7 @@ public class DoubleEquationOptionTest {
 
     @Test
     public void canInitialize() {
-        DoubleEquationOption equationOption = builder.addViewValueChangeCallback(callback)
+        DoubleEquationOption equationOption = builder.addViewValueChangeCallback(callback).setValuesSupplier(ValuesSuppliers.builder().build())
                 .initial("2+3").build();
 
     }

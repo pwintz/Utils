@@ -19,6 +19,10 @@ public class MockLayer extends Layer<Void> {
 
 	private final Queue<DrawingAction> recordedDrawingActions = new LinkedList<>();
 
+	public MockLayer(int size) {
+		super(size, size);
+	}
+
 	public MockLayer(int width, int height) {
 		super(width, height);
 	}
@@ -32,7 +36,8 @@ public class MockLayer extends Layer<Void> {
 		public DrawingAction(String name, String... coordinates){
 			this.name = name;
 			this.coordinates = Arrays.asList(coordinates);
-			this.coordinates.forEach(coord -> checkArgument(coordinatePattern.matcher(coord).matches()));
+			this.coordinates.forEach(coord -> checkArgument(coordinatePattern.matcher(coord).matches(),
+													"coord: " + coord + " does not match regEx"));
 		}
 
 		@Override
