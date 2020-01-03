@@ -95,7 +95,7 @@ public final class Lg {
     }
 
     private static String tempTAG() {
-        return "(temp logging!)" + new Exception().getStackTrace()[2].getClassName();
+        return "(TEMP)" + new Exception().getStackTrace()[2].getClassName();
     };
 
     public static void temp(String message){

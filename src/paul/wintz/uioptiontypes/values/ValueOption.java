@@ -52,18 +52,23 @@ public class ValueOption<T> {
      * and the change is otherwise legal, then true is returned.
      */
     public boolean emitViewValueChanged(@Nonnull T newValue) {
-        boolean changeAllowed = isStateValid() && isValueValid(newValue);
-        if (!changeAllowed || newValue.equals(this.value)) {
-            if(!changeAllowed) {
-                Lg.w(TAG, "Changed not allowed");
-            }
-            return changeAllowed;
+        if(!isStateValid()) {
+            Lg.w(TAG, "Change not emitted -- state not valid.");
+            return false;
+        }
+        if(!isValueValid(newValue)) {
+            Lg.w(TAG, "Change not emitted -- value is not valid: %s.", value);
+            return false;
+        }
+        if (newValue.equals(this.value)) {
+            Lg.w(TAG, "Change not emitted because value already equals \"%s\"", value);
+            return false;
         }
         this.value = checkNotNull(newValue);
         for(ValueChangeCallback<T> callbackFromViewChange : viewValueChangeCallbacks){
             callbackFromViewChange.callback(newValue);
         }
-        return changeAllowed;
+        return true;
     }
 
     public void addViewValueChangeCallback(ValueChangeCallback<T> viewValueChangeCallback) {
