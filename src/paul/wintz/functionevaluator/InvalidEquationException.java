@@ -12,7 +12,7 @@ public class InvalidEquationException extends Exception {
 
     private final String expression;
     private final Reason reason;
-    private final String message;
+    private final String explanation;
 
     public enum Reason {
         EMPTY_EXPRESSION,
@@ -26,10 +26,10 @@ public class InvalidEquationException extends Exception {
         UNKNOWN_EXCEPTION
     }
 
-    private InvalidEquationException(String expression, Reason reason, String message) {
+    private InvalidEquationException(String expression, Reason reason, String explanation) {
         this.expression = "\"" + expression + "\"";
         this.reason = reason;
-        this.message = message;
+        this.explanation = explanation;
     }
 
     @Override
@@ -37,8 +37,12 @@ public class InvalidEquationException extends Exception {
         return MoreObjects.toStringHelper(InvalidEquationException.class)
                 .add("expression", expression)
                 .add("reasons", reason)
-                .add("message", message)
+                .add("explanation", explanation)
                 .toString();
+    }
+
+    public String getExplanation() {
+        return explanation;
     }
 
     static InvalidEquationException construct(Exception e, String expressionString) {

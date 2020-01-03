@@ -93,7 +93,7 @@ public class DoubleEquationOptionWrapper {
                 functionEvaluatorBuilder.setEquation(equation).build();
                 return true;
             } catch (InvalidEquationException e) {
-                Lg.w(TAG, "Equation is not valid", e);
+                Lg.w(TAG, "Equation is not valid: \"%s\" because \"%s\"", equation, e.getExplanation());
                 return false;
             }
         }
