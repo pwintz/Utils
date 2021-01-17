@@ -4,10 +4,7 @@ import paul.wintz.utils.logging.Lg;
 
 import javax.annotation.Nullable;
 import javax.json.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,28 +27,39 @@ public class ValueOptionsBundle {
         jsonObject = jsonIO.load();
     }
 
-    public void save() {
+    public JsonObject getJsonObject(){
         JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
         for(Map.Entry<String, OptionItem<?>> optionItem : optionItems.entrySet()) {
             ValueOptionToJsonConverter.putValueInJson(optionItem.getKey(), optionItem.getValue(), jsonObjectBuilder);
         }
-        jsonIO.save(jsonObjectBuilder.build());
+        return jsonObjectBuilder.build();
     }
 
-    private static class OptionItem<T> {
-        private ValueOption<T> option = null; // is null until connected to an option.
-        private final Class<T> valueType;
-        private final T defaultValue;
+    public String getJsonString(){
+        return getJsonObject().toString();
+    }
 
-        private OptionItem(ValueOption<T> option, Class<T> valueType, T defaultValue) {
-            this.option = checkNotNull(option);
-            this.valueType = checkNotNull(valueType);
-            this.defaultValue = defaultValue;
-        }
+    public void save() {
+        jsonIO.save(getJsonObject());
+    }
 
-        private void setValueToDefault() {
-            option.setValue(defaultValue);
+    public void fromString(String jsonString) {
+
+        try {
+            JsonReader reader = Json.createReader(new StringReader(jsonString));
+            JsonObject jsonObject = reader.readObject();
+
+            JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+            for(Map.Entry<String, OptionItem<?>> optionItem : optionItems.entrySet()) {
+                ValueOptionToJsonConverter.setValueFromJson(optionItem.getKey(), optionItem.getValue(), jsonObject);
+            }
+        } catch (JsonException e) {
+            Lg.w(TAG, "Loading Json failed.", e);
         }
+}
+
+    public ValueOptionsBundle connectFile(String name, ValueOption<File> option, String defaultValue) {
+        return connect(name, new OptionItem<>(option, File.class, new File(defaultValue)));
     }
 
     public ValueOptionsBundle connect(String name, ValueOption<Float> option, Float defaultValue){
@@ -114,55 +122,6 @@ public class ValueOptionsBundle {
                 writer.writeObject(jsonObject);
             } catch (FileNotFoundException e) {
                 Lg.e(TAG, "Could not save Json", e);
-            }
-        }
-    }
-
-    private static class ValueOptionToJsonConverter {
-
-        public static void setValueFromJson(String name, OptionItem<?> optionItem, @Nullable JsonObject json) {
-            if(json == null) {
-                optionItem.setValueToDefault();
-                return;
-            }
-            if(optionItem.valueType == Integer.class) {
-                int value = json.getInt(name, (Integer) optionItem.defaultValue);
-                ((ValueOption<Integer>)optionItem.option).setValue(value);
-            } else if(optionItem.valueType == Float.class) {
-                JsonNumber jsonNumber = json.getJsonNumber(name);
-                float value;
-                if(jsonNumber != null){
-                    value = (float) jsonNumber.doubleValue();
-                } else {
-                    value = (Float) optionItem.defaultValue;
-                }
-                ((ValueOption<Float>)optionItem.option).setValue(value);
-            } else if(optionItem.valueType == Boolean.class) {
-                boolean value = json.getBoolean(name, (Boolean) optionItem.defaultValue);
-                ((ValueOption<Boolean>)optionItem.option).setValue(value);
-            } else if(optionItem.valueType == String.class) {
-                String value = json.getString(name, (String) optionItem.defaultValue);
-                ((ValueOption<String>)optionItem.option).setValue(value);
-            } else {
-                throw new RuntimeException("Unrecognized data type:" + optionItem.valueType);
-            }
-        }
-
-        public static void putValueInJson(String name, OptionItem<?> optionItem, JsonObjectBuilder jsonObjectBuilder){
-            if(optionItem.valueType == Integer.class) {
-                Integer value = ((ValueOption<Integer>)optionItem.option).getValue();
-                jsonObjectBuilder.add(name, value);
-            } else if(optionItem.valueType == Float.class) {
-                Float value = ((ValueOption<Float>)optionItem.option).getValue();
-                jsonObjectBuilder.add(name, value);
-            } else if(optionItem.valueType == Boolean.class) {
-                boolean value = ((ValueOption<Boolean>)optionItem.option).getValue();
-                jsonObjectBuilder.add(name, value);
-            } else if(optionItem.valueType == String.class) {
-                String value = ((ValueOption<String>)optionItem.option).getValue();
-                jsonObjectBuilder.add(name, value);
-            } else {
-                throw new RuntimeException("Unrecognized data type:" + optionItem.valueType);
             }
         }
     }

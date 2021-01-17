@@ -32,6 +32,7 @@ public class ValueOption<T> {
     private final Set<ValueChangeCallback<T>> modelValueChangeCallbacks = new HashSet<>();
     private final ImmutableList<ValueValidator<T>> valueValueValidator;
     private final ImmutableList<StateValidator> stateValidators;
+    private boolean emitIfNewValueEqualsOld;
 
     protected ValueOption(Builder<T, ?> builder) {
         builder.checkValue(builder.initial, "initial");
@@ -43,6 +44,7 @@ public class ValueOption<T> {
             emitViewValueChanged(builder.initial);
         }
         this.value = checkNotNull(builder.initial);
+        this.emitIfNewValueEqualsOld = builder.emitIfNewValueEqualsOld;
     }
 
     /**
@@ -60,7 +62,7 @@ public class ValueOption<T> {
             Lg.w(TAG, "Change not emitted -- value is not valid: %s.", value);
             return false;
         }
-        if (newValue.equals(this.value)) {
+        if (!emitIfNewValueEqualsOld && newValue.equals(this.value)) {
             Lg.w(TAG, "Change not emitted because value already equals \"%s\"", value);
             return false;
         }
@@ -111,6 +113,7 @@ public class ValueOption<T> {
 
         protected T initial;
         private boolean callbackOnInitialization = false;
+        private boolean emitIfNewValueEqualsOld = false;
         private final List<ValueValidator<T>> valueValidators = new ArrayList<>();
         private final List<StateValidator> stateValidators = new ArrayList<>();
         private final Set<ValueChangeCallback<T>> viewValueChangeCallback = new HashSet<>();
@@ -127,6 +130,11 @@ public class ValueOption<T> {
 
         public B callbackOnInitialization(boolean callbackOnInitialization){
             this.callbackOnInitialization = callbackOnInitialization;
+            return (B) this;
+        }
+
+        public B emitIfNewValueEqualsOld(boolean emitIfNewValueEqualsOld){
+            this.emitIfNewValueEqualsOld = emitIfNewValueEqualsOld;
             return (B) this;
         }
 
