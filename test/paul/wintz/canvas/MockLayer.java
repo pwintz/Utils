@@ -89,7 +89,7 @@ public class MockLayer extends Layer<Void> {
 	}
 
 	@Override
-	protected Void createLayer() {
+	protected Void createImageObject() {
 		// Do not record this method with addRecordedAction() because it is
 		// called in the constructor before the recorded actions list is created.
 		return null;
@@ -106,7 +106,7 @@ public class MockLayer extends Layer<Void> {
 	}
 
 	@Override
-	public void background(Painter painter) {
+	public void fill(int fillColor) {
 		addRecordedAction("background");
 	}
 

@@ -5,10 +5,17 @@ import paul.wintz.math.Vector2D;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Abstract class that provides methods for drawing and transforming images of type I. The
+ * @param <I> Image data type.
+ */
 public abstract class Layer<I> {
 
-    private static final List<Transformation> noTransforms = Collections.emptyList();
+    private static final List<Transformation> NO_TRANSFORMATIONS = Collections.emptyList();
 
+    /**
+     * Base interface type for Rotation, Translation, and Scale transformations.
+     */
     public interface Transformation {}
 
     public static final class Rotation implements Transformation {
@@ -20,8 +27,7 @@ public abstract class Layer<I> {
     }
 
     public static final class Translation implements Transformation {
-        public final float x;
-        public final float y;
+        public final float x, y;
 
         public Translation(float x, float y) {
             this.x = x;
@@ -30,8 +36,7 @@ public abstract class Layer<I> {
     }
 
     public static final class Scale implements Transformation {
-        public final float x;
-        public final float y;
+        public final float x, y;
 
         public Scale(float x, float y) {
             this.x = x;
@@ -39,14 +44,19 @@ public abstract class Layer<I> {
         }
     }
 
+    /**
+     * Create a new instance with the given width and height.
+     * @param width The width of the layer.
+     * @param height The height of the layer.
+     */
     public Layer(int width, int height) {
         this.width = width;
         this.height = height;
 
-        image = createLayer();
+        imageObject = createImageObject();
     }
 
-    private I image;
+    private I imageObject;
     private int width;
     private int height;
 
@@ -56,9 +66,12 @@ public abstract class Layer<I> {
     private float centerX = 0;
     private float centerY = 0;
 
-
+    /**
+     * Makes the image object available to subclasses.
+     * @return The image object.
+     */
     protected I getImage() {
-        return image;
+        return imageObject;
     }
 
     //******************************************
@@ -127,7 +140,7 @@ public abstract class Layer<I> {
         this.width = width;
         this.height = height;
 
-        image = createLayer();
+        imageObject = createImageObject();
     }
 
     public int getWidth() {
@@ -138,11 +151,20 @@ public abstract class Layer<I> {
         return height;
     }
 
-    protected abstract I createLayer();
+    protected abstract I createImageObject();
 
     public abstract void handleNewFrame();
+
+    /**
+     * Delete the current contents of the layer.
+     */
     public abstract void clear();
-    public abstract void background(Painter painter);
+
+    /**
+     * Fills the layer with a color provided by fillColor.
+     * @param fillColor Color that is drawn over the contents of the layer.
+     */
+    public abstract void fill(int fillColor);
 
     public abstract void drawOnto(I target);
 
@@ -155,7 +177,7 @@ public abstract class Layer<I> {
     public abstract void arc(float xCenter, float yCenter, float width, float height, float startAngle, float endAngle, Painter painter);
 
     public void rectangle(float x, float y, float width, float height, Painter painter) {
-        rectangle(x, y, width, height, painter, noTransforms);
+        rectangle(x, y, width, height, painter, NO_TRANSFORMATIONS);
     }
     public abstract void rectangle(float x, float y, float width, float height, Painter painter, List<Transformation> transforms);
 
@@ -166,7 +188,7 @@ public abstract class Layer<I> {
      * @param y y-coordinate of center of circle
      */
     public void circle(float x, float y, float radius, Painter painter) {
-        ellipse(x, y, (2 * radius), (2 * radius), painter, noTransforms);
+        ellipse(x, y, (2 * radius), (2 * radius), painter, NO_TRANSFORMATIONS);
     }
 
     public void vector2D(Vector2D startPos, Vector2D vector2D, Painter painter) {
@@ -182,19 +204,19 @@ public abstract class Layer<I> {
         circle((float) center.x(), (float) center.y(), radius, painter);
     }
     public void ellipse(float xCenter, float yCenter, float width, float height, Painter painter){
-        ellipse(xCenter, yCenter, width, height, painter, noTransforms);
+        ellipse(xCenter, yCenter, width, height, painter, NO_TRANSFORMATIONS);
     }
     public abstract void ellipse(float xCenter, float yCenter, float width, float height, Painter painter, List<Transformation> transforms);
 
     public abstract void quad(Vector2D corner0, Vector2D corner1, Vector2D corner2, Vector2D corner3, Painter painter);
 
     public void drawPath(List<Vector2D> points, Painter painter) {
-        drawPath(points, painter, noTransforms);
+        drawPath(points, painter, NO_TRANSFORMATIONS);
     }
     public abstract void drawPath(final List<Vector2D> points, final Painter painter, final List<Transformation> transforms);
 
     public void drawPolygon(final List<Vector2D> points, final Painter painter) {
-        drawPolygon(points, painter, noTransforms);
+        drawPolygon(points, painter, NO_TRANSFORMATIONS);
     }
     public abstract void drawPolygon(final List<Vector2D> points, final Painter painter, List<Transformation> transforms);
 
