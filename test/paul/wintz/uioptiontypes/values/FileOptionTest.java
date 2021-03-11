@@ -20,7 +20,8 @@ public class FileOptionTest {
 
     @Before
     public void setUp() throws Exception {
-        builder.addViewValueChangeCallback(changeCallback);
+        builder.addViewValueChangeCallback(changeCallback)
+                .extensionFilter("All files","*");
     }
 
     @Test

@@ -72,6 +72,10 @@ public final class Lg {
         logger.logError(tag, String.format(format, args));
     }
 
+    public static void e(String tag, String format, Throwable error, Object... args){
+        logger.logError(tag, String.format(format, args), error);
+    }
+
     public static void e(String tag, Throwable error){
         logger.logError(tag, "", error);
     }
