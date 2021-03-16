@@ -27,6 +27,7 @@ public class ValueOptionsBundle {
         jsonObject = jsonIO.load();
     }
 
+    // Create a Json object out of all the options stored in optionItems
     public JsonObject getJsonObject(){
         JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
         for(Map.Entry<String, OptionItem<?>> optionItem : optionItems.entrySet()) {
