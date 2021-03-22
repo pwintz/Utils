@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 public class ListOption<T> extends ValueOption<T> {
 
     private final ImmutableList<T> list;
-    public final Function<T, String> nameMapper;
+    private final Function<T, String> nameMapper;
 
     private ListOption(Builder<T> builder) {
         super(builder);
@@ -24,6 +24,10 @@ public class ListOption<T> extends ValueOption<T> {
 
     public int getSize() {
         return list.size();
+    }
+
+    public String displayName(T item){
+        return nameMapper.apply(item);
     }
 
     private int getIndex() {

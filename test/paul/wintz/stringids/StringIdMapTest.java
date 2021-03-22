@@ -19,26 +19,36 @@ public class StringIdMapTest {
     @Test (expected = IllegalStateException.class)
     public void throwsIfMissingStringsForRequiredIds() {
         StringIdMap.builder()
-                .setRequiredIds(MyStringIds.values())
+                .setRequiredIds(NumbersStringIds.values())
                 .build();
     }
 
     @Test
     public void stringMapReturnsSpecifiedStrings() {
         StringIdMap stringIdMap = StringIdMap.builder()
-                .setRequiredIds(MyStringIds.values())
-                .putStringId(MyStringIds.ONE, "one")
-                .putStringId(MyStringIds.TWO, "two")
-                .putStringId(MyStringIds.THREE, "three")
+                .setRequiredIds(NumbersStringIds.values())
+                .putStringId(NumbersStringIds.ONE, "one")
+                .putStringId(NumbersStringIds.TWO, "two")
+                .putStringId(NumbersStringIds.THREE, "three")
                 .build();
 
-        assertThat(stringIdMap.get(MyStringIds.ONE), is(equalTo("one")));
-        assertThat(stringIdMap.get(MyStringIds.TWO), is(equalTo("two")));
-        assertThat(stringIdMap.get(MyStringIds.THREE), is(equalTo("three")));
+        assertThat(stringIdMap.get(NumbersStringIds.ONE), is(equalTo("one")));
+        assertThat(stringIdMap.get(NumbersStringIds.TWO), is(equalTo("two")));
+        assertThat(stringIdMap.get(NumbersStringIds.THREE), is(equalTo("three")));
     }
 
-    private enum MyStringIds implements StringId {
+    @Test
+    public void stringMapReturnsEmptyStringIfKeyIsNull() {
+        StringIdMap stringIdMap = StringIdMap.builder()
+                .setRequiredIds(EmptyStringIds.values())
+                .build();
+
+        assertThat(stringIdMap.get(null), is(equalTo("")));
+    }
+
+    private enum NumbersStringIds implements StringId {
         ONE, TWO, THREE
     }
+    private enum EmptyStringIds implements StringId {}
 
 }

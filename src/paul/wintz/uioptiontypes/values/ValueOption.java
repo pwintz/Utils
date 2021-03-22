@@ -4,13 +4,18 @@ import com.google.common.collect.ImmutableList;
 import paul.wintz.utils.logging.Lg;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ValueOption<T> {
     @SuppressWarnings("unused") private static final String TAG = Lg.makeTAG(ValueOption.class);
+    @Nullable private final String description;
 
     @FunctionalInterface
     public interface ValueChangeCallback<T> {
@@ -44,6 +49,7 @@ public class ValueOption<T> {
             emitViewValueChanged(builder.initial);
         }
         this.value = checkNotNull(builder.initial);
+        this.description = builder.description;
         this.emitIfNewValueEqualsOld = builder.emitIfNewValueEqualsOld;
     }
 
@@ -59,11 +65,11 @@ public class ValueOption<T> {
             return false;
         }
         if(!isValueValid(newValue)) {
-            Lg.w(TAG, "Change not emitted -- value is not valid: %s.", value);
+            Lg.w(TAG, "Change not emitted -- new value is not valid: %s.", newValue);
             return false;
         }
         if (!emitIfNewValueEqualsOld && newValue.equals(this.value)) {
-            Lg.w(TAG, "Change not emitted because value already equals \"%s\"", value);
+            // Lg.w(TAG, "Change not emitted because new value equals current value: \"%s\"", value);
             return false;
         }
         this.value = checkNotNull(newValue);
@@ -108,10 +114,16 @@ public class ValueOption<T> {
         return stateValidators.stream().allMatch(StateValidator::isValid);
     }
 
+    @Nullable
+    public String getDescription() {
+        return description;
+    }
+
     @SuppressWarnings({"unchecked", "UnusedReturnValue"})
     protected static class Builder<T, B extends Builder> {
 
         protected T initial;
+        private String description = null;
         private boolean callbackOnInitialization = false;
         private boolean emitIfNewValueEqualsOld = false;
         private final List<ValueValidator<T>> valueValidators = new ArrayList<>();
@@ -120,6 +132,11 @@ public class ValueOption<T> {
 
         public B initial(T initial) {
             this.initial = checkNotNull(initial);
+            return (B) this;
+        }
+
+        public B description(String description) {
+            this.description = description;
             return (B) this;
         }
 

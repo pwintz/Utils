@@ -3,6 +3,7 @@ package paul.wintz.stringids;
 import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -19,7 +20,10 @@ public class StringIdMap {
         }
     }
 
-    public String get(StringId id) {
+    public String get(@Nullable StringId id) {
+        if(id == null){
+            return "";
+        }
         return stringIdMap.get(id);
     }
 
