@@ -88,8 +88,9 @@ public final class Utils {
         return intRange;
     }
 
-    public static String getRandomHash() {
-        return String.format("%08x", Utils.randomInteger(0, Integer.MAX_VALUE));
+    public static String randomHex() {
+        return String.format("%08x", random.nextInt());
+//        return Integer.toHexString(random.nextInt());
     }
 
     /*

@@ -174,7 +174,7 @@ public final class UtilsTester {
         Set<String> hashes = new HashSet<>();
 
         for (int i = 0; i < 100; i++) {
-            String hash = Utils.getRandomHash();
+            String hash = Utils.randomHex();
 
             boolean isValid = hashPattern.matcher(hash).matches();
             assertTrue("The hash '" + hash + " is not valid", isValid);
