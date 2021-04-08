@@ -3,7 +3,7 @@ package paul.wintz.functionevaluator;
 import net.objecthunter.exp4j.function.Function;
 import paul.wintz.utils.Utils;
 
-import static java.lang.Math.round;
+import static java.lang.Math.*;
 
 @SuppressWarnings("WeakerAccess")
 public class ExtraFunctions {
@@ -32,6 +32,40 @@ public class ExtraFunctions {
         }
     };
 
+    public static final Function FLOOR = new Function("floor") {
+        @Override
+        public double apply(double... args) {
+            if(Double.isNaN(args[0])) {
+                return Double.NaN;
+            }
+            return floor(args[0]);
+        }
+    };
+
+    public static final Function CEIL = new Function("ceil") {
+        @Override
+        public double apply(double... args) {
+            if(Double.isNaN(args[0])) {
+                return Double.NaN;
+            }
+            return ceil(args[0]);
+        }
+    };
+
+    public static final Function MIN = new Function("min", 2) {
+        @Override
+        public double apply(double... args) {
+            return min(args[0], args[1]);
+        }
+    };
+
+    public static final Function MAX = new Function("max", 2) {
+        @Override
+        public double apply(double... args) {
+            return max(args[0], args[1]);
+        }
+    };
+
     /**
      * A function that that increases in value 'steps' times in [0, 1). If there is one
      * step, it occurs at 0.5. If two, then they are at 1/3, 2/3.
@@ -54,13 +88,13 @@ public class ExtraFunctions {
      * by the second argument, which we will call 'frequency'. If frequency=1.0, then the value will be zero in [0.0, 0.5) and
      * 1.0 in [0.5, 1.0).
      **/
-    public static final Function SQUARE_WAVE = new Function("square", 2) {
+    public static final Function SQUARE_WAVE = new Function("square") {
         @Override
         public double apply(double... args) {
             double x = args[0];
-            double frequency = args[1];
+            double frequency = 1.0; //args[1];
 
-            // If frequency, we invert the wave. This is effectively the same as
+            // If frequency is negative, we invert the wave. This is effectively the same as
             // reversing the x-axis. The
             if(frequency < 0.0) {
                 x = -x;

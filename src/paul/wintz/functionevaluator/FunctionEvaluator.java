@@ -112,6 +112,10 @@ public class FunctionEvaluator {
                 builder.function(ExtraFunctions.NORMALIZED_SINE)
                         .function(ExtraFunctions.NORMALIZED_COSINE)
                         .function(ExtraFunctions.ROUND)
+                        .function(ExtraFunctions.FLOOR)
+                        .function(ExtraFunctions.CEIL)
+                        .function(ExtraFunctions.MAX)
+                        .function(ExtraFunctions.MIN)
                         .function(ExtraFunctions.STEPS)
                         .function(ExtraFunctions.SQUARE_WAVE);
 

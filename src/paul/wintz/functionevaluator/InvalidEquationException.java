@@ -48,7 +48,7 @@ public class InvalidEquationException extends Exception {
     static InvalidEquationException construct(Exception e, String expressionString) {
         Reason reason = getReason(e);
         if(reason == Reason.UNKNOWN_EXCEPTION) {
-            Lg.w(TAG, "The equation '%s' caused an unrecognized exception: %s for", expressionString, e);
+            Lg.e(TAG, "The equation '%s' caused an unrecognized exception: %s for", expressionString, e);
         }
         return new InvalidEquationException(expressionString, reason, e.getMessage());
     }
