@@ -31,6 +31,7 @@ public class PresenterFactoryPresenter<T> {
         presenterSelectionView.setPresentersOption(ListOption.<Class<? extends Presenter<?>>>builder()
                 .addAll(presenterFactory.getBaseTypes())
                 .displayNameMapper(Class::getSimpleName)
+                .emitIfNewValueEqualsOld(true) // This is a workaround for the initial values not being set properly.
                 .addViewValueChangeCallback(basePresenterType -> {
                     if(currentPresenter != null){
                         currentPresenter.disable();

@@ -16,7 +16,7 @@ import static java.lang.Math.*;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public final class Utils {
     public static final double TAU = 2 * PI;
-    public static final Random random = new Random();
+    private static final Random RANDOM = new Random();
     public static final char PHI = '\u03D5';
     public static final char PSI = '\u03C8';
     private static final String NOT_POSITIVE_FORMAT = "%s is not positive";
@@ -72,7 +72,7 @@ public final class Utils {
         int i;
         do {
             int range = Utils.checkPositive(Math.abs(high - low));
-            i = random.nextInt(range) + low;
+            i = RANDOM.nextInt(range) + low;
         } while (!allowZeroValue && i == 0);
 
         return i;
@@ -89,8 +89,8 @@ public final class Utils {
     }
 
     public static String randomHex() {
-        return String.format("%08x", random.nextInt());
-//        return Integer.toHexString(random.nextInt());
+        return String.format("%08x", RANDOM.nextInt());
+//        return Integer.toHexString(RANDOM.nextInt());
     }
 
     /*
@@ -256,7 +256,7 @@ public final class Utils {
     }
 
     public static double randomDouble() {
-        return random.nextDouble();
+        return RANDOM.nextDouble();
     }
 
     public static void assertNonNull(Object... objs){
