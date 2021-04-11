@@ -3,6 +3,7 @@ package paul.wintz.functionevaluator;
 import net.objecthunter.exp4j.function.Function;
 import paul.wintz.utils.Utils;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.Math.*;
 
 @SuppressWarnings("WeakerAccess")
@@ -92,14 +93,7 @@ public class ExtraFunctions {
         @Override
         public double apply(double... args) {
             double x = args[0];
-            double frequency = 1.0; //args[1];
-
-            // If frequency is negative, we invert the wave. This is effectively the same as
-            // reversing the x-axis. The
-            if(frequency < 0.0) {
-                x = -x;
-                frequency = -frequency;
-            }
+            checkArgument(args.length == 1, "Only one argument is accepted.");
 
             // The modulus operator (%) does not play well with negative numbers, for our
             // uses, so if the number is negative, we add a value to it into [0.0, 1.0).
@@ -107,7 +101,7 @@ public class ExtraFunctions {
                 x -= Math.floor(x);
             }
 
-            double period = 1.0 / frequency;
+            double period = 1.0;
             if(x % period < period / 2.0) {
                 return 0.0;
             } else {

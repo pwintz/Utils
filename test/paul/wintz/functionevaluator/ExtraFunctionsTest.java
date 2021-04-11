@@ -103,34 +103,5 @@ public class ExtraFunctionsTest {
         assertThat(SQUARE_WAVE.apply(-0.4, frequency), is(equalTo(1.0)));
         assertThat(SQUARE_WAVE.apply(-0.6, frequency), is(equalTo(0.0)));
         assertThat(SQUARE_WAVE.apply(-1.4, frequency), is(equalTo(1.0)));
-
-        frequency = 2.0;
-        // For a frequency of 2.0, the value should be
-        // 0.0 in ..., [-0.5, 0.25), [0.0, 0.25), [0.5, 0.75), ...
-        // and  1.0 in ...[-0.25, 0.0), [0.25, 0.5), [0.75, 2.0), etc.
-        assertThat(SQUARE_WAVE.apply(0.0, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(0.25, frequency), is(equalTo(1.0)));
-        assertThat(SQUARE_WAVE.apply(0.5, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(0.75, frequency), is(equalTo(1.0)));
-
-        // the negative direction works too.
-        assertThat(SQUARE_WAVE.apply(-0.1, frequency), is(equalTo(1.0)));
-        assertThat(SQUARE_WAVE.apply(-0.26, frequency), is(equalTo(0.0)));
-
-        frequency = -1.0;
-        // For a frequency of -1.0, intervals are identical to frequency=1.0, but the
-        // values are swapped:
-        // 1.0 in {..., (-0.5, 0.25], (0.0, 0.25], (0.5, 0.75], ...}
-        // and 0.0 in {..., (-0.25, 0.0], (0.25, 0.5], (0.75, 2.0], ...}
-        // Note, however, the rounding at the boundaries is opposite of above
-        assertThat(SQUARE_WAVE.apply(0.0, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(0.01, frequency), is(equalTo(1.0)));
-        assertThat(SQUARE_WAVE.apply(0.51, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(1.01, frequency), is(equalTo(1.0)));
-        assertThat(SQUARE_WAVE.apply(1.51, frequency), is(equalTo(0.0)));
-
-       // the negative direction works too.
-        assertThat(SQUARE_WAVE.apply(-0.1, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(-0.51, frequency), is(equalTo(1.0)));
     }
 }
