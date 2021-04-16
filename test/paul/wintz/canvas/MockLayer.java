@@ -190,7 +190,7 @@ public class MockLayer extends Layer<Void> {
 	}
 
 	@Override
-	public void drawText(String text, int x, int y) {
+	public void drawText(String text, float x, float y, Painter painter) {
 		throw new UnsupportedOperationException();
 	}
 

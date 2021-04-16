@@ -1,8 +1,11 @@
 package paul.wintz.utils.color;
 
+import com.sun.istack.internal.Nullable;
 import paul.wintz.utils.Utils;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Creates and evaluates colors. The format of the created ints are: [1 byte
@@ -152,9 +155,25 @@ public class ColorUtils {
 
     public static String toString(int color) {
         String format = String.format("%08X", color);
-        if(format.startsWith("FF")) {
+        if(format.startsWith("FF")) { // This means full alpha (no transparency).
             format = format.substring(2);
         }
         return "#" + format;
+    }
+
+    public static String pixelsToString(@Nullable int[] pixels) {
+        return pixelsToString(pixels, pixels.length);
+    }
+
+    public static String pixelsToString(@Nullable int[] pixels, int maxSize) {
+        if(pixels == null){
+            return "null";
+        }
+        String entries = Arrays.stream(pixels).limit(maxSize).boxed().map(ColorUtils::toString).collect(Collectors.joining(", "));
+        if(maxSize < pixels.length){
+            return String.format("[%s, ...]", entries);
+        } else {
+            return String.format("[%s]", entries);
+        }
     }
 }

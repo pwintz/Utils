@@ -2,6 +2,7 @@ package paul.wintz.canvas;
 
 import paul.wintz.math.Vector2D;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public abstract class Layer<I> {
         imageObject = createImageObject();
     }
 
-    private I imageObject;
+    @Nonnull private I imageObject;
     private int width;
     private int height;
 
@@ -188,7 +189,7 @@ public abstract class Layer<I> {
      * @param y y-coordinate of center of circle
      */
     public void circle(float x, float y, float radius, Painter painter) {
-        ellipse(x, y, (2 * radius), (2 * radius), painter, NO_TRANSFORMATIONS);
+        ellipse(x, y, (2f * radius), (2f * radius), painter, NO_TRANSFORMATIONS);
     }
 
     public void vector2D(Vector2D startPos, Vector2D vector2D, Painter painter) {
@@ -220,11 +221,11 @@ public abstract class Layer<I> {
     }
     public abstract void drawPolygon(final List<Vector2D> points, final Painter painter, List<Transformation> transforms);
 
-    public abstract void drawText(String text, int x, int y);
+    public abstract void drawText(String text, float x, float y, Painter painter);
 
     @Override
     public String toString() {
-        return String.format("Layer(%d x %d){scaleX=%.2f, scaleY=%.2f, rotation=%.2f}", width, height, scaleX, scaleY, rotation);
+        return String.format("Layer(%d x %d){scale(%.2f, %.2f), rotation=%.2f}", width, height, scaleX, scaleY, rotation);
     }
 
 }
