@@ -11,7 +11,7 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ValueOptionsBundle {
-    public static final String TAG = Lg.makeTAG(ValueOptionsBundle.class);
+    private static final String TAG = Lg.makeTAG(ValueOptionsBundle.class);
 
     private final JsonIO jsonIO;
     private Map<String, OptionItem<?>> optionItems = new HashMap<>();

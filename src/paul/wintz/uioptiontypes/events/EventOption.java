@@ -7,11 +7,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class EventOption {
 
-    @FunctionalInterface
-    public interface Event {
-        void doEvent();
-    }
-
     @Nonnull private final Event event;
     @Nullable private final EventQueue eventQueue;
 

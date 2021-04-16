@@ -2,8 +2,6 @@ package paul.wintz.uioptiontypes.events;
 
 import java.util.*;
 
-import paul.wintz.uioptiontypes.events.EventOption.Event;
-
 public class EventQueue {
 
     private final Queue<Event> queue = new LinkedList<>();
@@ -12,11 +10,15 @@ public class EventQueue {
         queue.add(event);
     }
 
-    public void handleEvents() {
+    public void callEvents() {
         Event event;
         while ((event = queue.poll()) != null) {
             event.doEvent();
         }
+    }
+
+    public int size(){
+        return queue.size();
     }
 
 }

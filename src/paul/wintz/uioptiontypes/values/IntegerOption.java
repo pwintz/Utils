@@ -3,7 +3,7 @@ package paul.wintz.uioptiontypes.values;
 public class IntegerOption extends NumberOption<Integer> {
     private final long numberOfValuesInRange;
 
-    private IntegerOption(Builder builder) {
+    protected IntegerOption(Builder builder) {
         super(builder);
         numberOfValuesInRange = (long) builder.max - (long) builder.min + 1L;
     }
@@ -16,9 +16,9 @@ public class IntegerOption extends NumberOption<Integer> {
         return new Builder();
     }
 
-    public static final class Builder extends NumberOption.Builder<Integer, Builder> {
+    public static class Builder extends NumberOption.Builder<Integer, Builder> {
 
-        private Builder() {
+        protected Builder() {
             initial = 0;
             increment = 1;
             max = Integer.MAX_VALUE;
@@ -40,7 +40,7 @@ public class IntegerOption extends NumberOption<Integer> {
             return this;
         }
 
-        public final IntegerOption build() {
+        public IntegerOption build() {
             addValidityEvaluator(value -> value >= min);
             addValidityEvaluator(value -> value <= max);
             return new IntegerOption(this);

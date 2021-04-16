@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,7 +14,7 @@ public class EventsTest {
 
     EventOption.Builder builder = EventOption.builder();
     EventQueue eventQueue = new EventQueue();
-    @Mock EventOption.Event event;
+    @Mock Event event;
 
     @Test(expected = NullPointerException.class)
     public void throwsIfEventIsNull() {
@@ -30,7 +30,7 @@ public class EventsTest {
 
         Mockito.reset(event);
 
-        eventQueue.handleEvents();
+        eventQueue.callEvents();
         verify(event, Mockito.never()).doEvent();
     }
 
@@ -44,7 +44,7 @@ public class EventsTest {
         option.triggerEvent();
         verify(event, Mockito.never()).doEvent();
 
-        eventQueue.handleEvents();
+        eventQueue.callEvents();
         verify(event).doEvent();
     }
 
@@ -55,7 +55,7 @@ public class EventsTest {
         builder.eventQueue(eventQueue).event(event).build()
                 .triggerEvent();
 
-        eventQueue.handleEvents();
+        eventQueue.callEvents();
 
         verify(event, times(2)).doEvent();
     }
