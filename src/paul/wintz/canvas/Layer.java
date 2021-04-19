@@ -154,7 +154,7 @@ public abstract class Layer<I> {
 
     protected abstract I createImageObject();
 
-    public abstract void handleNewFrame();
+    public abstract void applyPersistentTransformationsUpdate();
 
     /**
      * Delete the current contents of the layer.

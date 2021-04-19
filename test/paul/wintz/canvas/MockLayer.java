@@ -96,7 +96,7 @@ public class MockLayer extends Layer<Void> {
 	}
 
 	@Override
-	public void handleNewFrame() {
+	public void applyPersistentTransformationsUpdate() {
 		addRecordedAction("handleNewFrame");
 	}
 
