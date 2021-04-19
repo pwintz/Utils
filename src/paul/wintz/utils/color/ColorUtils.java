@@ -1,9 +1,9 @@
 package paul.wintz.utils.color;
 
-import com.sun.istack.internal.Nullable;
 import paul.wintz.utils.Utils;
 
-import java.awt.Color;
+import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
