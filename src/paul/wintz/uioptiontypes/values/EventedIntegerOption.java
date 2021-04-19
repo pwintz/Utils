@@ -22,12 +22,12 @@ public class EventedIntegerOption extends IntegerOption {
         private EventQueue eventQueue;
 
         public EventedIntegerOption build() {
-            checkNotNull(eventQueue);
+            checkNotNull(eventQueue, "eventQueue must be set.");
             return new EventedIntegerOption(this);
         }
 
         public Builder eventQueue(EventQueue eventQueue) {
-            this.eventQueue = eventQueue;
+            this.eventQueue = checkNotNull(eventQueue);
             return this;
         }
 

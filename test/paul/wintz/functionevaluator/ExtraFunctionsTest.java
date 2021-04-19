@@ -90,18 +90,17 @@ public class ExtraFunctionsTest {
 
     @Test
     public void testSquareWave() {
-        double frequency = 1.0;
         // For a frequency of 1.0, the value should be
         // 0.0 in {..., [-1.0, -0.5), [0.0, 0.5), [1.0, 1.5), ...}
         // and  1.0 in {...[-0.5, 0.0), [0.5, 1.0), [1.5, 2.0), ...}
-        assertThat(SQUARE_WAVE.apply(0.0, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(0.5, frequency), is(equalTo(1.0)));
-        assertThat(SQUARE_WAVE.apply(1.0, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(1.5, frequency), is(equalTo(1.0)));
+        assertThat(SQUARE_WAVE.apply(0.0), is(equalTo(0.0)));
+        assertThat(SQUARE_WAVE.apply(0.5), is(equalTo(1.0)));
+        assertThat(SQUARE_WAVE.apply(1.0), is(equalTo(0.0)));
+        assertThat(SQUARE_WAVE.apply(1.5), is(equalTo(1.0)));
 
         // the negative direction works too.
-        assertThat(SQUARE_WAVE.apply(-0.4, frequency), is(equalTo(1.0)));
-        assertThat(SQUARE_WAVE.apply(-0.6, frequency), is(equalTo(0.0)));
-        assertThat(SQUARE_WAVE.apply(-1.4, frequency), is(equalTo(1.0)));
+        assertThat(SQUARE_WAVE.apply(-0.4), is(equalTo(1.0)));
+        assertThat(SQUARE_WAVE.apply(-0.6), is(equalTo(0.0)));
+        assertThat(SQUARE_WAVE.apply(-1.4), is(equalTo(1.0)));
     }
 }
